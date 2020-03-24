@@ -6,7 +6,7 @@ import re
 
 class CategoryManager():
     """Import datas from the OpenFoodFact API and process them"""
-    def __init__(self, **kwargs):
+    def __init__(self):
         self.__response = "" #the response at the http get request
         self.__content = "" #the content in json format at the http get request
         self.__imported_categories = "" #an extract of the whole categories
@@ -37,7 +37,7 @@ class CategoryManager():
     def categories(self):
         """Return the categories selected"""
         self.import_data(CATEGORIES_URL, CATEGORIES_KEY, CATEGORIES_REG_EXP, CATEGORIES_NAME_FIELDS)
-        self.select_data(NB_SELECTED_AMONG_THE_LIST)
+        self.select_data(NB_CAT_SELECTED_AMONG_THE_LIST)
         return self.__categories_selected_list
 
 category = CategoryManager()
