@@ -1,4 +1,4 @@
-# Pur Beurre x OpenFoodFacts
+# Pur Beurre x OpenFoodFacts : FoodChoice
 
 This project aims to help the customer of the Pur Beurre compagny to eat better
 
@@ -36,9 +36,9 @@ Feel free to contribute to this project
 
 ## Versions
 
-Created in 
-Development : 
-Last version : 
+Created in  
+Development :  
+Last version :  
 
 ## Auteurs
 
