@@ -14,7 +14,7 @@ class ProductManager:
         self.product_list = [] # an extract of products with "nutrition_grade_fr_producer"
         self.products_selected_list = []  # an extract and a selection of products
 
-    def import_data(self, products_key, products_url):
+    def import_data(self, products_key, products_url, products_name_field):
         """import some products"""
 
         response = ""  # the response at the http get request
@@ -46,11 +46,8 @@ class ProductManager:
             self.products_selected_list = [
                 product
                 for product in imported_product
-                if product.get("nutrition_grades") is not None
+                if product.get(products_name_field) is not None
             ]
-
-            with open("data_file.json", "w") as write_file:
-                json.dump(self.products_selected_list, write_file, indent=4)
 
         else:
             print("error : trying to consume the API in order to obtain products")
@@ -58,4 +55,4 @@ class ProductManager:
         return self.products_selected_list
 
 products = ProductManager("Thés verts à la menthe")
-print(len(products.import_data(PRODUCT_KEY, PRODUCTS_URL)))
+print(len(products.import_data(PRODUCT_KEY, PRODUCTS_URL, PRODUCTS_NAME_FIELD)))

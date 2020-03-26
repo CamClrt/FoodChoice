@@ -13,7 +13,7 @@ class CategoryManager():
         self.__category_list = [] # an extract of the whole categories
         self.__categories_selected_list = []  # an extract and a selection of categories
 
-    def import_data(self, categories_url, categories_key, categories_name_fields, categories_reg_exp):
+    def import_data(self, categories_url, categories_key, categories_name_field, categories_reg_exp):
         """import categories"""
 
         response = ""  # the response at the http get request
@@ -29,9 +29,9 @@ class CategoryManager():
             imported_categories = content.get(categories_key)
 
             self.__category_list = [
-                imported_category[categories_name_fields]
+                imported_category[categories_name_field]
                 for imported_category in imported_categories
-                if re.fullmatch(categories_reg_exp, imported_category[categories_name_fields]) is not None
+                if re.fullmatch(categories_reg_exp, imported_category[categories_name_field]) is not None
             ]
 
     def select_data(self, nb_cat_selected_among_the_list):
@@ -42,7 +42,7 @@ class CategoryManager():
     @property
     def categories(self):
         """Return the categories selected"""
-        self.import_data(CATEGORIES_URL, CATEGORIES_KEY, CATEGORIES_NAME_FIELDS, CATEGORIES_REG_EXP)
+        self.import_data(CATEGORIES_URL, CATEGORIES_KEY, CATEGORIES_NAME_FIELD, CATEGORIES_REG_EXP)
         self.select_data(NB_CAT_SELECTED_AMONG_THE_LIST)
         return self.__categories_selected_list
 
