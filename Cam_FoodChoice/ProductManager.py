@@ -11,21 +11,24 @@ class ProductManager:
     """Import datas from the OpenFoodFact API and process them"""
     def __init__(self, category):
         self.category = category
-        self.product_list = []
+        self.product_list = [] # an extract of products with "nutrition_grade_fr_producer"
+        self.products_selected_list = []  # an extract and a selection of products
 
-    def import_data(self, products_key, products_url, products_reg_exp, products_name_fields):
+    def import_data(self, products_key, products_url):
         """import some products"""
 
         response = ""  # the response at the http get request
         content = {}  # the content in json format at the http get request
-        imported_products = []  # an extract of the whole categories
+        imported_products = []  # an extract of the whole products
+        product_list_int = []  # an extract of 1000 products
+        product = ""
 
         payload = {"action": "process",
                     "tagtype_0": "categories",
                     "tag_contains_0": "contains",
                     "tag_0": self.category,
                     "sort_by": "last_modified_t",
-                    "page_size": "1000",
+                    "page_size": "500",
                     "json": "true"}
 
         response = requests.get(products_url, params = payload)
@@ -34,18 +37,25 @@ class ProductManager:
             content = response.json()
             imported_products = content.get(products_key)
 
-            self.product_list = [
+            imported_product = [
                 imported_product
                 for imported_product in imported_products
-                #if re.fullmatch(products_reg_exp, imported_product[products_name_fields]) is not None
             ]
+
+            # keep just the products with a nutrition_grade
+            self.products_selected_list = [
+                product
+                for product in imported_product
+                if product.get("nutrition_grades") is not None
+            ]
+
+            with open("data_file.json", "w") as write_file:
+                json.dump(self.products_selected_list, write_file, indent=4)
 
         else:
             print("error : trying to consume the API in order to obtain products")
-        return self.product_list
 
+        return self.products_selected_list
 
-
-products = ProductManager("Boissons chaudes")
-print(type(products.import_data(PRODUCT_KEY, PRODUCTS_URL, PRODUCTS_REG_EXP, PRODUCTS_NAME_FIELDS)))
-print(len(products.import_data(PRODUCT_KEY, PRODUCTS_URL, PRODUCTS_REG_EXP, PRODUCTS_NAME_FIELDS)))
+products = ProductManager("Thés verts à la menthe")
+print(len(products.import_data(PRODUCT_KEY, PRODUCTS_URL)))

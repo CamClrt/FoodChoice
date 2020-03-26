@@ -8,23 +8,15 @@ CATEGORIES_REG_EXP = "^[A-Z].+"
 #products
 PRODUCTS_URL = "https://fr.openfoodfacts.org/cgi/search.pl?"
 PRODUCT_KEY = "products"
-PRODUCTS_NAME_FIELDS = "nutrition_grade_fr_producer"
-NB_PROD_SELECTED_AMONG_THE_LIST = 500
-PRODUCTS_REG_EXP = "(?i)^[a-e]"
+PRODUCTS_NAME_FIELDS = "nutrition_grades"
+NB_PROD_SELECTED_AMONG_THE_LIST = 250
 
 #random seed
 SEED = 100
 
 
-# "nutriscore_grade"
-# "brands"
-# "product_name_fr"
-# "generic_name"
-# "energy_100g"
+
+
 # "url"
-# "ingredients_text"
-# "serving_quantity"
 # "code"
-# "last_modified_t" >>> ex : "last_modified_t":1543602687,
-# "languages"
-#
+# "purchase_places_tags"
