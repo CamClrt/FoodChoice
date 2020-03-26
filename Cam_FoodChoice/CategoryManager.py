@@ -9,16 +9,15 @@ class CategoryManager():
         def __init__(self):
             self.__response = ""  # the response at the http get request
             self.__content = ""  # the content in json format at the http get request
-            self.__imported_categories_int = ""  # a complete extract of the whole categories
             self.__imported_categories = ""  # an extract of the whole categories
             self.__category_list = []  # an extract of the whole categories
             self.__categories_selected_list = []  # an extract and a selection of categories
 
     def import_data(self, categories_url, categories_key, categories_name_fields, categories_reg_exp):
-        """import categories and drop the categories starting with the id's country"""
+        """import some categories"""
         self.__response = requests.get(categories_url)
 
-        if self.__response.status_code != 200:
+        if self.__response.status_code != requests.codes.ok:
             print("error : trying to consume the API in order to obtain categories")
         else:
             self.__content = self.__response.json()

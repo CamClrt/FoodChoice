@@ -6,17 +6,12 @@ NB_CAT_SELECTED_AMONG_THE_LIST = 20
 CATEGORIES_REG_EXP = "^[A-Z].+"
 
 #products
-
-#the 6 parts of the search request to associate one category with products
-REQUEST_URL = "https://fr.openfoodfacts.org/cgi/search.pl?"
-ACTION = "action=process"
-TAGTYPE_0 = "&tagtype_0=categories"
-TAG_CONTAINS_0 =  "&tag_contains_0=contains"
-TAG_0 = "&tag_0=" #in this part, add the name of the category
-JSON_FORMAT = "&json=true"
-
+PRODUCTS_URL = "https://fr.openfoodfacts.org/cgi/search.pl?"
 PRODUCT_KEY = "products"
-NB_PROD_SELECTED_AMONG_THE_LIST = 100
+PRODUCTS_NAME_FIELDS = "nutrition_grade_fr"
+NB_PROD_SELECTED_AMONG_THE_LIST = 500
+PRODUCTS_REG_EXP = "(?i)^[a-e]"
+
 
 # "nutriscore_grade"
 # "brands"
