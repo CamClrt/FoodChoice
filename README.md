@@ -19,7 +19,7 @@ Controles :
 
 ## Functions
 
-* consulting the data (categories, products etc.)
+* 
 
 *
 

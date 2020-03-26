@@ -8,9 +8,12 @@ CATEGORIES_REG_EXP = "^[A-Z].+"
 #products
 PRODUCTS_URL = "https://fr.openfoodfacts.org/cgi/search.pl?"
 PRODUCT_KEY = "products"
-PRODUCTS_NAME_FIELDS = "nutrition_grade_fr"
+PRODUCTS_NAME_FIELDS = "nutrition_grade_fr_producer"
 NB_PROD_SELECTED_AMONG_THE_LIST = 500
 PRODUCTS_REG_EXP = "(?i)^[a-e]"
+
+#random seed
+SEED = 100
 
 
 # "nutriscore_grade"

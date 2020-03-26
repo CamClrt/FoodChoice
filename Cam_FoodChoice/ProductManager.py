@@ -3,43 +3,49 @@ import re
 import requests
 from data import *
 
+class Product():
+    """Create Product table in the database and import data"""
+    pass
+
 class ProductManager:
     """Import datas from the OpenFoodFact API and process them"""
     def __init__(self, category):
         self.category = category
-        self.payload = {}
-        self.__response = ""
-        self.__content = ""
-        self.__imported_products = ""
-        self.__product_list = []
+        self.product_list = []
 
-    def import_data(self, products_key, products_url, products_name_fields, products__reg_exp):
+    def import_data(self, products_key, products_url, products_reg_exp, products_name_fields):
         """import some products"""
 
-        self.payload = {"action": "process",
-                        "tagtype_0": "categories",
-                        "tag_contains_0": "contains",
-                        "tag_0": self.category,
-                        "sort_by": "last_modified_t",
-                        "page_size": "1000",
-                        "json": "true"}
+        response = ""  # the response at the http get request
+        content = {}  # the content in json format at the http get request
+        imported_products = []  # an extract of the whole categories
 
-        self.__response = requests.get(products_url, params= self.payload)
+        payload = {"action": "process",
+                    "tagtype_0": "categories",
+                    "tag_contains_0": "contains",
+                    "tag_0": self.category,
+                    "sort_by": "last_modified_t",
+                    "page_size": "1000",
+                    "json": "true"}
 
-        if self.__response.status_code == requests.codes.ok:
-            self.__content = self.__response.json()
-            self.__imported_products = self.__content.get(products_key)
+        response = requests.get(products_url, params = payload)
 
+        if response.status_code == requests.codes.ok:
+            content = response.json()
+            imported_products = content.get(products_key)
 
+            self.product_list = [
+                imported_product
+                for imported_product in imported_products
+                #if re.fullmatch(products_reg_exp, imported_product[products_name_fields]) is not None
+            ]
 
         else:
             print("error : trying to consume the API in order to obtain products")
-
-    def select_data(self, nb_cat_selected_among_the_list):
-        """select some products"""
-        pass
+        return self.product_list
 
 
 
 products = ProductManager("Boissons chaudes")
-products.import_data(PRODUCT_KEY, PRODUCTS_URL, PRODUCTS_NAME_FIELDS, PRODUCTS_REG_EXP)
+print(type(products.import_data(PRODUCT_KEY, PRODUCTS_URL, PRODUCTS_REG_EXP, PRODUCTS_NAME_FIELDS)))
+print(len(products.import_data(PRODUCT_KEY, PRODUCTS_URL, PRODUCTS_REG_EXP, PRODUCTS_NAME_FIELDS)))
