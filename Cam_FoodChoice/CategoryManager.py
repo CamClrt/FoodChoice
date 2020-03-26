@@ -3,9 +3,8 @@ import requests
 import random
 import re
 
-class Category():
-    """Create Category table in the database and import data"""
-    pass
+from requests import HTTPError
+
 
 class CategoryManager():
     """Import datas from the OpenFoodFact API and process them"""
@@ -20,11 +19,9 @@ class CategoryManager():
         content = ""  # the content in json format at the http get request
         imported_categories = []  # an extract of the whole categories
 
-        response = requests.get(categories_url)
+        response = requests.get(categories_url, timeout=5)
 
-        if response.status_code != requests.codes.ok:
-            print("error : trying to consume the API in order to obtain categories")
-        else:
+        if response.status_code == requests.codes.ok:
             content = response.json()
             imported_categories = content.get(categories_key)
 
@@ -33,6 +30,9 @@ class CategoryManager():
                 for imported_category in imported_categories
                 if re.fullmatch(categories_reg_exp, imported_category[categories_name_field]) is not None
             ]
+
+        else:
+            print("error : trying to consume the API in order to obtain categories")
 
     def select_data(self, nb_cat_selected_among_the_list):
         """select randomly some categories"""
@@ -45,6 +45,12 @@ class CategoryManager():
         self.import_data(CATEGORIES_URL, CATEGORIES_KEY, CATEGORIES_NAME_FIELD, CATEGORIES_REG_EXP)
         self.select_data(NB_CAT_SELECTED_AMONG_THE_LIST)
         return self.__categories_selected_list
+
+
+class Category():
+    """Create Category table in the database and import data"""
+    pass
+
 
 category = CategoryManager()
 print(category.categories)

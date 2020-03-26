@@ -1,11 +1,7 @@
-import json
-import re
-import requests
 from data import *
+import json
+import requests
 
-class Product():
-    """Create Product table in the database and import data"""
-    pass
 
 class ProductManager:
     """Import datas from the OpenFoodFact API and process them"""
@@ -31,7 +27,7 @@ class ProductManager:
                     "page_size": "500",
                     "json": "true"}
 
-        response = requests.get(products_url, params = payload)
+        response = requests.get(products_url, params = payload, timeout=5)
 
         if response.status_code == requests.codes.ok:
             content = response.json()
@@ -54,5 +50,25 @@ class ProductManager:
 
         return self.products_selected_list
 
-products = ProductManager("Thés verts à la menthe")
-print(len(products.import_data(PRODUCT_KEY, PRODUCTS_URL, PRODUCTS_NAME_FIELD)))
+
+class Product():
+    """Create Product table in the database and import data"""
+
+    """for i in range(len(products.products_selected_list) - 1):
+        product = self.products_selected_list[i]
+    
+        liste = []
+        liste.append(product.get("product_name_fr"))
+        liste.append(product.get("brands"))
+        liste.append(product.get("nutrition_grades"))
+        liste.append(product.get("ingredients_text"))
+        liste.append(product.get("serving_quantity"))
+        liste.append(product.get("url"))
+        liste.append(product.get("code"))
+        liste.append(product.get("stores"))
+        liste.append("FIN")
+        print(liste)"""
+
+
+products = ProductManager("Cordons bleus")
+products.import_data(PRODUCT_KEY, PRODUCTS_URL, PRODUCTS_NAME_FIELD)
