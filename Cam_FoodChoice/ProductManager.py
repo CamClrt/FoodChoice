@@ -27,7 +27,7 @@ class ProductManager:
                     "page_size": "500",
                     "json": "true"}
 
-        response = requests.get(products_url, params = payload, timeout=5)
+        response = requests.get(products_url, params = payload, timeout=10)
 
         if response.status_code == requests.codes.ok:
             content = response.json()
@@ -46,7 +46,7 @@ class ProductManager:
             ]
 
         else:
-            print("error : trying to consume the API in order to obtain products")
+            print("error")
 
         return self.products_selected_list
 

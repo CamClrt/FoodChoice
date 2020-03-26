@@ -3,8 +3,6 @@ import requests
 import random
 import re
 
-from requests import HTTPError
-
 
 class CategoryManager():
     """Import datas from the OpenFoodFact API and process them"""
@@ -32,7 +30,7 @@ class CategoryManager():
             ]
 
         else:
-            print("error : trying to consume the API in order to obtain categories")
+            print("error")
 
     def select_data(self, nb_cat_selected_among_the_list):
         """select randomly some categories"""
