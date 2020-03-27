@@ -48,27 +48,29 @@ class ProductManager:
         else:
             print("error")
 
+        "Create Product table in the database and import data"""
+
+        for i in range(len(products.products_selected_list) - 1):
+            product = self.products_selected_list[i]
+
+            liste = []
+            #iste.append(product.get("product_name_fr"))
+            #liste.append(product.get("brands"))
+            #liste.append(product.get("nutrition_grades"))
+            #liste.append(product.get("ingredients_text"))
+            #liste.append(product.get("nutriments")) # TODO aller chercher energy_100g dans le dico nutriments
+            #liste.append(product.get("url"))
+            #liste.append(product.get("code"))
+            #liste.append(product.get("stores"))
+            #liste.append("FIN")
+            print(liste)
+
         return self.products_selected_list
 
 
 class Product():
-    """Create Product table in the database and import data"""
-
-    """for i in range(len(products.products_selected_list) - 1):
-        product = self.products_selected_list[i]
-    
-        liste = []
-        liste.append(product.get("product_name_fr"))
-        liste.append(product.get("brands"))
-        liste.append(product.get("nutrition_grades"))
-        liste.append(product.get("ingredients_text"))
-        liste.append(product.get("serving_quantity"))
-        liste.append(product.get("url"))
-        liste.append(product.get("code"))
-        liste.append(product.get("stores"))
-        liste.append("FIN")
-        print(liste)"""
+    pass
 
 
-products = ProductManager("Cordons bleus")
+products = ProductManager("Biscuit")
 products.import_data(PRODUCT_KEY, PRODUCTS_URL, PRODUCTS_NAME_FIELD)
