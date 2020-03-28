@@ -1,6 +1,7 @@
 from data import *
 import mysql.connector
 from mysql.connector import Error
+import os
 
 class DatabaseManager:
     #TODO : writing docstring
@@ -102,6 +103,9 @@ class DatabaseManager:
                 print(x)
         except Error as e:
             print(f"The error '{e}' occurred")
+
+
+# TODO vérifier si FoodChoice est bien dans mysql_folder si non créer, si oui afficher (avec OS)
 
 
 FoodChoice = DatabaseManager()
