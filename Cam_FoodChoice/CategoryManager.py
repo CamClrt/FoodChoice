@@ -47,7 +47,13 @@ class CategoryManager():
 
 class Category():
     """Create Category table in the database and import data"""
-    pass
+
+    def __init__(self):
+        pass
+
+    def create_category_table(self):
+    #TODO docstring
+
 
 
 category = CategoryManager()

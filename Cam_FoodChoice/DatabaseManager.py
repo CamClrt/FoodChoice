@@ -1,31 +1,49 @@
 from data import *
 import mysql.connector
 from mysql.connector import Error
-import os
+import os.path
+from os import path
+import time
 
 class DatabaseManager:
     #TODO : writing docstring
 
     def __init__(self):
-        pass
+        self.DB_URL = path.join(path.dirname(__file__), "mysql_folder/FoodChoice")
+        self.database_name = DATABASE_NAME
+        self.host_name = HOST_NAME
+        self.user_name = USER_NAME
+        self.user_password = USER_PASSWORD
+        self.user_name_root = USER_NAME_ROOT
+        self.user_password_root = USER_PASSWORD_ROOT
 
-    def create_database_and_user(self, database_name, user_name, host_name, user_password, user_name_root, user_password_root):
+    def init_database(self):
+        # TODO : writing docstring
+
+        if os.path.isdir(self.DB_URL):
+            db = self.connect_database_and_user()
+        else:
+            self.create_database_and_user()
+            db = self.connect_database_and_user()
+        return db
+
+    def create_database_and_user(self):
         # TODO docsting
 
         # TODO docsting
         db = None
         try:
             db = mysql.connector.connect(
-                user=user_name_root,
-                password=user_password_root,
-                host=host_name,
+                user= self.user_name_root,
+                password= self.user_password_root,
+                host= self.host_name,
             )
             print("Connection to MySQL DB successful")
         except Error as e:
             print(f"The error '{e}' occurred")
 
         # TODO docsting
-        database_query = "CREATE DATABASE " + database_name
+        database_query = "CREATE DATABASE " + self.database_name
         cursor = db.cursor()
         try:
             cursor.execute(database_query)
@@ -34,13 +52,15 @@ class DatabaseManager:
             print(f"The error '{e}' occurred")
 
         # TODO docsting
-        user_query1 = "CREATE USER '" + user_name + "'@'" + host_name + "' IDENTIFIED BY '" + user_password +"'"
+
+        user_query1 = "CREATE USER '" + self.user_name + "'@'" + self.host_name + "' IDENTIFIED BY '" + self.user_password +"'"
+        time.sleep(3)
         try:
             cursor.execute(user_query1)
             print("User created successfully")
 
             # TODO docsting
-            user_query2 = "GRANT ALL PRIVILEGES ON " + database_name + ". * TO '" + user_name + "'@'" + host_name + "'"
+            user_query2 = "GRANT ALL PRIVILEGES ON " + self.database_name + ".* TO '" + self.user_name + "'@'" + self.host_name + "'"
             try:
                 cursor.execute(user_query2)
                 print("Privileges granted successfully")
@@ -50,19 +70,21 @@ class DatabaseManager:
         except Error as e:
             print(f"The error '{e}' occurred")
 
+        return db
 
-    def connect_database_and_user(self, database_name, user_name, host_name, user_password):
+
+    def connect_database_and_user(self):
         # TODO docsting
 
         db = None
         try:
             db = mysql.connector.connect(
-                user=user_name,
-                password=user_password,
-                host=host_name,
-                database=database_name
+                user= self.user_name_root,
+                password= self.user_password_root,
+                host= self.host_name,
+                database= self.database_name,
             )
-            print("Connection to " + database_name + " DB successful")
+            print("Connection to " + self.database_name + " DB successful")
         except Error as e:
             print(f"The error '{e}' occurred")
 
@@ -105,12 +127,8 @@ class DatabaseManager:
             print(f"The error '{e}' occurred")
 
 
-# TODO vérifier si FoodChoice est bien dans mysql_folder si non créer, si oui afficher (avec OS)
-
-
-FoodChoice = DatabaseManager()
-#FoodChoice.create_database_and_user(DATABASE_NAME, USER_NAME, HOST_NAME, USER_PASSWORD, USER_NAME_ROOT, USER_PASSWORD_ROOT)
-db = FoodChoice.connect_database_and_user(DATABASE_NAME, USER_NAME_ROOT, HOST_NAME, USER_PASSWORD_ROOT)
-FoodChoice.show_databases(db)
-FoodChoice.show_users(db)
-FoodChoice.show_tables(db)
+food_choice = DatabaseManager()
+db = food_choice.init_database()
+food_choice.show_databases(db)
+food_choice.show_users(db)
+food_choice.show_tables(db)
