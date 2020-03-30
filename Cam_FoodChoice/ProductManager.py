@@ -62,8 +62,8 @@ class ProductManager:
             #liste.append(product.get("url"))
             #liste.append(product.get("code"))
             #liste.append(product.get("stores"))
+            # TODO trouver le champs catégorie pour faire le lien avec product
             #liste.append("FIN")
-            print(liste)
 
         return self.products_selected_list
 

@@ -2,6 +2,8 @@ from data import *
 import requests
 import random
 import re
+from mysql.connector import Error
+from Cam_FoodChoice.DatabaseManager import DatabaseManager
 
 
 class CategoryManager():
@@ -51,10 +53,21 @@ class Category():
     def __init__(self):
         pass
 
-    def create_category_table(self):
-    #TODO docstring
+    def create_category_table(self, db):
+    #TODO : writing docstring
 
+        mycursor = db.cursor()
 
+        query = "CREATE TABLE `Category` (`ID` SMALLINT UNSIGNED,`Name` VARCHAR(75),PRIMARY KEY (`ID`))"
 
-category = CategoryManager()
-print(category.categories)
+        try:
+            mycursor.execute(query)
+            print("Category table creation to MySQL DB successful")
+        except Error as e:
+            print(f"The error '{e}' occurred")
+
+food_choice = DatabaseManager()
+db = food_choice.init_database()
+
+category = Category()
+category.create_category_table(db)

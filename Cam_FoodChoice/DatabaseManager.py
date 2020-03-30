@@ -17,20 +17,22 @@ class DatabaseManager:
         self.user_name_root = USER_NAME_ROOT
         self.user_password_root = USER_PASSWORD_ROOT
 
+
     def init_database(self):
         # TODO : writing docstring
 
         if os.path.isdir(self.DB_URL):
-            db = self.connect_database_and_user()
+            db = self.connect_database()
         else:
-            self.create_database_and_user()
-            db = self.connect_database_and_user()
+            self.create_database()
+            db = self.connect_database()
+            self.create_user(db)
         return db
 
-    def create_database_and_user(self):
-        # TODO docsting
 
-        # TODO docsting
+    def create_database(self):
+        # TODO : writing docstring
+
         db = None
         try:
             db = mysql.connector.connect(
@@ -42,27 +44,34 @@ class DatabaseManager:
         except Error as e:
             print(f"The error '{e}' occurred")
 
-        # TODO docsting
+        # TODO : writing docstring
         database_query = "CREATE DATABASE " + self.database_name
-        cursor = db.cursor()
+        mycursor = db.cursor()
         try:
-            cursor.execute(database_query)
+            mycursor.execute(database_query)
             print("Database created successfully")
         except Error as e:
             print(f"The error '{e}' occurred")
 
-        # TODO docsting
+        mycursor.close()
+        db.close()
+
+
+    def create_user(self, db):
+        # TODO : writing docstring
+
+        mycursor = db.cursor()
 
         user_query1 = "CREATE USER '" + self.user_name + "'@'" + self.host_name + "' IDENTIFIED BY '" + self.user_password +"'"
         time.sleep(3)
         try:
-            cursor.execute(user_query1)
+            mycursor.execute(user_query1)
             print("User created successfully")
 
-            # TODO docsting
+            # TODO : writing docstring
             user_query2 = "GRANT ALL PRIVILEGES ON " + self.database_name + ".* TO '" + self.user_name + "'@'" + self.host_name + "'"
             try:
-                cursor.execute(user_query2)
+                mycursor.execute(user_query2)
                 print("Privileges granted successfully")
             except Error as e:
                 print(f"The error '{e}' occurred")
@@ -70,11 +79,12 @@ class DatabaseManager:
         except Error as e:
             print(f"The error '{e}' occurred")
 
-        return db
+        mycursor.close()
+        db.close()
 
 
-    def connect_database_and_user(self):
-        # TODO docsting
+    def connect_database(self):
+        # TODO : writing docstring
 
         db = None
         try:
@@ -90,8 +100,9 @@ class DatabaseManager:
 
         return db
 
+
     def show_databases(self, db):
-        # TODO docsting
+        # TODO : writing docstring
 
         mycursor = db.cursor()
         mycursor.execute("SHOW DATABASES")
@@ -102,8 +113,12 @@ class DatabaseManager:
         except Error as e:
             print(f"The error '{e}' occurred")
 
+        mycursor.close()
+        db.close()
+
+
     def show_users(self, db):
-        # TODO docsting
+        # TODO : writing docstring
 
         mycursor = db.cursor()
         mycursor.execute("SELECT User FROM mysql.user")
@@ -114,8 +129,12 @@ class DatabaseManager:
         except Error as e:
             print(f"The error '{e}' occurred")
 
+        mycursor.close()
+        db.close()
+
+
     def show_tables(self, db):
-        # TODO docsting
+        # TODO : writing docstring
 
         mycursor = db.cursor()
         mycursor.execute("SHOW TABLES")
@@ -125,6 +144,9 @@ class DatabaseManager:
                 print(x)
         except Error as e:
             print(f"The error '{e}' occurred")
+
+        mycursor.close()
+        db.close()
 
 
 food_choice = DatabaseManager()
