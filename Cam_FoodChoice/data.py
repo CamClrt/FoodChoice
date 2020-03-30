@@ -21,10 +21,6 @@ HOST_NAME = "localhost"
 USER_NAME_ROOT = "root"
 USER_PASSWORD_ROOT = "my-secret-pw"
 
-#user
-USER_NAME = "FoodChoice_user"
-USER_PASSWORD = "FoodChoice_pw"
-
 
 #TODO : à supprimer
 #docker run -d -p 3306:3306 -v /Users/cam/Documents/Dev/OC/Projet/P5/Cam_FoodChoice/mysql_folder:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw mysql:8.0.19
