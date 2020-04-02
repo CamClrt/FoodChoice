@@ -3,7 +3,7 @@ import mysql.connector
 from mysql.connector import Error
 import os.path
 from os import path
-import time
+
 
 class DatabaseManager:
     #TODO : writing docstring
@@ -15,7 +15,6 @@ class DatabaseManager:
         self.user_name_root = USER_NAME_ROOT
         self.user_password_root = USER_PASSWORD_ROOT
 
-
     def init_database(self):
         # TODO : writing docstring
 
@@ -24,8 +23,8 @@ class DatabaseManager:
         else:
             self.create_database()
             db = self.connect_database()
-        return db # TODO à retirer à la fin du projet > pas utile juste pour consultation ses TABLES / DB & USERS ou à mettre dans un fichier de log ?
-
+            self.create_tables(db)
+        return db # TODO à retirer à la fin du projet
 
     def create_database(self):
         # TODO : writing docstring
@@ -41,18 +40,13 @@ class DatabaseManager:
         except Error as e:
             print(f"The error '{e}' occurred")
 
-        # TODO : writing docstring
-        database_query = f"CREATE DATABASE {self.database_name} DEFAULT CHARACTER SET 'utf8'"
         mycursor = db.cursor()
+
         try:
-            mycursor.execute(database_query)
+            mycursor.execute(SQL_CREATE_DB)
             print("Database created successfully")
         except Error as e:
             print(f"The error '{e}' occurred")
-
-        mycursor.close()
-        db.close()
-
 
     def connect_database(self):
         # TODO : writing docstring
@@ -71,6 +65,16 @@ class DatabaseManager:
 
         return db
 
+    def create_tables(self, db):
+        # TODO : writing docstring
+
+        for query in CREATE_TABLES:
+                try:
+                    mycursor = db.cursor()
+                    mycursor.execute(query)
+                    print("Tables created successfully")
+                except Error as e:
+                    print(f"The error '{e}' occurred")
 
     def show_databases(self, db):
         # TODO : writing docstring
@@ -84,9 +88,6 @@ class DatabaseManager:
         except Error as e:
             print(f"The error '{e}' occurred")
 
-        mycursor.close()
-
-
     def show_users(self, db):
         # TODO : writing docstring
 
@@ -98,9 +99,6 @@ class DatabaseManager:
                 print(x)
         except Error as e:
             print(f"The error '{e}' occurred")
-
-        mycursor.close()
-
 
     def show_tables(self, db):
         # TODO : writing docstring
@@ -114,8 +112,8 @@ class DatabaseManager:
         except Error as e:
             print(f"The error '{e}' occurred")
 
-        mycursor.close()
 
+# -------------- Execution ------------------
 
 food_choice = DatabaseManager()
 db = food_choice.init_database()

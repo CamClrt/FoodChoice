@@ -21,7 +21,8 @@ class CategoryManager():
 
         response = requests.get(categories_url, timeout=5)
 
-        if response.status_code == requests.codes.ok:
+        try:
+            response.status_code == requests.codes.ok
             content = response.json()
             imported_categories = content.get(categories_key)
 
@@ -31,8 +32,9 @@ class CategoryManager():
                 if re.fullmatch(categories_reg_exp, imported_category[categories_name_field]) is not None
             ]
 
-        else:
-            print("error")
+        except:
+
+            print(f"The error : '{response.status_code}' occurred")
 
     def select_data(self, nb_cat_selected_among_the_list):
         """select randomly some categories"""
@@ -47,27 +49,10 @@ class CategoryManager():
         return self.__categories_selected_list
 
 
-class Category():
-    """Create Category table in the database and import data"""
-
-    def __init__(self):
-        pass
-
-    def create_category_table(self, db):
-    #TODO : writing docstring
-
-        mycursor = db.cursor()
-
-        query = "CREATE TABLE `Category` (`ID` SMALLINT UNSIGNED,`Name` VARCHAR(75),PRIMARY KEY (`ID`))"
-
-        try:
-            mycursor.execute(query)
-            print("Category table creation to MySQL DB successful")
-        except Error as e:
-            print(f"The error '{e}' occurred")
+# -------------- Execution ------------------
 
 food_choice = DatabaseManager()
 db = food_choice.init_database()
 
-category = Category()
-category.create_category_table(db)
+categorymanager = CategoryManager()
+print(categorymanager.categories)

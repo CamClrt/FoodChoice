@@ -3,11 +3,12 @@ CATEGORIES_URL = "https://fr.openfoodfacts.org/categories.json"
 #CATEGORIES_URL = "https://httpbin.org/status/404"
 CATEGORIES_KEY = "tags"
 CATEGORIES_NAME_FIELD = "name"
-NB_CAT_SELECTED_AMONG_THE_LIST = 20
+NB_CAT_SELECTED_AMONG_THE_LIST = 50
 CATEGORIES_REG_EXP = "^[A-Z].+"
 
 #products
 PRODUCTS_URL = "https://fr.openfoodfacts.org/cgi/search.pl?"
+#PRODUCTS_URL = "https://httpbin.org/status/404"
 PRODUCT_KEY = "products"
 PRODUCTS_NAME_FIELD = "nutrition_grades"
 NB_PROD_SELECTED_AMONG_THE_LIST = 250
@@ -21,6 +22,40 @@ HOST_NAME = "localhost"
 USER_NAME_ROOT = "root"
 USER_PASSWORD_ROOT = "my-secret-pw"
 
+#SQL requests
 
-#TODO : à supprimer
-#docker run -d -p 3306:3306 -v /Users/cam/Documents/Dev/OC/Projet/P5/Cam_FoodChoice/mysql_folder:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw mysql:8.0.19
+SQL_CREATE_DB = "CREATE DATABASE " + DATABASE_NAME + " DEFAULT CHARACTER SET 'utf8'"
+
+SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE `Category` (" \
+                            "`ID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT," \
+                            "`Name` VARCHAR(75)," \
+                            "PRIMARY KEY (`ID`)" \
+                            ")" \
+                            "ENGINE=INNODB"
+
+SQL_CREATE_PRODUCT_TABLE = "CREATE TABLE `Product` (" \
+                            "`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT," \
+                            "`Category_ID` INT UNSIGNED," \
+                            "`product_name_fr` VARCHAR(50)," \
+                            "`code` BIGINT UNSIGNED," \
+                            "`brands` VARCHAR(25)," \
+                            "`nutrition_grades` CHAR(1)," \
+                            "`ingredients_text` TINYTEXT," \
+                            "`energy_100g` SMALLINT UNSIGNED," \
+                            "`url` VARCHAR(255)," \
+                            "`stores` VARCHAR(50)," \
+                            "PRIMARY KEY (`ID`)," \
+                            "KEY FK (`Category_ID`)" \
+                            ")" \
+                            "ENGINE=INNODB"
+
+SQL_CREATE_SUBSTITUTE_TABLE = "CREATE TABLE `Substitute` (" \
+                              "`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT," \
+                              "`Product_ID` INT UNSIGNED," \
+                              "`Date` DATETIME," \
+                              "PRIMARY KEY (`ID`)," \
+                              "KEY FK (`Product_ID`)" \
+                              ")" \
+                              "ENGINE=INNODB"
+
+CREATE_TABLES = [SQL_CREATE_PRODUCT_TABLE, SQL_CREATE_SUBSTITUTE_TABLE, SQL_CREATE_CATEGORY_TABLE]
