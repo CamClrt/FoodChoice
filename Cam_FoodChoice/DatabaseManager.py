@@ -1,4 +1,7 @@
 from Cam_FoodChoice.data import *
+from Cam_FoodChoice.CategoryManager import CategoryManager
+from Cam_FoodChoice.ProductManager import ProductManager
+
 import mysql.connector
 from mysql.connector import Error
 import os.path
@@ -22,18 +25,11 @@ class DatabaseManager:
         if os.path.isdir(self.DB_URL):
             db = self.connect_database()
         else:
-            time.sleep(30)
-            try:
-                self.create_database()
-            except:
-                print("Waiting, second and last try to connect...")
-                time.sleep(30)
-                self.create_database()
-            try:
-                db = self.connect_database()
-                self.create_tables(db)
-            except:
-                print(f"FATAL ERROR : The database can be create")
+            time.sleep(15)
+            self.create_database()
+            db = self.connect_database()
+            self.create_tables(db)
+            self.insert_data(db)
         return db
 
     def create_database(self):
@@ -86,25 +82,21 @@ class DatabaseManager:
             except Error as e:
                 print(f"The error '{e}' occurred")
 
-"""    def insert_data(self, db, category_list):
+    def insert_data(self, db):
         # TODO : writing docstring
 
-        #insert categories
+        #insert categories & products
+        category_manager = CategoryManager()
+        category_list = category_manager.categories
+
         for category in category_list:
-            query = "INSERT INTO Category (Name) VALUES ('" + category + "')"
-            mycursor = db.cursor()
-            mycursor.execute(query)"""
+            try:
+                query = "INSERT INTO Category (Name) VALUES ('" + category + "')"
+                mycursor = db.cursor()
+                mycursor.execute(query)
+            except Error as e:
+                print(f"The error '{e}' occurred")
 
-"""        mycursor = db.cursor()
-        mycursor.execute("SELECT * FROM Products")
-        try:
-            print("\n **** TABLE Products ****")
-            for x in mycursor:
-                print(x)
-        except Error as e:
-            print(f"The error '{e}' occurred")"""
-
-
-# -------------- Execution ------------------
-
-"""food_choice = DatabaseManager()"""
+"""        for category in category_list:
+            product_manager = ProductManager(category)
+            product_dictionnary = product_manager.import_data()"""

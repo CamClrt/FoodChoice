@@ -8,8 +8,11 @@ class ProductManager:
     def __init__(self, category):
         self.category = category
         self.product_list = [] # an extract and a selection of products
+        self.products_key = PRODUCT_KEY
+        self.products_url = PRODUCTS_URL
+        self.products_name_field = PRODUCTS_NAME_FIELD
 
-    def import_data(self, products_key, products_url, products_name_field):
+    def import_data(self):
         """import some products"""
 
         response = ""  # the response at the http get request
@@ -26,12 +29,12 @@ class ProductManager:
                     "page_size": "500",
                     "json": "true"}
 
-        response = requests.get(products_url, params=payload, timeout=10)
+        response = requests.get(self.products_url, params=payload, timeout=10)
 
         try:
             response.status_code == requests.codes.ok
             content = response.json()
-            imported_products = content.get(products_key)
+            imported_products = content.get(self.products_key)
 
             imported_product = [
                 imported_product
@@ -42,7 +45,7 @@ class ProductManager:
             self.product_list = [
                 product
                 for product in imported_product
-                if product.get(products_name_field) is not None
+                if product.get(self.products_name_field) is not None
             ]
 
         except:
@@ -99,8 +102,3 @@ class ProductManager:
             print("stores : ", product["stores"])
         except KeyError:
             print("stores : pas de clé")"""
-
-# -------------- Execution ------------------
-
-"""products = ProductManager("Biscuit")
-print(products.import_data(PRODUCT_KEY, PRODUCTS_URL, PRODUCTS_NAME_FIELD))"""

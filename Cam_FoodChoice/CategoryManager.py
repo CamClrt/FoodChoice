@@ -47,12 +47,3 @@ class CategoryManager():
         self.import_data(CATEGORIES_URL, CATEGORIES_KEY, CATEGORIES_NAME_FIELD, CATEGORIES_REG_EXP)
         self.select_data(NB_CAT_SELECTED_AMONG_THE_LIST)
         return self.__categories_selected_list
-
-
-# -------------- Execution ------------------
-
-"""food_choice = DatabaseManager()
-db = food_choice.init_database()
-
-categorymanager = CategoryManager()
-print(categorymanager.categories)"""
