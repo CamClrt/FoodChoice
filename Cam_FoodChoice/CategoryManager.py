@@ -1,9 +1,9 @@
 from data import *
+import json
 import requests
 import random
 import re
 from mysql.connector import Error
-from Cam_FoodChoice.DatabaseManager import DatabaseManager
 
 
 class CategoryManager():
@@ -51,8 +51,8 @@ class CategoryManager():
 
 # -------------- Execution ------------------
 
-food_choice = DatabaseManager()
+"""food_choice = DatabaseManager()
 db = food_choice.init_database()
 
 categorymanager = CategoryManager()
-print(categorymanager.categories)
+print(categorymanager.categories)"""

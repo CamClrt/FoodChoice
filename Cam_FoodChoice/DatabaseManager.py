@@ -1,8 +1,9 @@
-from data import *
+from Cam_FoodChoice.data import *
 import mysql.connector
 from mysql.connector import Error
 import os.path
 from os import path
+import time
 
 
 class DatabaseManager:
@@ -21,10 +22,19 @@ class DatabaseManager:
         if os.path.isdir(self.DB_URL):
             db = self.connect_database()
         else:
-            self.create_database()
-            db = self.connect_database()
-            self.create_tables(db)
-        return db # TODO à retirer à la fin du projet
+            time.sleep(30)
+            try:
+                self.create_database()
+            except:
+                print("Waiting, second and last try to connect...")
+                time.sleep(30)
+                self.create_database()
+            try:
+                db = self.connect_database()
+                self.create_tables(db)
+            except:
+                print(f"FATAL ERROR : The database can be create")
+        return db
 
     def create_database(self):
         # TODO : writing docstring
@@ -69,54 +79,32 @@ class DatabaseManager:
         # TODO : writing docstring
 
         for query in CREATE_TABLES:
-                try:
-                    mycursor = db.cursor()
-                    mycursor.execute(query)
-                    print("Tables created successfully")
-                except Error as e:
-                    print(f"The error '{e}' occurred")
+            try:
+                mycursor = db.cursor()
+                mycursor.execute(query)
+                print(f"Table created successfully")
+            except Error as e:
+                print(f"The error '{e}' occurred")
 
-    def show_databases(self, db):
+"""    def insert_data(self, db, category_list):
         # TODO : writing docstring
 
-        mycursor = db.cursor()
-        mycursor.execute("SHOW DATABASES")
+        #insert categories
+        for category in category_list:
+            query = "INSERT INTO Category (Name) VALUES ('" + category + "')"
+            mycursor = db.cursor()
+            mycursor.execute(query)"""
+
+"""        mycursor = db.cursor()
+        mycursor.execute("SELECT * FROM Products")
         try:
-            print("\n **** DATABASES ****")
+            print("\n **** TABLE Products ****")
             for x in mycursor:
                 print(x)
         except Error as e:
-            print(f"The error '{e}' occurred")
-
-    def show_users(self, db):
-        # TODO : writing docstring
-
-        mycursor = db.cursor()
-        mycursor.execute("SELECT User FROM mysql.user")
-        try:
-            print("\n **** USERS ****")
-            for x in mycursor:
-                print(x)
-        except Error as e:
-            print(f"The error '{e}' occurred")
-
-    def show_tables(self, db):
-        # TODO : writing docstring
-
-        mycursor = db.cursor()
-        mycursor.execute("SHOW TABLES")
-        try:
-            print("\n **** TABLES ****")
-            for x in mycursor:
-                print(x)
-        except Error as e:
-            print(f"The error '{e}' occurred")
+            print(f"The error '{e}' occurred")"""
 
 
 # -------------- Execution ------------------
 
-food_choice = DatabaseManager()
-db = food_choice.init_database()
-food_choice.show_databases(db)
-food_choice.show_users(db)
-food_choice.show_tables(db)
+"""food_choice = DatabaseManager()"""

@@ -29,7 +29,7 @@ class ProductManager:
         response = requests.get(products_url, params=payload, timeout=10)
 
         try:
-            response.status_code == requests.codes.ok:
+            response.status_code == requests.codes.ok
             content = response.json()
             imported_products = content.get(products_key)
 
@@ -51,7 +51,7 @@ class ProductManager:
         return self.product_list
 
 
-class Product():
+"""class Product():
     # TODO : writing docstring
 
     for product in ??? :
@@ -98,9 +98,9 @@ class Product():
         try:
             print("stores : ", product["stores"])
         except KeyError:
-            print("stores : pas de clé")
+            print("stores : pas de clé")"""
 
 # -------------- Execution ------------------
 
-products = ProductManager("Biscuit")
-print(products.import_data(PRODUCT_KEY, PRODUCTS_URL, PRODUCTS_NAME_FIELD))
+"""products = ProductManager("Biscuit")
+print(products.import_data(PRODUCT_KEY, PRODUCTS_URL, PRODUCTS_NAME_FIELD))"""
