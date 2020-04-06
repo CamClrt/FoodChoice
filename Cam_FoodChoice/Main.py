@@ -8,7 +8,7 @@ init_db = DatabaseManager()
 db = init_db.init_database()
 
 #display the different elements in the database
-time.sleep(5)
+time.sleep(2)
 display = Database()
 display.display_databases(db)
 display.display_users(db)

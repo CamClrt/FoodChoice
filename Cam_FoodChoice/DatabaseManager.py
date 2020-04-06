@@ -90,8 +90,9 @@ class DatabaseManager:
         category_list = category_manager.categories
 
         for category in category_list:
+            reformat_category = category.replace("'"," ")
             try:
-                query = "INSERT INTO Category (Name) VALUES ('" + category + "')"
+                query = "INSERT INTO Category (Name) VALUES ('" + reformat_category + "')"
                 mycursor = db.cursor()
                 mycursor.execute(query)
             except Error as e:
