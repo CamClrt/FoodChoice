@@ -82,4 +82,10 @@ CREATE_TABLES = [
     SQL_CREATE_CATEGORY_TABLE,
 ]
 
+TABLES = [
+    'Category',
+    'Product',
+    'Substitute',
+]
+
 SQL_CREATE_CATEGORY = "INSERT INTO Category (Name) VALUES ('category')"

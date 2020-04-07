@@ -1,3 +1,4 @@
+from Cam_FoodChoice.data import *
 import mysql.connector
 from mysql.connector import Error
 
@@ -43,30 +44,13 @@ class Database():
     def display_data_in_tables(self, db):
         # TODO : writing docstring
 
-        #category
+        # Everything
         mycursor = db.cursor()
-        mycursor.execute("SELECT * FROM Category")
-        try:
-            print("\n **** Category table ****")
-            for x in mycursor:
-                print(x)
-        except Error as e:
-            print(f"The error '{e}' occurred")
-
-        #product
-        mycursor.execute("SELECT * FROM Product")
-        try:
-            print("\n **** Product table ****")
-            for x in mycursor:
-                print(x)
-        except Error as e:
-            print(f"The error '{e}' occurred")
-
-        #Substitute
-        mycursor.execute("SELECT * FROM Substitute")
-        try:
-            print("\n **** Substitute table ****")
-            for x in mycursor:
-                print(x)
-        except Error as e:
-            print(f"The error '{e}' occurred")
+        for table in TABLES:
+            mycursor.execute("SELECT * FROM " + table)
+            try:
+                print("\n **** " + table + " table ****")
+                for x in mycursor:
+                    print(x)
+            except Error as e:
+                print(f"The error '{e}' occurred")
