@@ -6,6 +6,8 @@ import time
 #launch the programm
 init_db = DatabaseManager()
 db = init_db.init_database()
+init_db.insert_category_data(db)
+
 
 #display the different elements in the database
 time.sleep(2)
@@ -14,6 +16,3 @@ display.display_databases(db)
 display.display_users(db)
 display.display_tables(db)
 display.display_data_in_tables(db)
-
-
-

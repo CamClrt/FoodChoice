@@ -11,6 +11,26 @@ PRODUCT_KEY = "products"
 PRODUCTS_NAME_FIELD = "nutrition_grades"
 NB_PROD_SELECTED_AMONG_THE_LIST = 250
 
+PAYLOAD = {"action": "process",
+           "tagtype_0": "categories",
+           "tag_contains_0": "contains",
+           "tag_0": "category",
+           "sort_by": "last_modified_t",
+           "page_size": "500",
+           "json": "true"
+}
+
+PARARMETERS_PRODUCT = {
+    "product_name_fr": "product_name_fr",
+    "brands": "brands",
+    "nutrition_grades": "nutrition_grades",
+    "ingredients_text": "ingredients_text",
+    "nutriments": "energy_100g",
+    "url": "url",
+    "code": "code",
+    "stores": "stores"
+}
+
 #random seed
 SEED = 100
 
@@ -56,4 +76,10 @@ SQL_CREATE_SUBSTITUTE_TABLE = "CREATE TABLE `Substitute` (" \
                               ")" \
                               "ENGINE=INNODB"
 
-CREATE_TABLES = [SQL_CREATE_PRODUCT_TABLE, SQL_CREATE_SUBSTITUTE_TABLE, SQL_CREATE_CATEGORY_TABLE]
+CREATE_TABLES = [
+    SQL_CREATE_PRODUCT_TABLE,
+    SQL_CREATE_SUBSTITUTE_TABLE,
+    SQL_CREATE_CATEGORY_TABLE,
+]
+
+SQL_CREATE_CATEGORY = "INSERT INTO Category (Name) VALUES ('category')"

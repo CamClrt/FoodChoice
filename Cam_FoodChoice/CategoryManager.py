@@ -26,10 +26,15 @@ class CategoryManager():
             content = response.json()
             imported_categories = content.get(categories_key)
 
-            self.__category_list = [
+            temporary_category_list = [
                 imported_category[categories_name_field]
                 for imported_category in imported_categories
                 if re.fullmatch(categories_reg_exp, imported_category[categories_name_field]) is not None
+            ]
+
+            self.__category_list = [
+                category.replace("'", " ")
+                for category in temporary_category_list
             ]
 
         except:

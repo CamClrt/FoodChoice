@@ -29,7 +29,6 @@ class DatabaseManager:
             self.create_database()
             db = self.connect_database()
             self.create_tables(db)
-            self.insert_data(db)
         return db
 
     def create_database(self):
@@ -69,6 +68,8 @@ class DatabaseManager:
         except Error as e:
             print(f"The error '{e}' occurred")
 
+        print("\n **** CONNEXION ****")
+
         return db
 
     def create_tables(self, db):
@@ -82,7 +83,7 @@ class DatabaseManager:
             except Error as e:
                 print(f"The error '{e}' occurred")
 
-    def insert_data(self, db):
+    def insert_category_data(self, db):
         # TODO : writing docstring
 
         #insert categories & products
@@ -90,14 +91,39 @@ class DatabaseManager:
         category_list = category_manager.categories
 
         for category in category_list:
-            reformat_category = category.replace("'"," ")
             try:
-                query = "INSERT INTO Category (Name) VALUES ('" + reformat_category + "')"
+                #query = "INSERT INTO Category (Name) VALUES ('" + reformat_category + "')" TODO à supprimer si ok
+                query = SQL_CREATE_CATEGORY.replace("category", category)
                 mycursor = db.cursor()
                 mycursor.execute(query)
+                #self.insert_product_data(db, reformat_categories)
             except Error as e:
                 print(f"The error '{e}' occurred")
 
-"""        for category in category_list:
-            product_manager = ProductManager(category)
-            product_dictionnary = product_manager.import_data()"""
+"""    def insert_product_data(self, db, categories):
+        # TODO : writing docstring
+
+        # insert products
+        product_manager = ProductManager(categories)
+        product_list = product_manager.import_data()
+
+        for product_dictionnary in product_list:
+
+            for key, item in PARARMETERS_PRODUCT.items():
+
+                if key == item:
+                    try:
+                        query = "INSERT INTO Product + (Name)+  VALUES ('" + reformat_product + "')"
+                        mycursor = db.cursor()
+                        mycursor.execute(query)
+
+                        print(key, " : ", product_dictionnary[key])
+
+                    except Error as e:
+                        print(f"The error '{e}' occurred")
+                else:
+                    detail = product_dictionnary[key]
+                    try:
+                        print(item, " : ", detail[item])
+                    except Error as e:
+                        print(f"The error '{e}' occurred")"""
