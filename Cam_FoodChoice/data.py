@@ -56,7 +56,7 @@ SQL_CREATE_PRODUCT_TABLE = "CREATE TABLE `Product` (" \
                             "`Category_ID` INT UNSIGNED," \
                             "`product_name_fr` VARCHAR(50)," \
                             "`code` BIGINT UNSIGNED," \
-                            "`brands` VARCHAR(25)," \
+                            "`brands` VARCHAR(50)," \
                             "`nutrition_grades` CHAR(1)," \
                             "`ingredients_text` TINYTEXT," \
                             "`energy_100g` SMALLINT UNSIGNED," \
@@ -89,3 +89,13 @@ TABLES = [
 ]
 
 SQL_CREATE_CATEGORY = "INSERT INTO Category (Name) VALUES ('category')"
+
+SQL_CREATE_PRODUCT = "INSERT INTO Product (product_name_fr,\
+                                            brands,\
+                                            nutrition_grades,\
+                                            ingredients_text,\
+                                            energy_100g,\
+                                            url,\
+                                            code,\
+                                            stores)\
+                                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"

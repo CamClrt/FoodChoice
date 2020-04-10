@@ -1,12 +1,15 @@
 from Cam_FoodChoice.DatabaseManager import DatabaseManager
 from Cam_FoodChoice.Database import Database
+
 import time
 
 
 #launch the programm
 init_db = DatabaseManager()
 db = init_db.init_database()
-init_db.insert_category_data(db)
+categories = init_db.insert_category_data(db)
+for category in categories:
+    init_db.insert_product_data(db, category)
 
 
 #display the different elements in the database

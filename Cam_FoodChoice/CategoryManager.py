@@ -1,4 +1,5 @@
-from data import *
+from Cam_FoodChoice.data import *
+
 import json
 import requests
 import random
@@ -7,14 +8,15 @@ from mysql.connector import Error
 
 
 class CategoryManager():
-    """Import datas from the OpenFoodFact API and process them"""
+    """Import data from OpenFoodFact's API and process them"""
+
     def __init__(self):
-        self.__category_list = [] # an extract of the whole categories
-        self.__categories_selected_list = []  # an extract and a selection of categories
+        self.__category_list = []  # an extract of the whole categories
+        self.__categories_selected_list = []  # a selection of categories
+
 
     def import_data(self, categories_url, categories_key, categories_name_field, categories_reg_exp):
-        """import categories"""
-
+        """Import categories"""
         response = ""  # the response at the http get request
         content = ""  # the content in json format at the http get request
         imported_categories = []  # an extract of the whole categories
@@ -33,22 +35,21 @@ class CategoryManager():
             ]
 
             self.__category_list = [
-                category.replace("'", " ")
+                category.replace("'", " ")  # exclude the ' character in the field to avoid SQL error
                 for category in temporary_category_list
             ]
 
         except:
-
             print(f"The error : '{response.status_code}' occurred")
 
     def select_data(self, nb_cat_selected_among_the_list):
-        """select randomly some categories"""
+        """Select categories randomly"""
         random.seed(SEED)
         self.__categories_selected_list = random.sample(self.__category_list, nb_cat_selected_among_the_list)
 
     @property
     def categories(self):
-        """Return the categories selected"""
+        """Return categories"""
         self.import_data(CATEGORIES_URL, CATEGORIES_KEY, CATEGORIES_NAME_FIELD, CATEGORIES_REG_EXP)
         self.select_data(NB_CAT_SELECTED_AMONG_THE_LIST)
         return self.__categories_selected_list

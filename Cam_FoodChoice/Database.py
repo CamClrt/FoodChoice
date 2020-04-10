@@ -1,13 +1,14 @@
 from Cam_FoodChoice.data import *
+
 import mysql.connector
 from mysql.connector import Error
 
+
 class Database():
-    # TODO : writing docstring
+    """Display the different element of MySQL : databases, users, tables & the whole contain of the tables"""
 
     def display_databases(self, db):
-        # TODO : writing docstring
-
+        """Display databases"""
         mycursor = db.cursor()
         mycursor.execute("SHOW DATABASES")
         try:
@@ -18,8 +19,7 @@ class Database():
             print(f"The error '{e}' occurred")
 
     def display_users(self, db):
-        # TODO : writing docstring
-
+        """Display users"""
         mycursor = db.cursor()
         mycursor.execute("SELECT User FROM mysql.user")
         try:
@@ -30,8 +30,7 @@ class Database():
             print(f"The error '{e}' occurred")
 
     def display_tables(self, db):
-        # TODO : writing docstring
-
+        """Display tables"""
         mycursor = db.cursor()
         mycursor.execute("SHOW TABLES")
         try:
@@ -42,9 +41,7 @@ class Database():
             print(f"The error '{e}' occurred")
 
     def display_data_in_tables(self, db):
-        # TODO : writing docstring
-
-        # Everything
+        """Display data in tables"""
         mycursor = db.cursor()
         for table in TABLES:
             mycursor.execute("SELECT * FROM " + table)
