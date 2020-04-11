@@ -1,4 +1,4 @@
-from Cam_FoodChoice.data import *
+from FoodChoice.data import *
 
 import json
 import requests

@@ -1,5 +1,5 @@
-from Cam_FoodChoice.DatabaseManager import DatabaseManager
-from Cam_FoodChoice.Database import Database
+from FoodChoice.DatabaseManager import DatabaseManager
+from FoodChoice.Database import Database
 
 import time
 

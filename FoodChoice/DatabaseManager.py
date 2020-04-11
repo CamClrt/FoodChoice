@@ -1,7 +1,7 @@
-from Cam_FoodChoice.data import *
+from FoodChoice.data import *
 
-from Cam_FoodChoice.CategoryManager import CategoryManager
-from Cam_FoodChoice.ProductManager import ProductManager
+from FoodChoice.CategoryManager import CategoryManager
+from FoodChoice.ProductManager import ProductManager
 
 import mysql.connector
 from mysql.connector import Error
@@ -103,70 +103,27 @@ class DatabaseManager:
     def insert_product_data(self, db, category):
         """At the first start, import products from the OpenFoodFact API"""
         product_manager = ProductManager(category)
-        product_list = product_manager.import_data()
+        product_list = product_manager.products
 
         product_details_list = []
-        temporary_list = []
+        data = []
 
         for product in product_list:
-
-            product_name_fr = ""
-            brands = ""
-            nutrition_grades = ""
-            ingredients_text = ""
-            details = {}
-            energy_100g = ""
-            url = ""
-            code = ""
-            stores = ""
-
-
-            try:
-                product["product_name_fr"] = product_name_fr
-                product["brands"] = brands
-                product["nutrition_grades"] = nutrition_grades
-                product["ingredients_text"] = ingredients_text
-                product["nutriments"] = details
-                details["energy_100g"] = energy_100g
-                product["url"] = url
-                product["code"] = code
-                product["stores"] = stores
-            except KeyError:
-                pass
-
-            try:
-                mycursor = db.cursor()
-                mycursor.executemany(SQL_CREATE_PRODUCT, product_details_list)
-            except Error as e:
-                print(f"The error '{e}' occurred")
-            db.commit()
-
-            product_name_fr = ""
-            brands = ""
-            nutrition_grades = ""
-            ingredients_text = ""
-            details = {}
-            energy_100g = ""
-            url = ""
-            code = ""
-            stores = ""
-
-"""            for key, item in PARARMETERS_PRODUCT.items():
+            product_details_list.append("1") #TODO aller chercher l'ID dans la table catégorie
+            for key, item in PARARMETERS_PRODUCT.items():
                 if key == item:
-                    try:
-                        product[key]
-                        temporary_list.append(product[key])
-                    except KeyError:
-                        temporary_list.append("NULL")
+                    product_details_list.append(product.get(key, ""))
                 else:
-                    try :
-                        detail = product[key]
-                    except KeyError:
-                        temporary_list.append("NULL")
-                    try:
-                        detail[item]
-                        temporary_list.append(detail[item])
-                    except KeyError:
-                        temporary_list.append("NULL")
+                    detail = product.get(key, "")
+                    product_details_list.append(detail.get(item, ""))
 
-            product_details_list.append(tuple(temporary_list))"""
+            data.append(tuple(product_details_list))
+            product_details_list = []
+
+        try:
+            mycursor = db.cursor()
+            mycursor.executemany(SQL_CREATE_PRODUCT, data)
+        except Error as e:
+            print(f"The error '{e}' occurred")
+
+        db.commit()

@@ -1,4 +1,4 @@
-from Cam_FoodChoice.data import *
+from FoodChoice.data import *
 
 import json
 import requests
@@ -21,7 +21,7 @@ class CategoryManager():
         content = ""  # the content in json format at the http get request
         imported_categories = []  # an extract of the whole categories
 
-        response = requests.get(categories_url, timeout=5)
+        response = requests.get(categories_url, timeout=10)
 
         try:
             response.status_code == requests.codes.ok

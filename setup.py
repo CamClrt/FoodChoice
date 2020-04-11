@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='Cam_FoodChoice',
+    name='FoodChoice',
     version='0.1',
     author="Camille Clarret",
     author_email="camille.clarret@gmail.com",

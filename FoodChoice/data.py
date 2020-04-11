@@ -11,13 +11,14 @@ PRODUCT_KEY = "products"
 PRODUCTS_NAME_FIELD = "nutrition_grades"
 NB_PROD_SELECTED_AMONG_THE_LIST = 250
 
-PAYLOAD = {"action": "process",
-           "tagtype_0": "categories",
-           "tag_contains_0": "contains",
-           "tag_0": "category",
-           "sort_by": "last_modified_t",
-           "page_size": "500",
-           "json": "true"
+PAYLOAD = {
+    "action": "process",
+    "tagtype_0": "categories",
+    "tag_contains_0": "contains",
+    "tag_0": "category",
+    "sort_by": "last_modified_t",
+    "page_size": "500",
+    "json": "true"
 }
 
 PARARMETERS_PRODUCT = {
@@ -46,7 +47,7 @@ SQL_CREATE_DB = "CREATE DATABASE " + DATABASE_NAME + " DEFAULT CHARACTER SET 'ut
 
 SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE `Category` (" \
                             "`ID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT," \
-                            "`Name` VARCHAR(75)," \
+                            "`Name` VARCHAR(100)," \
                             "PRIMARY KEY (`ID`)" \
                             ")" \
                             "ENGINE=INNODB"
@@ -54,14 +55,14 @@ SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE `Category` (" \
 SQL_CREATE_PRODUCT_TABLE = "CREATE TABLE `Product` (" \
                             "`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT," \
                             "`Category_ID` INT UNSIGNED," \
-                            "`product_name_fr` VARCHAR(50)," \
+                            "`product_name_fr` VARCHAR(150)," \
                             "`code` BIGINT UNSIGNED," \
-                            "`brands` VARCHAR(50)," \
+                            "`brands` VARCHAR(100)," \
                             "`nutrition_grades` CHAR(1)," \
-                            "`ingredients_text` TINYTEXT," \
+                            "`ingredients_text` TEXT," \
                             "`energy_100g` SMALLINT UNSIGNED," \
                             "`url` VARCHAR(255)," \
-                            "`stores` VARCHAR(50)," \
+                            "`stores` VARCHAR(100)," \
                             "PRIMARY KEY (`ID`)," \
                             "KEY FK (`Category_ID`)" \
                             ")" \
@@ -90,12 +91,6 @@ TABLES = [
 
 SQL_CREATE_CATEGORY = "INSERT INTO Category (Name) VALUES ('category')"
 
-SQL_CREATE_PRODUCT = "INSERT INTO Product (product_name_fr,\
-                                            brands,\
-                                            nutrition_grades,\
-                                            ingredients_text,\
-                                            energy_100g,\
-                                            url,\
-                                            code,\
-                                            stores)\
-                                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+SQL_CREATE_PRODUCT = "INSERT INTO Product \
+            (Category_ID, product_name_fr, brands, nutrition_grades, ingredients_text, energy_100g, url, code, stores)\
+             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
