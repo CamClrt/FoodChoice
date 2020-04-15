@@ -27,13 +27,13 @@ class DatabaseManager:
         """"Init database and import data or connect it"""
         if os.path.isdir(self.DB_URL):
             db = self.connect_database()
+            self.insert_product_data(db, self.insert_category_data(db)) #TODO à retirer ensuite
         else:
             time.sleep(15)
             self.create_database()
             db = self.connect_database()
             self.create_tables(db)
-            categories = self.insert_category_data(db)
-            self.insert_product_data(db, categories)
+            self.insert_product_data(db, self.insert_category_data(db))
         return db
 
     def create_database(self):
@@ -76,7 +76,7 @@ class DatabaseManager:
         return db
 
     def create_tables(self, db):
-        """At the first start, create tables"""
+        """At the first connexion, create tables"""
         for query in CREATE_TABLES:
             try:
                 mycursor = db.cursor()
@@ -86,13 +86,13 @@ class DatabaseManager:
                 print(f"The error '{e}' occurred")
 
     def insert_category_data(self, db):
-        """At the first start, import categories from the OpenFoodFact API"""
+        """At the first connexion, import categories from the OpenFoodFact API"""
         category_manager = CategoryManager()
         category_list = category_manager.categories
 
         for category in category_list:
             try:
-                query = SQL_CREATE_CATEGORY.replace("category", category)
+                query = SQL_CREATE_CATEGORIES.replace("category", category)
                 mycursor = db.cursor()
                 mycursor.execute(query)
             except Error as e:
@@ -100,30 +100,34 @@ class DatabaseManager:
         db.commit()
         return category_list
 
-    def insert_product_data(self, db, category):
-        """At the first start, import products from the OpenFoodFact API"""
-        product_manager = ProductManager(category)
-        product_list = product_manager.products
+    def insert_product_data(self, db, categories):
+        """At the first start, import products data from the OpenFoodFact API"""
+        for category in categories:
+            product_manager = ProductManager(category)
+            product_list = product_manager.products
 
-        product_details_list = []
-        data = []
-
-        for product in product_list:
-            product_details_list.append("1") #TODO aller chercher l'ID dans la table catégorie
-            for key, item in PARARMETERS_PRODUCT.items():
-                if key == item:
-                    product_details_list.append(product.get(key, ""))
-                else:
-                    detail = product.get(key, "")
-                    product_details_list.append(detail.get(item, ""))
-
-            data.append(tuple(product_details_list))
             product_details_list = []
+            data = []
 
-        try:
-            mycursor = db.cursor()
-            mycursor.executemany(SQL_CREATE_PRODUCT, data)
-        except Error as e:
-            print(f"The error '{e}' occurred")
+            for product in product_list:
+                for key, item in PRODUCT_PARARMETERS.items():
+                    if key == item:
+                        product_details_list.append(product.get(key, ""))
+                    else:
+                        detail = product.get(key, "")
+                        try:
+                            detail[item] is int
+                            product_details_list.append(detail.get(item, ""))
+                        except:
+                            product_details_list.append(0)
 
-        db.commit()
+                data.append(tuple(product_details_list))
+                product_details_list = []
+
+            try:
+                mycursor = db.cursor()
+                mycursor.executemany(SQL_CREATE_PRODUCTS, data)
+            except Error as e:
+                print(f"The error '{e}' occurred")
+
+            db.commit()

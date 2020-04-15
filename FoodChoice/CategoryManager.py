@@ -35,7 +35,7 @@ class CategoryManager():
             ]
 
             self.__category_list = [
-                category.replace("'", " ")  # exclude the ' character in the field to avoid SQL error
+                category.replace("'", "")  # exclude the ' character in the field to avoid SQL error
                 for category in temporary_category_list
             ]
 

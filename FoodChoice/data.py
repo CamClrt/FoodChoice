@@ -21,15 +21,21 @@ PAYLOAD = {
     "json": "true"
 }
 
-PARARMETERS_PRODUCT = {
+PRODUCT_PARARMETERS = {
     "product_name_fr": "product_name_fr",
     "brands": "brands",
     "nutrition_grades": "nutrition_grades",
-    "ingredients_text": "ingredients_text",
     "nutriments": "energy_100g",
     "url": "url",
     "code": "code",
-    "stores": "stores"
+}
+
+PRODUCT_STORE_PARARMETERS = {
+    "stores": "stores",
+}
+
+PRODUCT_CITY_PARARMETERS = {
+    "purchase_places": "purchase_places",
 }
 
 #random seed
@@ -42,55 +48,68 @@ USER_NAME_ROOT = "root"
 USER_PASSWORD_ROOT = "my-secret-pw"
 
 #SQL requests
-
 SQL_CREATE_DB = "CREATE DATABASE " + DATABASE_NAME + " DEFAULT CHARACTER SET 'utf8'"
 
 SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE `Category` (" \
-                            "`ID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT," \
-                            "`Name` VARCHAR(100)," \
+                            "`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT," \
+                            "`Name` VARCHAR(50)," \
                             "PRIMARY KEY (`ID`)" \
                             ")" \
                             "ENGINE=INNODB"
 
 SQL_CREATE_PRODUCT_TABLE = "CREATE TABLE `Product` (" \
-                            "`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT," \
-                            "`Category_ID` INT UNSIGNED," \
-                            "`product_name_fr` VARCHAR(150)," \
-                            "`code` BIGINT UNSIGNED," \
-                            "`brands` VARCHAR(100)," \
-                            "`nutrition_grades` CHAR(1)," \
-                            "`ingredients_text` TEXT," \
-                            "`energy_100g` SMALLINT UNSIGNED," \
-                            "`url` VARCHAR(255)," \
-                            "`stores` VARCHAR(100)," \
-                            "PRIMARY KEY (`ID`)," \
-                            "KEY FK (`Category_ID`)" \
-                            ")" \
-                            "ENGINE=INNODB"
+                           "`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT," \
+                           "`Name` VARCHAR(150)," \
+                           "`Code` BIGINT UNSIGNED," \
+                           "`Brand` VARCHAR(100)," \
+                           "`Nutrition_grade` CHAR(1)," \
+                           "`Energy_100g` SMALLINT UNSIGNED," \
+                           "`URL` VARCHAR(255)," \
+                           "PRIMARY KEY (`ID`)" \
+                           ")" \
+                           "ENGINE=INNODB"
 
-SQL_CREATE_SUBSTITUTE_TABLE = "CREATE TABLE `Substitute` (" \
-                              "`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT," \
-                              "`Product_ID` INT UNSIGNED," \
-                              "`Date` DATETIME," \
-                              "PRIMARY KEY (`ID`)," \
-                              "KEY FK (`Product_ID`)" \
-                              ")" \
-                              "ENGINE=INNODB"
+SQL_CREATE_STORE_TABLE = "CREATE TABLE `Store` (" \
+                         "`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT," \
+                         "`Name` VARCHAR(50)," \
+                         "PRIMARY KEY (`ID`)" \
+                         ")" \
+                         "ENGINE=INNODB"
+
+SQL_CREATE_CITY_TABLE = "CREATE TABLE `City` (" \
+                        "`ID` INT UNSIGNED," \
+                        "`Name` VARCHAR(50)," \
+                        "`ZipCode` SMALLINT UNSIGNED," \
+                        "PRIMARY KEY (`ID`)" \
+                        ")" \
+                        "ENGINE=INNODB"
 
 CREATE_TABLES = [
-    SQL_CREATE_PRODUCT_TABLE,
-    SQL_CREATE_SUBSTITUTE_TABLE,
     SQL_CREATE_CATEGORY_TABLE,
+    SQL_CREATE_PRODUCT_TABLE,
+    SQL_CREATE_STORE_TABLE,
+    SQL_CREATE_CITY_TABLE,
 ]
 
 TABLES = [
     'Category',
     'Product',
-    'Substitute',
+    'Store',
+    'City',
 ]
 
-SQL_CREATE_CATEGORY = "INSERT INTO Category (Name) VALUES ('category')"
+SQL_CREATE_CATEGORIES = "INSERT INTO Category (Name) VALUES ('category')"
 
-SQL_CREATE_PRODUCT = "INSERT INTO Product \
-            (Category_ID, product_name_fr, brands, nutrition_grades, ingredients_text, energy_100g, url, code, stores)\
-             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+SQL_CREATE_PRODUCTS = "INSERT INTO Product \
+            (Name, Brand, Nutrition_grade, Energy_100g, URL, Code)\
+             VALUES (%s, %s, %s, %s, %s, %s)"
+
+SQL_CREATE_STORES = "INSERT INTO Store (Name) VALUES ('values');" #TODO ici à revoir
+
+SQL_CREATE_CITIES = "INSERT INTO City (Name) VALUES ('values');" #TODO ici à revoir
+
+PRODUCTS_DATA = {
+    SQL_CREATE_PRODUCTS: PRODUCT_PARARMETERS,
+    SQL_CREATE_STORES: PRODUCT_STORE_PARARMETERS,
+    SQL_CREATE_CITIES: PRODUCT_CITY_PARARMETERS,
+}

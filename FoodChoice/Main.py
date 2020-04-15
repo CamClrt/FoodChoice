@@ -7,10 +7,6 @@ import time
 #launch the programm
 init_db = DatabaseManager()
 db = init_db.init_database()
-categories = init_db.insert_category_data(db)
-for category in categories:
-    init_db.insert_product_data(db, category)
-
 
 #display the different elements in the database
 time.sleep(2)
