@@ -111,12 +111,13 @@ class DatabaseManager:
 
             for product in product_list:
                 for key, item in PRODUCT_PARARMETERS.items():
-                    if key == item:
-                        product_details_list.append(product.get(key, ""))
+                    if key == item[0]:
+                        int_value = str(product.get(key, ""))
+                        product_details_list.append(int_value[:item[1]])
                     else:
                         detail = product.get(key, "")
                         try:
-                            detail[item] is int
+                            detail[item] is item[1]
                             product_details_list.append(detail.get(item, ""))
                         except:
                             product_details_list.append(0)

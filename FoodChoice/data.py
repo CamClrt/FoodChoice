@@ -22,12 +22,12 @@ PAYLOAD = {
 }
 
 PRODUCT_PARARMETERS = {
-    "product_name_fr": "product_name_fr",
-    "brands": "brands",
-    "nutrition_grades": "nutrition_grades",
-    "nutriments": "energy_100g",
-    "url": "url",
-    "code": "code",
+    "product_name_fr": ["product_name_fr", 150],
+    "brands": ["brands", 100],
+    "nutrition_grades": ["nutrition_grades", 1],
+    "nutriments": ["energy_100g", int],
+    "url": ["url", 255],
+    "code": ["code", 19],
 }
 
 PRODUCT_STORE_PARARMETERS = {
