@@ -104,7 +104,7 @@ class DatabaseManager:
         """At the first start, import products data from the OpenFoodFact API"""
         for category in categories:
 
-            """add data in Product table"""
+            """process data to import in Product table"""
             product_manager = ProductManager(category)
             product_list = product_manager.products
 
@@ -127,6 +127,31 @@ class DatabaseManager:
                 data.append(tuple(product_details_list))
                 product_details_list = []
 
+                """process data to import in Store table"""
+                for key, item in PRODUCT_STORE_PARARMETERS.items():
+                    stores = []
+                    stores = product.get(key)
+                    if stores is list and len(stores) != 0:
+                        for store in stores:
+                            try:
+                                mycursor = db.cursor()
+                                mycursor.execute(SQL_CREATE_STORES.replace("store", store))
+                            except Error as e:
+                                print(f"The error '{e}' occurred")
+                    db.commit()
+
+                """process data to import in City table"""
+                for key, item in PRODUCT_CITY_PARARMETERS.items():
+                    cities = []
+                    cities = product.get(key)
+                    if cities is list and len(cities) != 0:
+                        for city in cities:
+                            try:
+                                mycursor = db.cursor()
+                                mycursor.execute(SQL_CREATE_CITIES.replace("city", city))
+                            except Error as e:
+                                print(f"The error '{e}' occurred")
+                    db.commit()
             try:
                 mycursor = db.cursor()
                 mycursor.executemany(SQL_CREATE_PRODUCTS, data)
@@ -134,11 +159,3 @@ class DatabaseManager:
                 print(f"The error '{e}' occurred")
 
             db.commit()
-
-            """add data in City table"""
-
-
-
-            """add data in Store table"""
-
-            

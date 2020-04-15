@@ -104,9 +104,9 @@ SQL_CREATE_PRODUCTS = "INSERT INTO Product \
             (Name, Brand, Nutrition_grade, Energy_100g, URL, Code)\
              VALUES (%s, %s, %s, %s, %s, %s)"
 
-SQL_CREATE_STORES = "INSERT INTO Store (Name) VALUES ('values');" #TODO ici à revoir
+SQL_CREATE_STORES = "INSERT INTO Store (Name) VALUES ('store');" #TODO ici à revoir
 
-SQL_CREATE_CITIES = "INSERT INTO City (Name) VALUES ('values');" #TODO ici à revoir
+SQL_CREATE_CITIES = "INSERT INTO City (Name) VALUES ('city');" #TODO ici à revoir
 
 PRODUCTS_DATA = {
     SQL_CREATE_PRODUCTS: PRODUCT_PARARMETERS,
