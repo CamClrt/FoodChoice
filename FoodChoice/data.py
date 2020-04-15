@@ -77,25 +77,25 @@ SQL_CREATE_STORE_TABLE = "CREATE TABLE `Store` (" \
                          "ENGINE=INNODB"
 
 SQL_CREATE_CITY_TABLE = "CREATE TABLE `City` (" \
-                        "`ID` INT UNSIGNED," \
+                        "`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT," \
                         "`Name` VARCHAR(50)," \
                         "`ZipCode` SMALLINT UNSIGNED," \
                         "PRIMARY KEY (`ID`)" \
                         ")" \
                         "ENGINE=INNODB"
 
-CREATE_TABLES = [
-    SQL_CREATE_CATEGORY_TABLE,
-    SQL_CREATE_PRODUCT_TABLE,
-    SQL_CREATE_STORE_TABLE,
-    SQL_CREATE_CITY_TABLE,
-]
-
 TABLES = [
     'Category',
     'Product',
     'Store',
     'City',
+]
+
+CREATE_TABLES = [
+    SQL_CREATE_CATEGORY_TABLE,
+    SQL_CREATE_PRODUCT_TABLE,
+    SQL_CREATE_STORE_TABLE,
+    SQL_CREATE_CITY_TABLE,
 ]
 
 SQL_CREATE_CATEGORIES = "INSERT INTO Category (Name) VALUES ('category')"
