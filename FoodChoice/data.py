@@ -31,11 +31,11 @@ PRODUCT_PARARMETERS = {
 }
 
 PRODUCT_STORE_PARARMETERS = {
-    "stores": "stores",
+    "stores_tags": ["stores_tags", 50],
 }
 
 PRODUCT_CITY_PARARMETERS = {
-    "purchase_places": "purchase_places",
+    "purchase_places_tags": ["purchase_places_tags", 50],
 }
 
 #random seed

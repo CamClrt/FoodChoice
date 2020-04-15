@@ -103,6 +103,8 @@ class DatabaseManager:
     def insert_product_data(self, db, categories):
         """At the first start, import products data from the OpenFoodFact API"""
         for category in categories:
+
+            """add data in Product table"""
             product_manager = ProductManager(category)
             product_list = product_manager.products
 
@@ -132,3 +134,11 @@ class DatabaseManager:
                 print(f"The error '{e}' occurred")
 
             db.commit()
+
+            """add data in City table"""
+
+
+
+            """add data in Store table"""
+
+            
