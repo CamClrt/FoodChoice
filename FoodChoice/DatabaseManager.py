@@ -1,4 +1,4 @@
-from FoodChoice.data import *
+from data import *
 
 from FoodChoice.API_Category import API_Category
 from FoodChoice.API_Product import API_Product

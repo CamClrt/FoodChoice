@@ -1,6 +1,5 @@
-from FoodChoice.data import *
+from data import *
 
-import json
 import requests
 
 

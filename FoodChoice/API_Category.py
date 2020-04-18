@@ -1,10 +1,8 @@
-from FoodChoice.data import *
+from data import *
 
-import json
 import requests
 import random
 import re
-from mysql.connector import Error
 
 
 class API_Category():
