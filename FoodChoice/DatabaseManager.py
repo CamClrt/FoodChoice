@@ -1,22 +1,16 @@
 from FoodChoice.data import *
 
-from FoodChoice.CategoryManager import CategoryManager
-from FoodChoice.ProductManager import ProductManager
+from FoodChoice.API_Category import API_Category
+from FoodChoice.API_Product import API_Product
 
 import mysql.connector
 from mysql.connector import Error
-
-import os.path
-from os import path
-
-import time
 
 
 class DatabaseManager:
     """"Init database or connect it"""
 
     def __init__(self):
-        self.DB_URL = path.join(path.dirname(__file__), "mysql_folder/FoodChoice")
         self.database_name = DATABASE_NAME
         self.host_name = HOST_NAME
         self.user_name_root = USER_NAME_ROOT
@@ -25,19 +19,22 @@ class DatabaseManager:
 
     def init_database(self):
         """"Init database and import data or connect it"""
-        if os.path.isdir(self.DB_URL):
-            db = self.connect_database()
-            self.insert_product_data(db, self.insert_category_data(db)) #TODO à retirer ensuite
-        else:
-            time.sleep(15)
-            self.create_database()
-            db = self.connect_database()
-            self.create_tables(db)
-            self.insert_product_data(db, self.insert_category_data(db))
-        return db
+        db = self.connect_service()
+        mycursor = db.cursor()
+        mycursor.execute("SHOW DATABASES")
+        databases = mycursor.fetchone()
+        db.close()
 
-    def create_database(self):
-        """At the first start, create database"""
+        if not databases.count("FoodChoice") == 1:
+            self.create_database()
+            self.create_tables()
+            self.insert_product_data(self.insert_category_data())
+            db.close()
+
+        return self.connect_database()
+
+    def connect_service(self):
+        """Connect to the service"""
         db = None
         try:
             db = mysql.connector.connect(
@@ -45,17 +42,12 @@ class DatabaseManager:
                 password= self.user_password_root,
                 host= self.host_name,
             )
-            print("Connection to MySQL DB successful")
         except Error as e:
             print(f"The error '{e}' occurred")
 
-        mycursor = db.cursor()
+        print("Connection to MySQL successfully")
 
-        try:
-            mycursor.execute(SQL_CREATE_DB)
-            print("Database created successfully")
-        except Error as e:
-            print(f"The error '{e}' occurred")
+        return db
 
     def connect_database(self):
         """Connect the database"""
@@ -67,28 +59,47 @@ class DatabaseManager:
                 host= self.host_name,
                 database= self.database_name,
             )
-            print("Connection to " + self.database_name + " DB successful")
+        except Error as e:
+            print(f"The error '{e}' occurred")
+        return db
+
+    def create_database(self):
+        """At the first connexion, create database"""
+        db = None
+        try:
+            db = mysql.connector.connect(
+                user= self.user_name_root,
+                password= self.user_password_root,
+                host= self.host_name,
+            )
         except Error as e:
             print(f"The error '{e}' occurred")
 
-        print("\n **** CONNEXION ****")
+        mycursor = db.cursor()
 
-        return db
+        try:
+            mycursor.execute(SQL_CREATE_DB)
+            print("Database created successfully")
+        except Error as e:
+            print(f"The error '{e}' occurred")
 
-    def create_tables(self, db):
+    def create_tables(self):
         """At the first connexion, create tables"""
-        for query in CREATE_TABLES:
+        db = self.connect_database()
+        for name, query in TABLES.items():
             try:
                 mycursor = db.cursor()
                 mycursor.execute(query)
-                print(f"Table created successfully")
+                print(f"{name} table created successfully")
             except Error as e:
                 print(f"The error '{e}' occurred")
+        db.close()
 
-    def insert_category_data(self, db):
+    def insert_category_data(self):
         """At the first connexion, import categories from the OpenFoodFact API"""
-        category_manager = CategoryManager()
-        category_list = category_manager.categories
+        api_category = API_Category()
+        category_list = api_category.categories
+        db = self.connect_database()
 
         for category in category_list:
             try:
@@ -98,17 +109,17 @@ class DatabaseManager:
             except Error as e:
                 print(f"The error '{e}' occurred")
         db.commit()
+        db.close()
         return category_list
 
-    def insert_product_data(self, db, categories):
+    def insert_product_data(self, categories):
         """At the first start, import products data from the OpenFoodFact API"""
-
-
+        db = self.connect_database()
         for category in categories:
 
             """process data to import in Product table"""
-            product_manager = ProductManager(category)
-            product_list = product_manager.products
+            api_product = API_Product(category)
+            product_list = api_product.products
 
             product_details_list = []
             data = []
@@ -165,3 +176,4 @@ class DatabaseManager:
                             db.commit()
                         except Error as e:
                             print(f"The error '{e}' occurred")
+        db.close()

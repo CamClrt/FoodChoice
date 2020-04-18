@@ -43,7 +43,7 @@ class Database():
     def display_data_in_tables(self, db):
         """Display data in tables"""
         mycursor = db.cursor()
-        for table in TABLES:
+        for table in TABLES.keys():
             mycursor.execute("SELECT * FROM " + table)
             try:
                 print("\n **** " + table + " table ****")

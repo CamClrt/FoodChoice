@@ -1,15 +1,12 @@
 from FoodChoice.DatabaseManager import DatabaseManager
 from FoodChoice.Database import Database
 
-import time
-
 
 #launch the programm
 init_db = DatabaseManager()
 db = init_db.init_database()
 
 #display the different elements in the database
-time.sleep(2)
 display = Database()
 display.display_databases(db)
 display.display_users(db)

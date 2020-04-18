@@ -41,24 +41,27 @@ PRODUCT_CITY_PARARMETERS = {
 #random seed
 SEED = 100
 
+########################### DATABASE CONFIG ###############################
+
 #database
 DATABASE_NAME = "FoodChoice"
 HOST_NAME = "localhost"
 USER_NAME_ROOT = "root"
 USER_PASSWORD_ROOT = "my-secret-pw"
 
-#SQL requests
+############################# SQL QUERIES #################################
+
 SQL_CREATE_DB = "CREATE DATABASE " + DATABASE_NAME + " DEFAULT CHARACTER SET 'utf8'"
 
-SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE `Category` (" \
-                            "`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT," \
+SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE IF NOT EXISTS `Category` (" \
+                            "`ID` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT," \
                             "`Name` VARCHAR(50)," \
                             "PRIMARY KEY (`ID`)" \
                             ")" \
-                            "ENGINE=INNODB"
+                            "ENGINE=INNODB;"
 
-SQL_CREATE_PRODUCT_TABLE = "CREATE TABLE `Product` (" \
-                           "`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT," \
+SQL_CREATE_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS `Product` (" \
+                           "`ID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT," \
                            "`Name` VARCHAR(150)," \
                            "`Code` BIGINT UNSIGNED," \
                            "`Brand` VARCHAR(100)," \
@@ -67,36 +70,67 @@ SQL_CREATE_PRODUCT_TABLE = "CREATE TABLE `Product` (" \
                            "`URL` VARCHAR(255)," \
                            "PRIMARY KEY (`ID`)" \
                            ")" \
-                           "ENGINE=INNODB"
+                           "ENGINE=INNODB;"
 
-SQL_CREATE_STORE_TABLE = "CREATE TABLE `Store` (" \
-                         "`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT," \
+SQL_CREATE_STORE_TABLE = "CREATE TABLE IF NOT EXISTS `Store` (" \
+                         "`ID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT," \
                          "`Name` VARCHAR(50)," \
                          "PRIMARY KEY (`ID`)" \
                          ")" \
-                         "ENGINE=INNODB"
+                         "ENGINE=INNODB;"
 
-SQL_CREATE_CITY_TABLE = "CREATE TABLE `City` (" \
-                        "`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT," \
+SQL_CREATE_CITY_TABLE = "CREATE TABLE IF NOT EXISTS `City` (" \
+                        "`ID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT," \
                         "`Name` VARCHAR(50)," \
-                        "`ZipCode` SMALLINT UNSIGNED," \
+                        "`Zip_code` SMALLINT UNSIGNED," \
                         "PRIMARY KEY (`ID`)" \
                         ")" \
-                        "ENGINE=INNODB"
+                        "ENGINE=INNODB;"
 
-TABLES = [
-    'Category',
-    'Product',
-    'Store',
-    'City',
-]
+SQL_CREATE_SUBSTITUTE_TABLE = "CREATE TABLE IF NOT EXISTS `Substitute` (" \
+                              "`Substitute_ID` SMALLINT UNSIGNED  NOT NULL AUTO_INCREMENT," \
+                              "`Users_ID` TINYINT UNSIGNED," \
+                              "`Product_ID` SMALLINT UNSIGNED," \
+                              "`Date` DATETIME," \
+                              "`Note` TEXT," \
+                              "KEY `PK, FK` (`Substitute_ID`)," \
+                              "KEY `FK` (`Users_ID`, `Product_ID`)" \
+                              ")" \
+                              "ENGINE=INNODB;"
 
-CREATE_TABLES = [
-    SQL_CREATE_CATEGORY_TABLE,
-    SQL_CREATE_PRODUCT_TABLE,
-    SQL_CREATE_STORE_TABLE,
-    SQL_CREATE_CITY_TABLE,
-]
+SQL_CREATE_CATEGORY_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS `CategoryProduct` (" \
+                                    "`Product_ID` TINYINT UNSIGNED NOT NULL," \
+                                    "`Category_ID` SMALLINT UNSIGNED NOT NULL," \
+                                    "KEY `PK, FK` (`Product_ID`, `Category_ID`)" \
+                                    ")" \
+                                    "ENGINE=INNODB;"
+
+SQL_CREATE_PRODUCT_LOCATION_TABLE = "CREATE TABLE IF NOT EXISTS `ProductLocation` (" \
+                                    "`Product_ID` SMALLINT UNSIGNED NOT NULL," \
+                                    "`City_ID` SMALLINT UNSIGNED NOT NULL," \
+                                    "`Store_ID` SMALLINT UNSIGNED NOT NULL," \
+                                    "KEY `PK, FK` (`Product_ID`, `City_ID`, `Store_ID`)" \
+                                    ")" \
+                                    "ENGINE=INNODB;"
+
+SQL_CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS `Users` (" \
+                         "`ID` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT," \
+                         "`Name` VARCHAR(15)," \
+                         "`Password` VARCHAR(15)," \
+                         "PRIMARY KEY (`ID`)" \
+                         ")" \
+                         "ENGINE=INNODB;"
+
+TABLES = {
+    'Substitute': SQL_CREATE_SUBSTITUTE_TABLE,
+    'Category': SQL_CREATE_CATEGORY_TABLE,
+    'CategoryProduct': SQL_CREATE_CATEGORY_PRODUCT_TABLE,
+    'Product': SQL_CREATE_PRODUCT_TABLE,
+    'ProductLocation': SQL_CREATE_PRODUCT_LOCATION_TABLE,
+    'Store': SQL_CREATE_STORE_TABLE,
+    'City': SQL_CREATE_CITY_TABLE,
+    'Users': SQL_CREATE_USERS_TABLE,
+}
 
 SQL_CREATE_CATEGORIES = "INSERT INTO Category (Name) VALUES ('category')"
 
