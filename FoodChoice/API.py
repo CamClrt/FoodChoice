@@ -83,5 +83,5 @@ class API:
 
     @property
     def products(self):
-        """Return the whole products"""
+        """Return the whole products in a dictionnary"""
         return self.import_products()
