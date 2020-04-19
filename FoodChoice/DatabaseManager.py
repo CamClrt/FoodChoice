@@ -95,6 +95,8 @@ class DatabaseManager:
                 print(f"The error '{e}' occurred")
         db.close()
 
+######################### TODO : ici tout à revoir sur l'insertion des données #########################
+
     def insert_category_data(self):
         """At the first connexion, import categories from the OpenFoodFact API"""
         api_category = API_Category()
@@ -172,6 +174,21 @@ class DatabaseManager:
                         try:
                             mycursor = db.cursor()
                             query = SQL_CREATE_CITIES.replace("city", city)
+                            mycursor.execute(query)
+                            db.commit()
+                        except Error as e:
+                            print(f"The error '{e}' occurred")
+
+            """process data to import complete Category table"""
+            for key, item in PRODUCT_CATEGORY_PARARMETERS.items():
+                categories = []
+                categories = product.get(key)
+
+                if type(categories) is list and len(categories) != 0:
+                    for category in categories:
+                        try:
+                            mycursor = db.cursor()
+                            query = SQL_CREATE_CATEGORIES.replace("category", category)
                             mycursor.execute(query)
                             db.commit()
                         except Error as e:

@@ -38,6 +38,10 @@ PRODUCT_CITY_PARARMETERS = {
     "purchase_places_tags": ["purchase_places_tags", 50],
 }
 
+PRODUCT_CATEGORY_PARARMETERS = {
+    "categories_tags": ["categories_tags", 50],
+}
+
 #random seed
 SEED = 100
 

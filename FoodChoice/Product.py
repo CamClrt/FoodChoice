@@ -1,6 +1,6 @@
 class Product:
 
-    def __init__(self, id, name, code, brand, nutrition_grade, energy_100g, url, categories, cities, stores, sustitute):
+    def __init__(self, id, name, code, brand, nutrition_grade, energy_100g, url, sustitute, *categories, *cities, *stores):
         self.id = id
         self.name = name
         self.code = code
