@@ -54,7 +54,7 @@ USER_PASSWORD_ROOT = "my-secret-pw"
 SQL_CREATE_DB = "CREATE DATABASE " + DATABASE_NAME + " DEFAULT CHARACTER SET 'utf8'"
 
 SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE IF NOT EXISTS `Category` (" \
-                            "`ID` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT," \
+                            "`ID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT," \
                             "`Name` VARCHAR(50)," \
                             "PRIMARY KEY (`ID`)" \
                             ")" \
@@ -99,7 +99,7 @@ SQL_CREATE_SUBSTITUTE_TABLE = "CREATE TABLE IF NOT EXISTS `Substitute` (" \
                               "ENGINE=INNODB;"
 
 SQL_CREATE_CATEGORY_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS `CategoryProduct` (" \
-                                    "`Product_ID` TINYINT UNSIGNED NOT NULL," \
+                                    "`Product_ID` SMALLINT UNSIGNED NOT NULL," \
                                     "`Category_ID` SMALLINT UNSIGNED NOT NULL," \
                                     "KEY `PK, FK` (`Product_ID`, `Category_ID`)" \
                                     ")" \
