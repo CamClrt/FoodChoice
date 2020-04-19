@@ -8,15 +8,24 @@ import re
 class API:
     """Import data from OpenFoodFact's API and process them"""
 
-    def __init__(self):
-        self.products_key = PRODUCT_KEY
-        self.products_url = PRODUCTS_URL
-        self.products_name_field = PRODUCTS_NAME_FIELD
-        self.categories_url = CATEGORIES_URL
-        self.categories_key = CATEGORIES_KEY
-        self.categories_name_field = CATEGORIES_NAME_FIELD
-        self.categories_reg_exp = CATEGORIES_REG_EXP
-        self.nb_cat_selected_among_the_list = NB_CAT_SELECTED_AMONG_THE_LIST
+    def __init__(self, products_key= PRODUCT_KEY,
+                 products_url= PRODUCTS_URL,
+                 products_name_field= PRODUCTS_NAME_FIELD,
+                 categories_url= CATEGORIES_URL,
+                 categories_key= CATEGORIES_KEY,
+                 categories_name_field= CATEGORIES_NAME_FIELD,
+                 categories_reg_exp= CATEGORIES_REG_EXP,
+                 nb_cat_selected_among_the_list= NB_CAT_SELECTED_AMONG_THE_LIST,
+                 ):
+
+        self.products_key = products_key
+        self.products_url = products_url
+        self.products_name_field = products_name_field
+        self.categories_url = categories_url
+        self.categories_key = categories_key
+        self.categories_name_field = categories_name_field
+        self.categories_reg_exp = categories_reg_exp
+        self.nb_cat_selected_among_the_list = nb_cat_selected_among_the_list
 
     def import_categories(self):
         """Import categories"""
