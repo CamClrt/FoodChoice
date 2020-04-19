@@ -13,7 +13,7 @@ class API_Category():
         self.__categories_selected_list = []  # a selection of categories
 
 
-    def import_data(self, categories_url, categories_key, categories_name_field, categories_reg_exp):
+    def import_categories(self, categories_url, categories_key, categories_name_field, categories_reg_exp):
         """Import categories"""
         response = ""  # the response at the http get request
         content = ""  # the content in json format at the http get request
@@ -40,7 +40,7 @@ class API_Category():
         except:
             print(f"The error : '{response.status_code}' occurred")
 
-    def select_data(self, nb_cat_selected_among_the_list):
+    def select_categories(self, nb_cat_selected_among_the_list):
         """Select categories randomly"""
         random.seed(SEED)
         self.__categories_selected_list = random.sample(self.__category_list, nb_cat_selected_among_the_list)
@@ -48,6 +48,6 @@ class API_Category():
     @property
     def categories(self):
         """Return categories"""
-        self.import_data(CATEGORIES_URL, CATEGORIES_KEY, CATEGORIES_NAME_FIELD, CATEGORIES_REG_EXP)
-        self.select_data(NB_CAT_SELECTED_AMONG_THE_LIST)
+        self.import_categories(CATEGORIES_URL, CATEGORIES_KEY, CATEGORIES_NAME_FIELD, CATEGORIES_REG_EXP)
+        self.select_categories(NB_CAT_SELECTED_AMONG_THE_LIST)
         return self.__categories_selected_list

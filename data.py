@@ -2,7 +2,7 @@
 CATEGORIES_URL = "https://fr.openfoodfacts.org/categories.json"
 CATEGORIES_KEY = "tags"
 CATEGORIES_NAME_FIELD = "name"
-NB_CAT_SELECTED_AMONG_THE_LIST = 50
+NB_CAT_SELECTED_AMONG_THE_LIST = 20
 CATEGORIES_REG_EXP = "^[A-Z].+"
 
 #products
