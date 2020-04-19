@@ -85,6 +85,3 @@ class API:
     def products(self):
         """Return the whole products"""
         return self.import_products()
-
-api = API()
-print(len(api.products))
