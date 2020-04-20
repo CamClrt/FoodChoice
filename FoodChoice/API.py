@@ -59,10 +59,9 @@ class API:
         random.seed(SEED)
         return random.sample(categories, self.nb_cat_selected_among_the_list)
 
-
     def import_products(self):
-        """import products and store them in a dictionnary"""
-        products_dictionnary = {} #key: category & value: a list of products in JSON format
+        """import products by category"""
+        list_by_catgories = []
 
         for category in self.categories:
             PAYLOAD["tag_0"] = "'" + str(category) + "'"
@@ -79,18 +78,23 @@ class API:
                 ]
 
                 # select only the products with nutrition_grade
-                product_list = [
+                temporary_product_list = [
                     product
                     for product in imported_product
                     if product.get(self.products_name_field) is not None
                 ]
             except:
                 print(f"The error : '{response.status_code}' occurred")
+            list_by_catgories.append(temporary_product_list)
 
-            products_dictionnary[category] = product_list
-        return products_dictionnary
+        products = [item for sublist in list_by_catgories for item in sublist]
+
+        return products
 
     @property
     def products(self):
-        """Return the whole products in a dictionnary"""
+        """Return the whole products in a list"""
         return self.import_products()
+
+api = API()
+print(len(api.products))
