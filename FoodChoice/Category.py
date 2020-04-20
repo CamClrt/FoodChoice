@@ -1,3 +1,5 @@
+db = Databases()
+
 class CategoryManager:
 
     def __init__(self, database):
@@ -5,7 +7,7 @@ class CategoryManager:
 
 class Category:
 
-    objects = ProductManager(db)
+    objects = ProductManager(db.init_database())
 
     def __init__(self, id, name, products, **kwargs):
         self.id = id

@@ -55,6 +55,8 @@ USER_PASSWORD_ROOT = "my-secret-pw"
 
 ############################# SQL QUERIES #################################
 
+SQL_SHOW_DB = "SHOW DATABASES"
+
 SQL_CREATE_DB = "CREATE DATABASE " + DATABASE_NAME + " DEFAULT CHARACTER SET 'utf8'"
 
 SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE IF NOT EXISTS `Category` (" \

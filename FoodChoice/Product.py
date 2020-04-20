@@ -1,14 +1,18 @@
+db = Databases()
+
 class ProductManager:
 
     def __init__(self, database):
         self.database = database
 
+    def create_all(self):
+
 class Product:
 
-    objects = ProductManager(db)
+    objects = ProductManager(db.init_database())
 
     def __init__(self, id, name, code, brand, nutrition_grade, energy_100g,\
-                 url, sustitute, categories, cities, stores, **kwargs):
+                 url, sustitute, categories, cities, stores, *args):
         self.id = id
         self.name = name
         self.code = code
