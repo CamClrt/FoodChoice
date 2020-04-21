@@ -89,12 +89,32 @@ class API:
 
         products = [item for sublist in list_by_catgories for item in sublist]
 
-        return products #a list of
+        return products
 
     @property
     def products(self):
         """Return all the products in a list"""
-        return self.import_products()
+        products = []
+        for imported_product in self.import_products():
+            name = imported_product.get("product_name_fr", "")[:150]
+            brand = imported_product.get("brands", "")[:100]
+            nutrition_grade = imported_product.get("nutrition_grades", "")[:1]
+            if imported_product.get("nutriments", "").get("energy_100g", "") is int:
+                energy_100g = imported_product.get("nutriments", "").get("energy_100g", "")
+            else:
+                energy_100g = 0
+            url = imported_product.get("url", "")[:255]
+            if imported_product.get("code", "") is int:
+                code = imported_product.get("code", "") is int
+            else:
+                code = 0000000000000
+            stores = imported_product.get("stores", "").split(',')
+            places = imported_product.get("purchase_places", "").split(',')
+            categories = imported_product.get("categories", "").split(',')
+            products.append((name, brand, nutrition_grade, energy_100g, url, code, stores, places, categories))
+        return products
+
 
 api = API()
+print(len(api.categories))
 print(len(api.products))

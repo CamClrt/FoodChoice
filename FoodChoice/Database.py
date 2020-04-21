@@ -1,10 +1,11 @@
 from data import *
+from FoodChoice.API import API
 import os.path
 import mysql.connector
 from mysql.connector import Error
 
 class Database:
-    """"Init and/or connect database"""
+    """"The MySQL database"""
 
     def __init__(self, database_name=DATABASE_NAME,
                  host_name=HOST_NAME,
@@ -16,9 +17,17 @@ class Database:
         self.host_name = host_name
         self.user_name_root = user_name_root
         self.user_password_root = user_password_root
+        self.database = None
+
+    def __enter__(self):
+        self.database = self.connect()
+        return self.database
+
+    def __exit__(self, *args):
+        self.database.close()
 
     def connect(self):
-        """Connect to the service"""
+        """Init and/or connect database"""
         db = None
         try:
             db = mysql.connector.connect(
@@ -38,16 +47,26 @@ class Database:
                 else:
                     mycursor.execute(SQL_CREATE_DB.replace("DB", self.database_name))
                     print(">>> Database created successfully")
+
                     mycursor.execute(SQL_USE_DB.replace("DB", self.database_name))
                     for name, query in TABLES.items():
                         mycursor.execute(query)
                         print(f"> {name} table created successfully")
-            print("Database connected successfully")
+
+                    api = API()
+
+            print("Database connected successfully \n")
         except Error as e:
             print(f"The error '{e}' occurred")
         mycursor.close()
 
         return db
 
+
+
+    def insert_data(self):
+        self.import_data()
+
+
 db = Database()
-db.connect()
+db.import_data()

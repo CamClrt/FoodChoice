@@ -1,14 +1,14 @@
 #! /usr/bin/env python
 # coding: utf-8
 
-def main():
-    pass
+from FoodChoice.App import App
 
 
 if __name__ == "__main__":
-    main()
-
-    print("Execution du script")
+    app = App()
+    app.start()
 
 else:
-    print("import du module main.py)
+    print("main module is imported")
+
+

@@ -1,8 +1,12 @@
 class Substitute:
 
-    def __init__(self, id, date, note, users, products):
+    def __init__(self, id, date, note, users, product):
         self.id = id
         self.date = date
         self.note = note
         self.users = users
-        self.products = products
+        self.product = Product() None #object
+
+SubstituteManager
+
+#la liste des produits que ce substituant substitue

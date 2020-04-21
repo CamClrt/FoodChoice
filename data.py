@@ -1,15 +1,16 @@
+########################### DATABASE CONFIG ###############################
+
 #categories
 CATEGORIES_URL = "https://fr.openfoodfacts.org/categories.json"
 CATEGORIES_KEY = "tags"
 CATEGORIES_NAME_FIELD = "name"
-NB_CAT_SELECTED_AMONG_THE_LIST = 20
+NB_CAT_SELECTED_AMONG_THE_LIST = 25
 CATEGORIES_REG_EXP = "^[A-Z].+"
 
 #products
 PRODUCTS_URL = "https://fr.openfoodfacts.org/cgi/search.pl?"
 PRODUCT_KEY = "products"
 PRODUCTS_NAME_FIELD = "nutrition_grades"
-NB_PROD_SELECTED_AMONG_THE_LIST = 250
 
 PAYLOAD = {
     "action": "process",
@@ -19,30 +20,6 @@ PAYLOAD = {
     "sort_by": "last_modified_t",
     "page_size": "500",
     "json": "true"
-}
-
-PRODUCT_PARARMETERS = {
-    "product_name_fr": ["product_name_fr", 150],
-    "brands": ["brands", 100],
-    "nutrition_grades": ["nutrition_grades", 1],
-    "nutriments": ["energy_100g", int],
-    "url": ["url", 255],
-    "code": ["code", 19],
-    "stores_tags": ["stores_tags", 50],
-    "purchase_places_tags": ["purchase_places_tags", 50],
-    "categories_tags": ["categories_tags", 50]
-}
-
-PRODUCT_STORE_PARARMETERS = {
-    "stores_tags": ["stores_tags", 50], #TODO à supprimer ?
-}
-
-PRODUCT_CITY_PARARMETERS = {
-    "purchase_places_tags": ["purchase_places_tags", 50], #TODO à supprimer ?
-}
-
-PRODUCT_CATEGORY_PARARMETERS = {
-    "categories_tags": ["categories_tags", 50], #TODO à supprimer ?
 }
 
 #random seed
@@ -154,9 +131,3 @@ SQL_CREATE_PRODUCTS = "INSERT INTO Product \
 SQL_CREATE_STORES = "INSERT INTO Store (Name) VALUES ('store');" #TODO ici à revoir
 
 SQL_CREATE_CITIES = "INSERT INTO City (Name) VALUES ('city');" #TODO ici à revoir
-
-PRODUCTS_DATA = {
-    SQL_CREATE_PRODUCTS: PRODUCT_PARARMETERS,
-    SQL_CREATE_STORES: PRODUCT_STORE_PARARMETERS,
-    SQL_CREATE_CITIES: PRODUCT_CITY_PARARMETERS,
-}
