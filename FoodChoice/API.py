@@ -89,7 +89,7 @@ class API:
 
         products = [item for sublist in list_by_catgories for item in sublist]
 
-        return products
+        return products #a list of
 
     @property
     def products(self):

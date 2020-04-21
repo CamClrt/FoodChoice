@@ -1,12 +1,10 @@
 from data import *
-
 import os.path
-
 import mysql.connector
 from mysql.connector import Error
 
 class Database:
-    """"Init or connect database"""
+    """"Init and/or connect database"""
 
     def __init__(self, database_name=DATABASE_NAME,
                  host_name=HOST_NAME,
@@ -30,17 +28,17 @@ class Database:
             )
 
             mycursor = db.cursor()
-            mycursor.execute('select @@datadir')
+            mycursor.execute(SQL_DB_DIRECTORY)
             path = mycursor.fetchone()
 
             if len(path) != 0:
                 url_db = path[0] + self.database_name
                 if os.path.exists(url_db):
-                    mycursor.execute('USE ' + self.database_name)
+                    mycursor.execute(SQL_USE_DB.replace("DB", self.database_name))
                 else:
-                    mycursor.execute(SQL_CREATE_DB)
+                    mycursor.execute(SQL_CREATE_DB.replace("DB", self.database_name))
                     print(">>> Database created successfully")
-                    mycursor.execute('USE ' + self.database_name)
+                    mycursor.execute(SQL_USE_DB.replace("DB", self.database_name))
                     for name, query in TABLES.items():
                         mycursor.execute(query)
                         print(f"> {name} table created successfully")

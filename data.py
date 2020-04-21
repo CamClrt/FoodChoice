@@ -28,18 +28,21 @@ PRODUCT_PARARMETERS = {
     "nutriments": ["energy_100g", int],
     "url": ["url", 255],
     "code": ["code", 19],
+    "stores_tags": ["stores_tags", 50],
+    "purchase_places_tags": ["purchase_places_tags", 50],
+    "categories_tags": ["categories_tags", 50]
 }
 
 PRODUCT_STORE_PARARMETERS = {
-    "stores_tags": ["stores_tags", 50],
+    "stores_tags": ["stores_tags", 50], #TODO à supprimer ?
 }
 
 PRODUCT_CITY_PARARMETERS = {
-    "purchase_places_tags": ["purchase_places_tags", 50],
+    "purchase_places_tags": ["purchase_places_tags", 50], #TODO à supprimer ?
 }
 
 PRODUCT_CATEGORY_PARARMETERS = {
-    "categories_tags": ["categories_tags", 50],
+    "categories_tags": ["categories_tags", 50], #TODO à supprimer ?
 }
 
 #random seed
@@ -55,9 +58,13 @@ USER_PASSWORD_ROOT = "my-secret-pw"
 
 ############################# SQL QUERIES #################################
 
-SQL_SHOW_DB = "SHOW DATABASES"
+SQL_DB_DIRECTORY = 'select @@datadir;'
 
-SQL_CREATE_DB = "CREATE DATABASE " + DATABASE_NAME + " DEFAULT CHARACTER SET 'utf8'"
+SQL_SHOW_DB = "SHOW DATABASES;"
+
+SQL_CREATE_DB = "CREATE DATABASE DB DEFAULT CHARACTER SET 'utf8';"
+
+SQL_USE_DB = "USE DB;"
 
 SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE IF NOT EXISTS `Category` (" \
                             "`ID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT," \

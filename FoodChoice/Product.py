@@ -1,19 +1,10 @@
-db = Databases()
-
-class ProductManager:
-
-    def __init__(self, database):
-        self.database = database
-
-    def create_all(self):
-
 class Product:
 
-    objects = ProductManager(db.init_database())
+    id = 0
 
-    def __init__(self, id, name, code, brand, nutrition_grade, energy_100g,\
-                 url, sustitute, categories, cities, stores, *args):
-        self.id = id
+    def __init__(self, name, code, brand, nutrition_grade, energy_100g, url,\
+                 sustitute, database, categories, cities, stores, **kwargs):
+        Product.id += 1
         self.name = name
         self.code = code
         self.brand = brand
@@ -23,12 +14,20 @@ class Product:
         self.categories = categories
         self.cities = cities
         self.stores = stores
+        self._database = database
         self.sustitute = sustitute
 
     def __str__(self):
-        return f"{self.name}, {self.code}, {self.brand}, {self.nutrition_grade},{self.energy_100g},\
-                    {self.url}, {self.categories}, {self.cities}, {self.stores}, {self.sustitute}"
+        return f"{self.name}, {self.code}, {self.brand}, {self.nutrition_grade},{self.energy_100g}, {self.url}"
 
-    def convert_as_tuple(self):
-        return (self.name, self.code, self.brand, self.nutrition_grade, self.energy_100g,\
-                self.url, self.categories, self.cities, self.stores, self.sustitute)
+    def create(self):
+        pass
+
+liste = []
+for x in range(3):
+    produit = Product(x, x, x, x, x, x, x, x, x, x, x)
+    liste.append(produit)
+    print(produit.id)
+
+for item in liste:
+    print(item)
