@@ -93,8 +93,19 @@ class API:
 
     @property
     def products(self):
-        """Return all the products in a list"""
+        """Return 4 objects :
+        - a list witch contains all the products, one product = one tuple with this characteristics :
+        (name, brand, nutrition_grade, energy_100g, url, code, stores, places, categories) ;
+        - a set of stores depending on theses products ;
+        - a set of places depending on theses products ;
+        - a set of categories depending on theses products.
+        """
+
         products = []
+        product_stores = set()
+        product_places = set()
+        product_categories = set()
+
         for imported_product in self.import_products():
             name = imported_product.get("product_name_fr", "")[:150]
             brand = imported_product.get("brands", "")[:100]
@@ -109,12 +120,22 @@ class API:
             else:
                 code = 0000000000000
             stores = imported_product.get("stores", "").split(',')
+            for store in stores:
+                product_stores.add(store)
             places = imported_product.get("purchase_places", "").split(',')
+            for place in places:
+                product_places.add(place)
             categories = imported_product.get("categories", "").split(',')
-            products.append((name, brand, nutrition_grade, energy_100g, url, code, stores, places, categories))
-        return products
+            for categorie in categories:
+                product_categories.add(categorie)
 
+            products.append((name, brand, nutrition_grade, energy_100g, url, code, stores, places, categories))
+
+        product_stores.discard("")
+        product_places.discard("")
+        product_categories.discard("")
+
+        return products, product_stores, product_places, product_categories
 
 api = API()
-print(len(api.categories))
-print(len(api.products))
+api.products
