@@ -110,15 +110,10 @@ class API:
             #extract data and filter it to prepare the insertion in tables
 
             name = (imported_product.get("product_name_fr", "")[:150]).replace("'", "")
-
             brand = (imported_product.get("brands", "")[:100]).replace("'", "")
-
             nutrition_grade = imported_product.get("nutrition_grades", "")[:1]
-
             energy_100g = imported_product.get("nutriments", "").get("energy_100g", "")
-
             url = (imported_product.get("url", "")[:255]).replace("'", "")
-
             code = imported_product.get("code", "")
 
             stores = imported_product.get("stores", "").split(',')
