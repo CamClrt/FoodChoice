@@ -111,6 +111,7 @@ SQL_CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS `Users` (" \
                          ")" \
                          "ENGINE=INNODB;"
 
+#put name tables as key and sql queries as value in a dictionnary to ease creation
 TABLES = {
     'Substitute': SQL_CREATE_SUBSTITUTE_TABLE,
     'Category': SQL_CREATE_CATEGORY_TABLE,
@@ -122,12 +123,20 @@ TABLES = {
     'Users': SQL_CREATE_USERS_TABLE,
 }
 
-SQL_CREATE_CATEGORIES = "INSERT INTO Category (Name) VALUES ('category')"
+SQL_INSERT_PRODUCTS = "INSERT INTO Product " \
+                      "(Name, Code, Brand, Nutrition_grade, Energy_100g, URL)" \
+                      "VALUES (%s, %s, %s, %s, %s, %s);"
 
-SQL_CREATE_PRODUCTS = "INSERT INTO Product \
-            (Name, Brand, Nutrition_grade, Energy_100g, URL, Code)\
-             VALUES (%s, %s, %s, %s, %s, %s)"
+SQL_INSERT_STORES = "INSERT INTO Store (Name) VALUES (%s);"
 
-SQL_CREATE_STORES = "INSERT INTO Store (Name) VALUES ('store');" #TODO ici à revoir
+SQL_INSERT_CITIES = "INSERT INTO City (Name) VALUES (%s);"
 
-SQL_CREATE_CITIES = "INSERT INTO City (Name) VALUES ('city');" #TODO ici à revoir
+SQL_INSERT_PRODUCT_LOCATION = "INSERT INTO ProductLocation (Product_ID, City_ID, Store_ID) VALUES (%s, %s, %s);"
+
+SQL_INSERT_CATEGORIES = "INSERT INTO Category (Name) VALUES (%s);"
+
+SQL_INSERT_CATEGORY_PRODUCT = "INSERT INTO CategoryProduct (Product_ID, Category_ID) VALUES (%s, %s);"
+
+SQL_INSERT_USERS = "INSERT INTO Users (Name, Password) VALUES (%s, %s);"
+
+SQL_INSERT_SUBSTITUTE = "INSERT INTO Substitute (Users_ID, Product_ID, Date, Note) VALUES (%s, %s, %s, %s);"
