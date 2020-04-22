@@ -1,6 +1,5 @@
 from data import *
 from FoodChoice.Database import Database
-from FoodChoice.API import API
 
 class App:
 
@@ -15,8 +14,32 @@ class App:
             mycursor.execute(sql)
             myresult = mycursor.fetchall()
 
+            print("\n", " FoodChoice database ".center(100, '*'), "\n")
+
             for x in myresult:
                 print(x)
 
-app = App()
-app.start_app()
+            print("\n", " TABLES ".center(100, '*'), "\n")
+
+            sql = (SQL_SHOW_TABLES)
+            mycursor.execute(sql)
+            myresult = mycursor.fetchall()
+
+            for x in myresult:
+                print(x)
+
+            print("\n", " USERS ".center(100, '*'), "\n")
+            sql = (SQL_SELECT_ALL.replace("%s", "Users"))
+            mycursor.execute(sql)
+            myresult = mycursor.fetchall()
+
+            for x in myresult:
+                print(x)
+
+            print("\n", " CATEGORY ".center(100, '*'), "\n")
+            sql = (SQL_SELECT_ALL.replace("%s", "Category"))
+            mycursor.execute(sql)
+            myresult = mycursor.fetchall()
+
+            for x in myresult:
+                print(x)
