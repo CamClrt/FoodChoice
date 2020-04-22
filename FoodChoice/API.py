@@ -107,27 +107,44 @@ class API:
         product_categories = set()
 
         for imported_product in self.import_products():
-            name = imported_product.get("product_name_fr", "")[:150]
-            brand = imported_product.get("brands", "")[:100]
+            #extract data and filter it to prepare the insertion in tables
+
+            name = (imported_product.get("product_name_fr", "")[:150]).replace("'", "")
+
+            brand = (imported_product.get("brands", "")[:100]).replace("'", "")
+
             nutrition_grade = imported_product.get("nutrition_grades", "")[:1]
             if imported_product.get("nutriments", "").get("energy_100g", "") is int:
                 energy_100g = imported_product.get("nutriments", "").get("energy_100g", "")
             else:
                 energy_100g = 0
-            url = imported_product.get("url", "")[:255]
+
+            url = (imported_product.get("url", "")[:255]).replace("'", "")
+
             if imported_product.get("code", "") is int:
                 code = imported_product.get("code", "") is int
             else:
                 code = 0000000000000
+
             stores = imported_product.get("stores", "").split(',')
-            for store in stores:
-                product_stores.add(store)
+            for tmp_store in stores:
+                store = (tmp_store.replace("'", " ")).strip()
+                product_stores.add(store[:50])
+
             places = imported_product.get("purchase_places", "").split(',')
-            for place in places:
-                product_places.add(place)
+            for tmp_place in places:
+                place = (tmp_place.replace("'", " ")).strip()
+                product_places.add(place[:50])
+
             categories = imported_product.get("categories", "").split(',')
-            for categorie in categories:
-                product_categories.add(categorie)
+            for tmp_categorie in categories:
+                categorie = (tmp_categorie.replace("'", " ")).strip()
+
+                if re.search("..:", categorie):
+                    if (categorie[:2]).lower() == "fr:":
+                        product_categories.add(((categorie[3:]).capitalize())[:50])
+                else:
+                    product_categories.add(((categorie.capitalize()))[:50])
 
             products.append((name, brand, nutrition_grade, energy_100g, url, code, stores, places, categories))
 
