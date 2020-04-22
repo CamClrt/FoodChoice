@@ -114,17 +114,12 @@ class API:
             brand = (imported_product.get("brands", "")[:100]).replace("'", "")
 
             nutrition_grade = imported_product.get("nutrition_grades", "")[:1]
-            if imported_product.get("nutriments", "").get("energy_100g", "") is int:
-                energy_100g = imported_product.get("nutriments", "").get("energy_100g", "")
-            else:
-                energy_100g = 0
+
+            energy_100g = imported_product.get("nutriments", "").get("energy_100g", "")
 
             url = (imported_product.get("url", "")[:255]).replace("'", "")
 
-            if imported_product.get("code", "") is int:
-                code = imported_product.get("code", "") is int
-            else:
-                code = 0000000000000
+            code = imported_product.get("code", "")
 
             stores = imported_product.get("stores", "").split(',')
             for tmp_store in stores:

@@ -129,8 +129,8 @@ TABLES = {
 }
 
 SQL_INSERT_PRODUCTS = "INSERT INTO Product " \
-                      "(Name, Code, Brand, Nutrition_grade, Energy_100g, URL)" \
-                      "VALUES ('%s', '%s', '%s', '%s', '%s', '%s');"
+                              "(Name, Brand, Nutrition_grade, Energy_100g, URL, Code)" \
+                              "VALUES %s;"
 
 SQL_INSERT_STORES = "INSERT INTO Store (Name) VALUES ('%s');"
 

@@ -44,6 +44,14 @@ class App:
             for x in myresult:
                 print(x)
 
+            print("\n", " PRODUCT ".center(100, '*'), "\n")
+            sql = (SQL_SELECT_ALL.replace("%s", "Product"))
+            mycursor.execute(sql)
+            myresult = mycursor.fetchall()
+
+            for x in myresult:
+                print(x)
+
             print("\n", " STORE ".center(100, '*'), "\n")
             sql = (SQL_SELECT_ALL.replace("%s", "Store"))
             mycursor.execute(sql)

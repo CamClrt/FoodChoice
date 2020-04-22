@@ -12,7 +12,7 @@ class CityManager:
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
         id = mycursor.fetchone()
-        return id, city_object
+        return (id, city_object)
 
 
 class City:
