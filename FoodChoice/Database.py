@@ -1,8 +1,9 @@
 from data import *
 
-from FoodChoice.API import API
-from FoodChoice.Product import *
+from FoodChoice.API import *
 from FoodChoice.Category import *
+from FoodChoice.City import *
+from FoodChoice.Store import *
 
 import os.path
 
@@ -59,33 +60,35 @@ class Database:
                         mycursor.execute(query)
                         print(f"> {name} table created successfully")
 
-                    #insert data in Product, Category, Store and City tables
+                    #insert data
                     api = API()
-                    print("\n", " /!\ WAITING: importation of the data, this may take a few minutes ".center(100, '-'), "\n")
-                    products_imported, stores_imported, places_imported, categories_imported = api.products
+                    products_imported, stores_imported, cities_imported, categories_imported = api.products
+                    print("\n",
+                          " /!\ WAITING: importation of the data, this may take a few minutes ".center(100, '-'),
+                          "\n")
 
-                    #insert categories in Category table
-                    categories = [] # a list of category object
+                    # insert categories in Category table
                     for category_imported in categories_imported:
-                        products = [] # a list of product object
-                        for product_imported in products_imported:
-                            if product_imported[8].count(category_imported) != 0:
-                                name = product_imported[0]
-                                brand = product_imported[1]
-                                nutrition_grade = product_imported[2]
-                                energy_100g = product_imported[3]
-                                url = product_imported[4]
-                                code = product_imported[5]
-                                stores = product_imported[6]
-                                places = product_imported[7]
-                                categories = product_imported[8]
-                                product = Product(name, brand, nutrition_grade, energy_100g,
-                                                  url, code, stores, places, categories)
-                                products.append(product)
-                        category = Category(category_imported, products)
+                        category = Category(category_imported)
                         cat_mgr = CategoryManager(db)
                         cat_mgr.insert(category)
                     print("categories imported successfully")
+
+                    # insert cities in City table
+                    for city_imported in cities_imported:
+                        city = City(city_imported)
+                        city_mgr = CityManager(db)
+                        city_mgr.insert(city)
+                    print("cities imported successfully")
+
+                    # insert stores in Store table
+                    for store_imported in stores_imported:
+                        store = Store(store_imported)
+                        store_mgr = StoreManager(db)
+                        store_mgr.insert(store)
+                    print("stores imported successfully")
+
+                    
 
 
             print("Database connected successfully \n")

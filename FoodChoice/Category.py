@@ -10,20 +10,15 @@ class CategoryManager:
         mycursor = self.database.cursor()
         mycursor.execute(SQL_INSERT_CATEGORIES.replace("%s", name))
         self.database.commit()
-
         mycursor.execute(LAST_INSERT_ID)
         id = mycursor.fetchone()
-
-        return id, category_object.products
+        return id, category_object.name
 
 
 class Category:
 
-    id = 0
-    def __init__(self, name, products):
-        Category.id += 1
+    def __init__(self, name):
         self.name = name
-        self.products = products # a list of product object
 
     def __str__(self):
         return f"{self.name}"

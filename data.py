@@ -4,7 +4,7 @@
 CATEGORIES_URL = "https://fr.openfoodfacts.org/categories.json"
 CATEGORIES_KEY = "tags"
 CATEGORIES_NAME_FIELD = "name"
-NB_CAT_SELECTED_AMONG_THE_LIST = 50
+NB_CAT_SELECTED_AMONG_THE_LIST = 20
 CATEGORIES_REG_EXP = "^[A-Z].+"
 
 #products
@@ -18,7 +18,7 @@ PAYLOAD = {
     "tag_contains_0": "contains",
     "tag_0": "category",
     "sort_by": "last_modified_t",
-    "page_size": "500",
+    "page_size": "250",
     "json": "true"
 }
 
