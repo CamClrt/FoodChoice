@@ -4,7 +4,7 @@
 CATEGORIES_URL = "https://fr.openfoodfacts.org/categories.json"
 CATEGORIES_KEY = "tags"
 CATEGORIES_NAME_FIELD = "name"
-NB_CAT_SELECTED_AMONG_THE_LIST = 25
+NB_CAT_SELECTED_AMONG_THE_LIST = 50
 CATEGORIES_REG_EXP = "^[A-Z].+"
 
 #products
@@ -42,6 +42,11 @@ SQL_SHOW_DB = "SHOW DATABASES;"
 SQL_CREATE_DB = "CREATE DATABASE DB DEFAULT CHARACTER SET 'utf8';"
 
 SQL_USE_DB = "USE DB;"
+
+SQL_SHOW_TABLES = "SHOW TABLES;"
+
+SQL_SELECT_ALL = "SELECT * FROM %s;"
+
 
 SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE IF NOT EXISTS `Category` (" \
                             "`ID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT," \
@@ -125,18 +130,20 @@ TABLES = {
 
 SQL_INSERT_PRODUCTS = "INSERT INTO Product " \
                       "(Name, Code, Brand, Nutrition_grade, Energy_100g, URL)" \
-                      "VALUES (%s, %s, %s, %s, %s, %s);"
+                      "VALUES ('%s', '%s', '%s', '%s', '%s', '%s');"
 
-SQL_INSERT_STORES = "INSERT INTO Store (Name) VALUES (%s);"
+SQL_INSERT_STORES = "INSERT INTO Store (Name) VALUES ('%s');"
 
-SQL_INSERT_CITIES = "INSERT INTO City (Name) VALUES (%s);"
+SQL_INSERT_CITIES = "INSERT INTO City (Name) VALUES ('%s');"
 
-SQL_INSERT_PRODUCT_LOCATION = "INSERT INTO ProductLocation (Product_ID, City_ID, Store_ID) VALUES (%s, %s, %s);"
+SQL_INSERT_PRODUCT_LOCATION = "INSERT INTO ProductLocation (Product_ID, City_ID, Store_ID) VALUES ('%s', '%s', '%s');"
 
-SQL_INSERT_CATEGORIES = "INSERT INTO Category (Name) VALUES (%s);"
+SQL_INSERT_CATEGORIES = "INSERT INTO Category (Name) VALUES ('%s');"
 
-SQL_INSERT_CATEGORY_PRODUCT = "INSERT INTO CategoryProduct (Product_ID, Category_ID) VALUES (%s, %s);"
+SQL_INSERT_CATEGORY_PRODUCT = "INSERT INTO CategoryProduct (Product_ID, Category_ID) VALUES ('%s', '%s');"
 
-SQL_INSERT_USERS = "INSERT INTO Users (Name, Password) VALUES (%s, %s);"
+SQL_INSERT_USERS = "INSERT INTO Users (Name, Password) VALUES ('%s', '%s');"
 
-SQL_INSERT_SUBSTITUTE = "INSERT INTO Substitute (Users_ID, Product_ID, Date, Note) VALUES (%s, %s, %s, %s);"
+SQL_INSERT_SUBSTITUTES = "INSERT INTO Substitute (Users_ID, Product_ID, Date, Note) VALUES ('%s', '%s', '%s', '%s');"
+
+LAST_INSERT_ID = "SELECT LAST_INSERT_ID();"
