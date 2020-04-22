@@ -88,7 +88,7 @@ class Database:
                         store_mgr.insert(store)
                     print("stores imported successfully")
 
-                    
+
 
 
             print("Database connected successfully \n")
