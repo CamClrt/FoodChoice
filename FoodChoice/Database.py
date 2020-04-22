@@ -1,8 +1,14 @@
 from data import *
+
 from FoodChoice.API import API
+from FoodChoice.Product import *
+from FoodChoice.Category import *
+
 import os.path
+
 import mysql.connector
 from mysql.connector import Error
+
 
 class Database:
     """"The MySQL database"""
@@ -53,7 +59,34 @@ class Database:
                         mycursor.execute(query)
                         print(f"> {name} table created successfully")
 
+                    #insert data in Product, Category, Store and City tables
                     api = API()
+                    print("\n", " /!\ WAITING: importation of the data, this may take a few minutes ".center(100, '-'), "\n")
+                    products_imported, stores_imported, places_imported, categories_imported = api.products
+
+                    #insert categories in Category table
+                    categories = [] # a list of category object
+                    for category_imported in categories_imported:
+                        products = [] # a list of product object
+                        for product_imported in products_imported:
+                            if product_imported[8].count(category_imported) != 0:
+                                name = product_imported[0]
+                                brand = product_imported[1]
+                                nutrition_grade = product_imported[2]
+                                energy_100g = product_imported[3]
+                                url = product_imported[4]
+                                code = product_imported[5]
+                                stores = product_imported[6]
+                                places = product_imported[7]
+                                categories = product_imported[8]
+                                product = Product(name, brand, nutrition_grade, energy_100g,
+                                                  url, code, stores, places, categories)
+                                products.append(product)
+                        category = Category(category_imported, products)
+                        cat_mgr = CategoryManager(db)
+                        cat_mgr.insert(category)
+                    print("categories imported successfully")
+
 
             print("Database connected successfully \n")
         except Error as e:
@@ -61,12 +94,3 @@ class Database:
         mycursor.close()
 
         return db
-
-
-
-    def insert_data(self):
-        self.import_data()
-
-
-db = Database()
-db.import_data()
