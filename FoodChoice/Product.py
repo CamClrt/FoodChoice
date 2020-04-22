@@ -1,3 +1,5 @@
+from data import *
+
 class ProductManager:
 
     def __init__(self, database):
@@ -5,32 +7,31 @@ class ProductManager:
 
     def insert_all(self, products): #liste d'objets products
         for product in products:
-
-
+            pass
 
 class Product:
 
     id = 0
-    def __init__(self, name, code, brand, nutrition_grade, energy_100g, url, categories, cities, stores): #ici une liste d'objet aussi
+    def __init__(self, name, brand, nutrition_grade, energy_100g, url, code, stores, places, categories): #ici une liste d'objet
         Product.id += 1
         self.name = name
-        self.code = code
         self.brand = brand
         self.nutrition_grade = nutrition_grade
         self.energy_100g = energy_100g
         self.url = url
-        self.categories = categories
-        self.cities = cities
+        self.code = code
         self.stores = stores
-        self.sustitute = None #objet
+        self.places = places
+        self.categories = categories
+        self.sustitute = None
 
     def __str__(self):
-        return f"{self.name}, {self.code}, {self.brand}, {self.nutrition_grade},{self.energy_100g}, {self.url}, {self.sustitute}"
+        return f"{self.name}, {self.code}, {self.brand}, {self.nutrition_grade},{self.energy_100g}cal, {self.url}"
 
 
 
-produit = Product(x, x, x, x, x, x, x, x, x, x, x)
-produit.manager.insert_all()
+#produit = Product(x, x, x, x, x, x, x, x, x, x, x)
+#produit.manager.insert_all()
 
 """liste = []
 for x in range(3):
