@@ -136,6 +136,3 @@ class API:
         product_categories.discard("")
 
         return products, product_stores, product_places, product_categories
-
-api = API()
-api.products
