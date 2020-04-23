@@ -19,18 +19,21 @@ class ProductManager:
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
         id = mycursor.fetchone()
-        return (id, product_object)
+        return id[0], product_object.categories, product_object.stores, product_object.cities
 
 
 class Product:
 
-    def __init__(self, name, brand, nutrition_grade, energy_100g, url, code): #ici une liste d'objet
+    def __init__(self, name, brand, nutrition_grade, energy_100g, url, code, stores, cities, categories):
         self.name = name
         self.brand = brand
         self.nutrition_grade = nutrition_grade
         self.energy_100g = energy_100g
         self.url = url
         self.code = code
+        self.stores = stores
+        self.cities = cities
+        self.categories = categories
         self.sustitute = None
 
     def __str__(self):

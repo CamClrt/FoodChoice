@@ -78,10 +78,12 @@ class Database:
                         print(f"> {name} table created successfully")
 
                     #insert categories in Category table
+                    categories_list = [] #store tuple : (id + name)
                     for category_imported in categories_imported:
                         category = Category(category_imported)
                         cat_mgr = CategoryManager(db)
                         id, name = cat_mgr.insert(category)
+                        categories_list.append((id, name))
                     print("categories imported successfully")
 
                     #insert cities in City table
@@ -99,7 +101,8 @@ class Database:
                     print("stores imported successfully")
 
                     #insert products in Product table
-                    products = [] #store tuples with ID & object
+                    products_cat = [] #store tuple : (id & a list of categories)
+                    products_location = [] #store tuple : (id & a list of stores + a list of cities)
                     for product_imported in products_imported:
                         name = product_imported[0]
                         brand = product_imported[1]
@@ -112,13 +115,23 @@ class Database:
                         categories = product_imported[8]
                         product = Product(name, brand, nutrition_grade, energy_100g, url, code, stores, cities, categories)
                         prod_mgr = ProductManager(db)
-                        prod_mgr.insert(product)
+                        id, categories, stores, cities = prod_mgr.insert(product)
+                        products_cat.append((id, categories))
+                        products_location.append((id, stores, cities))
                     print("products imported successfully")
 
                     #create association in CategoryProduct table
-
-
-
+                    for product_cat in products_cat:
+                        pro_id = product_cat[0]
+                        prod_categories = product_cat[1]
+                        for prod_category in prod_categories:
+                            for category in categories_list:
+                                cat_id = category[0]
+                                cat_name = category[1]
+                                if prod_category == cat_name:
+                                    categoryproduct = CategoryProduct(pro_id, cat_id)
+                                    catprod_mgr = CategoryProductManager(db)
+                                    catprod_mgr.insert(categoryproduct)
                     print("products and categories associated successfully")
 
                     #create association in ProductLocation table

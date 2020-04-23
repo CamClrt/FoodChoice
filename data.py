@@ -49,14 +49,14 @@ SQL_SELECT_ALL = "SELECT * FROM %s;"
 
 
 SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE IF NOT EXISTS `Category` (" \
-                            "`ID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT," \
+                            "`ID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT," \
                             "`Name` VARCHAR(50)," \
                             "PRIMARY KEY (`ID`)" \
                             ")" \
                             "ENGINE=INNODB;"
 
 SQL_CREATE_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS `Product` (" \
-                           "`ID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT," \
+                           "`ID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT," \
                            "`Name` VARCHAR(150)," \
                            "`Code` BIGINT UNSIGNED," \
                            "`Brand` VARCHAR(100)," \
@@ -68,14 +68,14 @@ SQL_CREATE_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS `Product` (" \
                            "ENGINE=INNODB;"
 
 SQL_CREATE_STORE_TABLE = "CREATE TABLE IF NOT EXISTS `Store` (" \
-                         "`ID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT," \
+                         "`ID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT," \
                          "`Name` VARCHAR(50)," \
                          "PRIMARY KEY (`ID`)" \
                          ")" \
                          "ENGINE=INNODB;"
 
 SQL_CREATE_CITY_TABLE = "CREATE TABLE IF NOT EXISTS `City` (" \
-                        "`ID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT," \
+                        "`ID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT," \
                         "`Name` VARCHAR(50)," \
                         "`Zip_code` SMALLINT UNSIGNED," \
                         "PRIMARY KEY (`ID`)" \
@@ -83,9 +83,9 @@ SQL_CREATE_CITY_TABLE = "CREATE TABLE IF NOT EXISTS `City` (" \
                         "ENGINE=INNODB;"
 
 SQL_CREATE_SUBSTITUTE_TABLE = "CREATE TABLE IF NOT EXISTS `Substitute` (" \
-                              "`Substitute_ID` SMALLINT UNSIGNED  NOT NULL AUTO_INCREMENT," \
+                              "`Substitute_ID` BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT," \
                               "`Users_ID` TINYINT UNSIGNED," \
-                              "`Product_ID` SMALLINT UNSIGNED," \
+                              "`Product_ID` BIGINT UNSIGNED," \
                               "`Date` DATETIME," \
                               "`Note` TEXT," \
                               "KEY `PK, FK` (`Substitute_ID`)," \
@@ -94,16 +94,16 @@ SQL_CREATE_SUBSTITUTE_TABLE = "CREATE TABLE IF NOT EXISTS `Substitute` (" \
                               "ENGINE=INNODB;"
 
 SQL_CREATE_CATEGORY_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS `CategoryProduct` (" \
-                                    "`Product_ID` SMALLINT UNSIGNED NOT NULL," \
-                                    "`Category_ID` SMALLINT UNSIGNED NOT NULL," \
+                                    "`Product_ID` BIGINT UNSIGNED NOT NULL," \
+                                    "`Category_ID` BIGINT UNSIGNED NOT NULL," \
                                     "KEY `PK, FK` (`Product_ID`, `Category_ID`)" \
                                     ")" \
                                     "ENGINE=INNODB;"
 
 SQL_CREATE_PRODUCT_LOCATION_TABLE = "CREATE TABLE IF NOT EXISTS `ProductLocation` (" \
-                                    "`Product_ID` SMALLINT UNSIGNED NOT NULL," \
-                                    "`City_ID` SMALLINT UNSIGNED NOT NULL," \
-                                    "`Store_ID` SMALLINT UNSIGNED NOT NULL," \
+                                    "`Product_ID` BIGINT UNSIGNED NOT NULL," \
+                                    "`City_ID` BIGINT UNSIGNED NOT NULL," \
+                                    "`Store_ID` BIGINT UNSIGNED NOT NULL," \
                                     "KEY `PK, FK` (`Product_ID`, `City_ID`, `Store_ID`)" \
                                     ")" \
                                     "ENGINE=INNODB;"
@@ -136,11 +136,11 @@ SQL_INSERT_STORES = "INSERT INTO Store (Name) VALUES ('%s');"
 
 SQL_INSERT_CITIES = "INSERT INTO City (Name) VALUES ('%s');"
 
-SQL_INSERT_PRODUCT_LOCATION = "INSERT INTO ProductLocation (Product_ID, City_ID, Store_ID) VALUES ('%s', '%s', '%s');"
+SQL_INSERT_PRODUCT_LOCATION = "INSERT INTO ProductLocation (Product_ID, Store_ID, City_ID) VALUES %s;"
 
 SQL_INSERT_CATEGORIES = "INSERT INTO Category (Name) VALUES ('%s');"
 
-SQL_INSERT_CATEGORY_PRODUCT = "INSERT INTO CategoryProduct (Product_ID, Category_ID) VALUES ('%s', '%s');"
+SQL_INSERT_CATEGORY_PRODUCT = "INSERT INTO CategoryProduct (Product_ID, Category_ID) VALUES %s;"
 
 SQL_INSERT_USERS = "INSERT INTO Users (Name, Password) VALUES ('%s', '%s');"
 

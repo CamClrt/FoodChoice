@@ -12,7 +12,7 @@ class StoreManager:
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
         id = mycursor.fetchone()
-        return (id, store_object)
+        return (id[0], store_object)
 
 
 class Store:

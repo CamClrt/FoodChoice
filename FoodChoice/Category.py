@@ -12,7 +12,7 @@ class CategoryManager:
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
         id = mycursor.fetchone()
-        return (id, category_object)
+        return id[0], category_object.name
 
 
 class Category:
