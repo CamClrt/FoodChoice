@@ -5,8 +5,11 @@ from FoodChoice.Category import *
 from FoodChoice.City import *
 from FoodChoice.Store import *
 from FoodChoice.Product import *
+from FoodChoice.CategoryProduct import *
+from FoodChoice.ProductLocation import *
 
 import os.path
+import time
 
 import mysql.connector
 from mysql.connector import Error
@@ -53,6 +56,18 @@ class Database:
                 if os.path.exists(url_db):
                     mycursor.execute(SQL_USE_DB.replace("DB", self.database_name))
                 else:
+
+                    #insert data from OpenFoodfacts API
+                    api = API()
+                    print("\n", " /!\ WARNING: import & store data, this may take few minutes ".center(100, '-'), "\n")
+                    try:
+                        products_imported, stores_imported, cities_imported, categories_imported = api.products
+                    except Error as e:
+                        print(f"The error '{e}' occurred")
+                        print("\n", " /!\ RETRY: import & store data, this may take few minutes ".center(100, '-'),"\n")
+                        time.sleep(5)
+                        products_imported, stores_imported, cities_imported, categories_imported = api.products
+
                     mycursor.execute(SQL_CREATE_DB.replace("DB", self.database_name))
                     print(">>> Database created successfully")
 
@@ -61,36 +76,29 @@ class Database:
                         mycursor.execute(query)
                         print(f"> {name} table created successfully")
 
-                    #insert data
-                    api = API()
-                    print("\n", " /!\ WARNING: importing data, this may take few minutes ".center(100, '-'), "\n")
-                    products_imported, stores_imported, cities_imported, categories_imported = api.products
-
                     # insert categories in Category table
-                    categories = []
                     for category_imported in categories_imported:
                         category = Category(category_imported)
                         cat_mgr = CategoryManager(db)
-                        categories.append(cat_mgr.insert(category))
+                        id, name = cat_mgr.insert(category)
                     print("categories imported successfully")
 
                     # insert cities in City table
-                    cities = []
                     for city_imported in cities_imported:
                         city = City(city_imported)
                         city_mgr = CityManager(db)
-                        cities.append(city_mgr.insert(city))
+                        city_mgr.insert(city)
                     print("cities imported successfully")
 
                     # insert stores in Store table
-                    stores = []
                     for store_imported in stores_imported:
                         store = Store(store_imported)
                         store_mgr = StoreManager(db)
-                        stores.append(store_mgr.insert(store))
+                        store_mgr.insert(store)
                     print("stores imported successfully")
 
                     #insert products in Product table
+                    products = [] #store tuples with ID & object
                     for product_imported in products_imported:
                         name = product_imported[0]
                         brand = product_imported[1]
@@ -98,11 +106,22 @@ class Database:
                         energy_100g = product_imported[3]
                         url = product_imported[4]
                         code = product_imported[5]
-                        product = Product(name, brand, nutrition_grade, energy_100g, url, code)
-                        product_mgr = ProductManager(db)
-                        product_mgr.insert(product)
-
+                        stores = product_imported[6]
+                        cities = product_imported[7]
+                        categories = product_imported[8]
+                        product = Product(name, brand, nutrition_grade, energy_100g, url, code, stores, cities, categories)
+                        prod_mgr = ProductManager(db)
+                        prod_mgr.insert(product)
                     print("products imported successfully")
+
+                    #create association in CategoryProduct table
+
+
+
+                    print("products and categories associated successfully")
+
+                    #create association in ProductLocation table
+                    print("products, stores and cities associated successfully")
 
 
 
