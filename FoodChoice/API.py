@@ -118,23 +118,23 @@ class API:
 
             stores = imported_product.get("stores", "").split(',')
             for tmp_store in stores:
-                store = (tmp_store.replace("'", " ")).strip()
+                store = (tmp_store.replace("'", " ")).strip().capitalize()
                 product_stores.add(store[:50])
 
             places = imported_product.get("purchase_places", "").split(',')
             for tmp_place in places:
-                place = (tmp_place.replace("'", " ")).strip()
+                place = (tmp_place.replace("'", " ")).strip().capitalize()
                 product_places.add(place[:50])
 
             categories = imported_product.get("categories", "").split(',')
             for tmp_categorie in categories:
-                categorie = (tmp_categorie.replace("'", " ")).strip()
+                categorie = tmp_categorie.replace("'", " ").strip().capitalize()
 
                 if re.search("..:", categorie):
-                    if (categorie[:2]).lower() == "fr:":
-                        product_categories.add(((categorie[3:]).capitalize())[:50])
+                    if categorie[:2] == "fr:":
+                        product_categories.add(((categorie[3:])[:50]))
                 else:
-                    product_categories.add(((categorie.capitalize()))[:50])
+                    product_categories.add(categorie[:50])
 
             products.append((name, brand, nutrition_grade, energy_100g, url, code, stores, places, categories))
 
