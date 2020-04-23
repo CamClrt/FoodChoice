@@ -68,6 +68,7 @@ class Database:
                         time.sleep(5)
                         products_imported, stores_imported, cities_imported, categories_imported = api.products
 
+                    #create database and tables
                     mycursor.execute(SQL_CREATE_DB.replace("DB", self.database_name))
                     print(">>> Database created successfully")
 
@@ -76,14 +77,14 @@ class Database:
                         mycursor.execute(query)
                         print(f"> {name} table created successfully")
 
-                    # insert categories in Category table
+                    #insert categories in Category table
                     for category_imported in categories_imported:
                         category = Category(category_imported)
                         cat_mgr = CategoryManager(db)
                         id, name = cat_mgr.insert(category)
                     print("categories imported successfully")
 
-                    # insert cities in City table
+                    #insert cities in City table
                     for city_imported in cities_imported:
                         city = City(city_imported)
                         city_mgr = CityManager(db)
