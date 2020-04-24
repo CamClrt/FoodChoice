@@ -1,12 +1,12 @@
 from data import *
-
+from progress.bar import Bar
 import requests
 import random
 import re
 
 
 class API:
-    """Import data from OpenFoodFact's API and process them"""
+    """Import products from OpenFoodFact's API"""
 
     def __init__(self, products_key= PRODUCT_KEY,
                  products_url= PRODUCTS_URL,
@@ -27,119 +27,73 @@ class API:
         self.categories_reg_exp = categories_reg_exp
         self.nb_cat_selected_among_the_list = nb_cat_selected_among_the_list
 
-    def import_categories(self):
-        """Import categories"""
-        response = requests.get(self.categories_url, timeout=10)
+    @property
+    def categories(self):
+        """Import and return a selection of categories"""
+        headers = {'date': DATE, 'user-agent': APP_NAME}
+        response = requests.get(self.categories_url, headers=headers, timeout=10)
+        log = f"API : Date: '{response.headers['Date']}', ' \
+                        'Import categories '{self.nb_cat_selected_among_the_list}': ' \
+                        'Content-Type: '{response.headers['Content-Type']}', ' \
+                        'Connection: '{response.headers['Connection']}\n"
+
+        with open('log.txt', 'a', encoding="utf-8") as file:
+            file.write(log)
 
         try:
             response.status_code == requests.codes.ok
             content = response.json()
             imported_categories = content.get(self.categories_key)
 
-            temporary_category_list = [
+            #keep only a selection of x categories capitalized
+            category_list = [
                 imported_category[self.categories_name_field]
                 for imported_category in imported_categories
                 if re.fullmatch(self.categories_reg_exp, imported_category[self.categories_name_field]) is not None
             ]
 
-            category_list = [
-                category.replace("'", "")  # exclude the ' character in the field to avoid SQL error
-                for category in temporary_category_list
-            ]
-
         except:
-            print(f"The error : '{response.status_code}' occurred")
+            err = f"The error : '{response.status_code}' occurred"
+            print(err)
+            with open('log.txt', 'a', encoding="utf-8") as file:
+                file.write(err)
 
-        return category_list
-
-    @property
-    def categories(self):
-        """Return a selection of categories"""
-        categories = self.import_categories()
         random.seed(SEED)
-        return random.sample(categories, self.nb_cat_selected_among_the_list)
 
-    def import_products(self):
-        """import products by category"""
-        list_by_catgories = []
-
-        for category in self.categories:
-            PAYLOAD["tag_0"] = "'" + str(category) + "'"
-            response = requests.get(self.products_url, params=PAYLOAD, timeout=10)
-
-            try:
-                response.status_code == requests.codes.ok
-                content = response.json()
-                imported_products = content.get(self.products_key)
-
-                imported_product = [
-                    imported_product
-                    for imported_product in imported_products
-                ]
-
-                # select only the products with nutrition_grade
-                temporary_product_list = [
-                    product
-                    for product in imported_product
-                    if product.get(self.products_name_field) is not None
-                ]
-            except:
-                print(f"The error : '{response.status_code}' occurred")
-            list_by_catgories.append(temporary_product_list)
-
-        products = [item for sublist in list_by_catgories for item in sublist]
-
-        return products
+        return random.sample(category_list, self.nb_cat_selected_among_the_list)
 
     @property
     def products(self):
-        """Return 4 objects :
-        - a list witch contains all the products, one product = one tuple with this characteristics :
-        (name, brand, nutrition_grade, energy_100g, url, code, stores, places, categories) ;
-        - a set of stores depending on theses products ;
-        - a set of places depending on theses products ;
-        - a set of categories depending on theses products.
-        """
-
+        """Import and return a selection of products by category"""
         products = []
-        product_stores = set()
-        product_places = set()
-        product_categories = set()
 
-        for imported_product in self.import_products():
-            #extract data and filter it to prepare the insertion in tables
+        print("\n-----> Importing data from Open Food Facts API <-----")
+        with Bar('Processing', max=len(self.categories)) as bar: #display a progression bar during the import
+            for category in self.categories:
+                PAYLOAD["tag_0"] = "'" + str(category) + "'"
+                headers = {'date': DATE, 'user-agent': APP_NAME}
+                response = requests.get(self.products_url, params=PAYLOAD, headers=headers, timeout=10)
+                log = f"API : Date: '{response.headers['Date']}', ' \
+                                'Import products in '{category}': ' \
+                                'Content-Type: '{response.headers['Content-Type']}', ' \
+                                'Connection: '{response.headers['Connection']}\n"
 
-            name = (imported_product.get("product_name_fr", "")[:150]).replace("'", "")
-            brand = (imported_product.get("brands", "")[:100]).replace("'", "")
-            nutrition_grade = imported_product.get("nutrition_grades", "")[:1]
-            energy_100g = imported_product.get("nutriments", "").get("energy_100g", "")
-            url = (imported_product.get("url", "")[:255]).replace("'", "")
-            code = imported_product.get("code", "")
+                with open('log.txt', 'a', encoding="utf-8") as file:
+                    file.write(log)
 
-            stores = imported_product.get("stores", "").split(',')
-            for tmp_store in stores:
-                store = (tmp_store.replace("'", " ")).strip().capitalize()
-                product_stores.add(store[:50])
+                try:
+                    response.status_code == requests.codes.ok
+                    content = response.json()
+                    products.extend(content.get(self.products_key))
 
-            places = imported_product.get("purchase_places", "").split(',')
-            for tmp_place in places:
-                place = (tmp_place.replace("'", " ")).strip().capitalize()
-                product_places.add(place[:50])
+                except:
+                    err = f"The error : '{response.status_code}' occurred"
+                    print(err)
+                    with open('log.txt', 'a', encoding="utf-8") as file:
+                        file.write(err)
+                
+                bar.next()
 
-            categories = imported_product.get("categories", "").split(',')
-            for tmp_categorie in categories:
-                categorie = tmp_categorie.replace("'", " ").strip().capitalize()
+        print(f"-------------> {len(products)} products imported <-------------")
 
-                if re.search("..:", categorie):
-                    if categorie[:2] == "fr:":
-                        product_categories.add(((categorie[3:])[:50]))
-                else:
-                    product_categories.add(categorie[:50])
-
-            products.append((name, brand, nutrition_grade, energy_100g, url, code, stores, places, categories))
-
-        product_stores.discard("")
-        product_places.discard("")
-        product_categories.discard("")
-
-        return products, product_stores, product_places, product_categories
+        return products
