@@ -1,15 +1,17 @@
 from data import *
 
 from FoodChoice.API import *
-from FoodChoice.Category import *
 from FoodChoice.City import *
 from FoodChoice.Store import *
 from FoodChoice.Product import *
+from FoodChoice.Category import *
 from FoodChoice.CategoryProduct import *
 from FoodChoice.ProductLocation import *
 
-import os.path
+import re
 import time
+import os.path
+from progress.bar import Bar
 
 import mysql.connector
 from mysql.connector import Error
@@ -57,89 +59,66 @@ class Database:
                     mycursor.execute(SQL_USE_DB.replace("DB", self.database_name))
                 else:
 
-                    #insert data from OpenFoodfacts API
+                    # import data from OpenFoodfacts API
                     api = API()
-                    print("\n", " /!\ WARNING: import & store data, this may take few minutes ".center(100, '-'), "\n")
                     try:
-                        products_imported, stores_imported, cities_imported, categories_imported = api.products
+                        imported_products = api.products
                     except Error as e:
                         print(f"The error '{e}' occurred")
-                        print("\n", " /!\ RETRY: import & store data, this may take few minutes ".center(100, '-'),"\n")
                         time.sleep(5)
-                        products_imported, stores_imported, cities_imported, categories_imported = api.products
+                        imported_products = api.products
 
-                    #create database and tables
+                    # create database and tables
                     mycursor.execute(SQL_CREATE_DB.replace("DB", self.database_name))
-                    print(">>> Database created successfully")
+                    print("\n> Database created successfully")
 
                     mycursor.execute(SQL_USE_DB.replace("DB", self.database_name))
                     for name, query in TABLES.items():
                         mycursor.execute(query)
                         print(f"> {name} table created successfully")
 
-                    #insert categories in Category table
-                    categories_list = [] #store tuple : (id + name)
-                    for category_imported in categories_imported:
-                        category = Category(category_imported)
-                        cat_mgr = CategoryManager(db)
-                        id, name = cat_mgr.insert(category)
-                        categories_list.append((id, name))
-                    print("categories imported successfully")
+                    # insert data in DB
+                    print("\n-------------> Inserting data in database <-------------")
 
-                    #insert cities in City table
-                    for city_imported in cities_imported:
-                        city = City(city_imported)
-                        city_mgr = CityManager(db)
-                        city_mgr.insert(city)
-                    print("cities imported successfully")
+                    with Bar('Processing', max=len(imported_products)) as bar:
+                        for imported_product in imported_products:
 
-                    # insert stores in Store table
-                    for store_imported in stores_imported:
-                        store = Store(store_imported)
-                        store_mgr = StoreManager(db)
-                        store_mgr.insert(store)
-                    print("stores imported successfully")
+                            # filter & insert categories
+                            tmp_categories = imported_product.get("categories", "").split(',')
+                            for tmp_categorie in tmp_categories:
+                                categorie = tmp_categorie.replace("'", " ").strip().capitalize()
 
-                    #insert products in Product table
-                    products_cat = [] #store tuple : (id & a list of categories)
-                    products_location = [] #store tuple : (id & a list of stores + a list of cities)
-                    for product_imported in products_imported:
-                        name = product_imported[0]
-                        brand = product_imported[1]
-                        nutrition_grade = product_imported[2]
-                        energy_100g = product_imported[3]
-                        url = product_imported[4]
-                        code = product_imported[5]
-                        stores = product_imported[6]
-                        cities = product_imported[7]
-                        categories = product_imported[8]
-                        product = Product(name, brand, nutrition_grade, energy_100g, url, code, stores, cities, categories)
-                        prod_mgr = ProductManager(db)
-                        id, categories, stores, cities = prod_mgr.insert(product)
-                        products_cat.append((id, categories))
-                        products_location.append((id, stores, cities))
-                    print("products imported successfully")
+                                if re.search("..:", categorie):
+                                    if categorie[:2] == "fr:":
+                                        cat_mng = CategoryManager(db)
+                                        cat_mng.insert(Category(((categorie[3:])[:50])))
+                                else:
+                                    cat_mng = CategoryManager(db)
+                                    cat_mng.insert(Category(categorie[:50]))
 
-                    #create association in CategoryProduct table
-                    for product_cat in products_cat:
-                        pro_id = product_cat[0]
-                        prod_categories = product_cat[1]
-                        for prod_category in prod_categories:
-                            for category in categories_list:
-                                cat_id = category[0]
-                                cat_name = category[1]
-                                if prod_category == cat_name:
-                                    categoryproduct = CategoryProduct(pro_id, cat_id)
-                                    catprod_mgr = CategoryProductManager(db)
-                                    catprod_mgr.insert(categoryproduct)
-                    print("products and categories associated successfully")
+                                # filter & insert cities
+                                tmp_cities = imported_product.get("purchase_places", "").split(',')
 
-                    #create association in ProductLocation table
-                    print("products, stores and cities associated successfully")
+                                if len(tmp_cities) != 0:
+                                    for tmp_city in tmp_cities:
+                                        city = (tmp_city.replace("'", " ")).strip().capitalize()
+                                        city_mng = CityManager(db)
+                                        city_mng.insert(City(city[:50]))
+
+                                # filter & insert cities
+                                tmp_stores = imported_product.get("stores", "").split(',')
+
+                                if len(tmp_stores) != 0:
+                                    for tmp_store in tmp_stores:
+                                        store = (tmp_store.replace("'", " ")).strip().capitalize()
+                                        store_mng = StoreManager(db)
+                                        store_mng.insert(Store(store[:50]))
+
+                        bar.next()
 
 
+            print("Database connected successfully")
 
-            print("Database connected successfully \n")
         except Error as e:
             print(f"The error '{e}' occurred")
         mycursor.close()
