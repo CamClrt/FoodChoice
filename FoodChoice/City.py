@@ -6,20 +6,20 @@ class CityManager:
         self.database = database
 
     def insert(self, city_object):
-        name = city_object.name
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_INSERT_CITIES.replace("%s", name))
+        mycursor.execute(SQL_INSERT_CITIES.replace("%s", city_object.name))
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
-        id = mycursor.fetchone()
-        return (id[0], city_object)
+        city_object.id = mycursor.fetchone()[0]
+        return city_object
 
 
 class City:
 
     def __init__(self, name, zipcode=00000):
+        self.id = ""
         self.name = name
         self.zipcode = zipcode
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.id} {self.name} {self.zipcode}"
