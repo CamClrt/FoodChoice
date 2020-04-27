@@ -7,6 +7,7 @@ from FoodChoice.Product import *
 from FoodChoice.Category import *
 from FoodChoice.CategoryProduct import *
 from FoodChoice.ProductLocation import *
+from FoodChoice.Filter import *
 
 import re
 import time
@@ -83,36 +84,31 @@ class Database:
                     with Bar('Processing', max=len(imported_products)) as bar:
                         for imported_product in imported_products:
 
+                            filters = Filter()
+
                             # filter & insert categories
                             tmp_categories = imported_product.get("categories", "").split(',')
-                            for tmp_categorie in tmp_categories:
-                                categorie = tmp_categorie.replace("'", " ").strip().capitalize()
-
-                                if re.search("..:", categorie):
-                                    if categorie[:2] == "fr:":
-                                        cat_mng = CategoryManager(db)
-                                        cat_mng.insert(Category(((categorie[3:])[:50])))
-                                else:
+                            for tmp_category in tmp_categories:
+                                category = filters.cat_filter(tmp_category)
+                                if category is not None:
                                     cat_mng = CategoryManager(db)
-                                    cat_mng.insert(Category(categorie[:50]))
+                                    cat_mng.insert(Category(category))
 
                                 # filter & insert cities
                                 tmp_cities = imported_product.get("purchase_places", "").split(',')
-
                                 if len(tmp_cities) != 0:
                                     for tmp_city in tmp_cities:
-                                        city = (tmp_city.replace("'", " ")).strip().capitalize()
+                                        city = filters.city_filter(tmp_city)
                                         city_mng = CityManager(db)
-                                        city_mng.insert(City(city[:50]))
+                                        city_mng.insert(City(city))
 
                                 # filter & insert cities
                                 tmp_stores = imported_product.get("stores", "").split(',')
-
                                 if len(tmp_stores) != 0:
                                     for tmp_store in tmp_stores:
-                                        store = (tmp_store.replace("'", " ")).strip().capitalize()
+                                        store = filters.store_filter(tmp_store)
                                         store_mng = StoreManager(db)
-                                        store_mng.insert(Store(store[:50]))
+                                        store_mng.insert(Store(store))
 
                         bar.next()
 
