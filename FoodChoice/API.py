@@ -1,7 +1,6 @@
 from data import *
 from progress.bar import Bar
 import requests
-import random
 import re
 
 
@@ -58,9 +57,7 @@ class API:
             with open('log.txt', 'a', encoding="utf-8") as file:
                 file.write(err)
 
-        random.seed(SEED)
-
-        return random.sample(category_list, self.nb_cat_selected_among_the_list)
+        return category_list[:self.nb_cat_selected_among_the_list]
 
     @property
     def products(self):

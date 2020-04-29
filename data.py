@@ -11,7 +11,7 @@ DATE = date.__str__()[:19]
 CATEGORIES_URL = "https://fr.openfoodfacts.org/categories.json"
 CATEGORIES_KEY = "tags"
 CATEGORIES_NAME_FIELD = "name"
-NB_CAT_SELECTED_AMONG_THE_LIST = 25
+NB_CAT_SELECTED_AMONG_THE_LIST = 30
 CATEGORIES_REGEX = "^[A-Z].+"
 
 # products
@@ -25,12 +25,9 @@ PAYLOAD = {
     "tag_contains_0": "contains",
     "tag_0": "category",
     "sort_by": "last_modified_t",
-    "page_size": "500",
+    "page_size": "50",
     "json": "true"
 }
-
-# random seed
-SEED = 100
 
 ########################### DATABASE CONFIG ###############################
 
