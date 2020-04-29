@@ -1,30 +1,35 @@
 from data import *
 
+
 class ProductManager:
 
     def __init__(self, database):
         self.database = database
 
-    def insert(self, product_object):
+    def insert(self, products_object):
 
-        data = "('"+ product_object.name + "','" \
-               + product_object.brand + "','" \
-               + product_object.nutrition_grade + "'," \
-               + str(product_object.energy_100g) + ",'" \
-               + product_object.url + "'," \
-               + str(product_object.code) + ")"
+        data = []
+
+        for product_object in products_object:
+
+            data.append(
+                (product_object.name,
+                 product_object.brand,
+                 product_object.nutrition_grade,
+                 product_object.energy_100g,
+                 product_object.url,
+                 product_object.code,)
+            )
 
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_INSERT_PRODUCTS.replace("%s", data))
+        mycursor.executemany(SQL_INSERT_PRODUCTS, data)
         self.database.commit()
-        mycursor.execute(LAST_INSERT_ID)
-        id = mycursor.fetchone()
-        return id[0], product_object.categories, product_object.stores, product_object.cities
 
 
 class Product:
 
     def __init__(self, name, brand, nutrition_grade, energy_100g, url, code, stores, cities, categories):
+        self.id = ""
         self.name = name
         self.brand = brand
         self.nutrition_grade = nutrition_grade

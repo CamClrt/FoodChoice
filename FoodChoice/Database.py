@@ -5,11 +5,8 @@ from FoodChoice.City import *
 from FoodChoice.Store import *
 from FoodChoice.Product import *
 from FoodChoice.Category import *
-from FoodChoice.CategoryProduct import *
-from FoodChoice.ProductLocation import *
 from FoodChoice.Filter import *
 
-import re
 import time
 import os.path
 from progress.bar import Bar
@@ -81,37 +78,56 @@ class Database:
                     # insert data in DB
                     print("\n-------------> Inserting data in database <-------------")
 
+                    products = []  # store product objects
+                    prod_mng = ProductManager(db)
+
                     with Bar('Processing', max=len(imported_products)) as bar:
                         for imported_product in imported_products:
-
                             filters = Filter()
+                            cat_mng = CategoryManager(db)
+                            city_mng = CityManager(db)
+                            store_mng = StoreManager(db)
+                            categories = [] #store category objects
+                            cities = [] #store city objects
+                            stores = [] #store store objects
 
                             # filter & insert categories
                             tmp_categories = imported_product.get("categories", "").split(',')
                             for tmp_category in tmp_categories:
                                 category = filters.cat_filter(tmp_category)
                                 if category is not None:
-                                    cat_mng = CategoryManager(db)
-                                    cat_mng.insert(Category(category))
+                                    categories.append(cat_mng.find(category))
 
-                                # filter & insert cities
-                                tmp_cities = imported_product.get("purchase_places", "").split(',')
-                                if len(tmp_cities) != 0:
-                                    for tmp_city in tmp_cities:
-                                        city = filters.city_filter(tmp_city)
-                                        city_mng = CityManager(db)
-                                        city_mng.insert(City(city))
+                            # filter & insert cities
+                            tmp_cities = imported_product.get("purchase_places", "").split(',')
+                            if len(tmp_cities) != 0:
+                                for tmp_city in tmp_cities:
+                                    city = filters.city_filter(tmp_city)
+                                    cities.append(city_mng.find(city))
 
-                                # filter & insert cities
-                                tmp_stores = imported_product.get("stores", "").split(',')
-                                if len(tmp_stores) != 0:
-                                    for tmp_store in tmp_stores:
-                                        store = filters.store_filter(tmp_store)
-                                        store_mng = StoreManager(db)
-                                        store_mng.insert(Store(store))
+                            # filter & insert cities
+                            tmp_stores = imported_product.get("stores", "").split(',')
+                            if len(tmp_stores) != 0:
+                                for tmp_store in tmp_stores:
+                                    store = filters.store_filter(tmp_store)
+                                    stores.append(store_mng.find(store))
 
-                        bar.next()
+                            # filter & insert products
+                            tmp_name = imported_product.get("product_name_fr", "")
+                            tmp_brand = imported_product.get("brands", "")
+                            tmp_nutrition_grade = imported_product.get("nutrition_grades", "")
+                            tmp_energy_100g = imported_product.get("nutriments", "").get("energy_100g", 0)
+                            tmp_url = imported_product.get("url", "")
+                            tmp_code = imported_product.get("code", (13 * "0"))
 
+                            name, brand, nutrition_grade, energy_100g, url, code = filters.prod_filters(
+                                tmp_name, tmp_brand, tmp_nutrition_grade, tmp_energy_100g, tmp_url, tmp_code)
+
+                            products.append(Product(name, brand, nutrition_grade, energy_100g,
+                                                    url, code, stores, cities, categories))
+                            bar.next()
+
+                    prod_mng.insert(products)
 
             print("Database connected successfully")
 

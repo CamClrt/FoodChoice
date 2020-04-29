@@ -11,7 +11,7 @@ DATE = date.__str__()[:19]
 CATEGORIES_URL = "https://fr.openfoodfacts.org/categories.json"
 CATEGORIES_KEY = "tags"
 CATEGORIES_NAME_FIELD = "name"
-NB_CAT_SELECTED_AMONG_THE_LIST = 25
+NB_CAT_SELECTED_AMONG_THE_LIST = 15
 CATEGORIES_REGEX = "^[A-Z].+"
 
 # products
@@ -137,7 +137,7 @@ TABLES = {
 
 SQL_INSERT_PRODUCTS = "INSERT INTO Product " \
                               "(Name, Brand, Nutrition_grade, Energy_100g, URL, Code)" \
-                              "VALUES %s;"
+                              "VALUES (%s, %s, %s, %s, %s, %s);"
 
 SQL_INSERT_STORES = "INSERT IGNORE INTO Store (Name) VALUES ('%s');"
 
@@ -154,3 +154,10 @@ SQL_INSERT_USERS = "INSERT IGNORE INTO Users (Name, Password) VALUES ('%s', '%s'
 SQL_INSERT_SUBSTITUTES = "INSERT INTO Substitute (Users_ID, Product_ID, Date, Note) VALUES ('%s', '%s', '%s', '%s');"
 
 LAST_INSERT_ID = "SELECT LAST_INSERT_ID();"
+
+SQL_SELECT_CATEGORY = "SELECT ID FROM Category WHERE Name = '%s';"
+
+SQL_SELECT_STORE = "SELECT ID FROM Store WHERE Name = '%s';"
+
+SQL_SELECT_CITY = "SELECT ID FROM City WHERE Name = '%s';"
+

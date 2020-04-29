@@ -14,7 +14,7 @@ class API:
                  categories_url= CATEGORIES_URL,
                  categories_key= CATEGORIES_KEY,
                  categories_name_field= CATEGORIES_NAME_FIELD,
-                 categories_reg_exp= CATEGORIES_REG_EXP,
+                 categories_regex= CATEGORIES_REGEX,
                  nb_cat_selected_among_the_list= NB_CAT_SELECTED_AMONG_THE_LIST,
                  ):
 
@@ -24,7 +24,7 @@ class API:
         self.categories_url = categories_url
         self.categories_key = categories_key
         self.categories_name_field = categories_name_field
-        self.categories_reg_exp = categories_reg_exp
+        self.categories_regex = categories_regex
         self.nb_cat_selected_among_the_list = nb_cat_selected_among_the_list
 
     @property
@@ -45,11 +45,11 @@ class API:
             content = response.json()
             imported_categories = content.get(self.categories_key)
 
-            #keep only a selection of x categories capitalized
+            # keep only a selection of x categories capitalized
             category_list = [
                 imported_category[self.categories_name_field]
                 for imported_category in imported_categories
-                if re.fullmatch(self.categories_reg_exp, imported_category[self.categories_name_field]) is not None
+                if re.fullmatch(self.categories_regex, imported_category[self.categories_name_field]) is not None
             ]
 
         except:
@@ -68,7 +68,7 @@ class API:
         products = []
 
         print("\n-----> Importing data from Open Food Facts API <-----")
-        with Bar('Processing', max=len(self.categories)) as bar: #display a progression bar during the import
+        with Bar('Processing', max=len(self.categories)) as bar:
             for category in self.categories:
                 PAYLOAD["tag_0"] = "'" + str(category) + "'"
                 headers = {'date': DATE, 'user-agent': APP_NAME}
@@ -91,9 +91,9 @@ class API:
                     print(err)
                     with open('log.txt', 'a', encoding="utf-8") as file:
                         file.write(err)
-                
+
                 bar.next()
 
-        print(f"-------------> {len(products)} products imported <-------------")
+        print(f"--------------> {len(products)} products imported <--------------")
 
         return products

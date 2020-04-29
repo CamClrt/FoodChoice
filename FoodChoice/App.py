@@ -1,6 +1,7 @@
 from data import *
 from FoodChoice.Database import Database
 
+
 class App:
 
     def __init__(self):
@@ -30,38 +31,6 @@ class App:
 
             print("\n", " USERS ".center(100, '*'), "\n")
             sql = (SQL_SELECT_ALL.replace("%s", "Users"))
-            mycursor.execute(sql)
-            myresult = mycursor.fetchall()
-
-            for x in myresult:
-                print(x)
-
-            print("\n", " CATEGORY ".center(100, '*'), "\n")
-            sql = (SQL_SELECT_ALL.replace("%s", "Category"))
-            mycursor.execute(sql)
-            myresult = mycursor.fetchall()
-
-            for x in myresult:
-                print(x)
-
-            print("\n", " PRODUCT ".center(100, '*'), "\n")
-            sql = (SQL_SELECT_ALL.replace("%s", "Product"))
-            mycursor.execute(sql)
-            myresult = mycursor.fetchall()
-
-            for x in myresult:
-                print(x)
-
-            print("\n", " STORE ".center(100, '*'), "\n")
-            sql = (SQL_SELECT_ALL.replace("%s", "Store"))
-            mycursor.execute(sql)
-            myresult = mycursor.fetchall()
-
-            for x in myresult:
-                print(x)
-
-            print("\n", " CITY ".center(100, '*'), "\n")
-            sql = (SQL_SELECT_ALL.replace("%s", "City"))
             mycursor.execute(sql)
             myresult = mycursor.fetchall()
 
