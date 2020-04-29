@@ -14,7 +14,7 @@ class CityManager:
         if res is None:
             return self.insert(city)
         else:
-            city.id = res[0]
+            city.id = int(res[0])
             return city
 
     def insert(self, city_object):

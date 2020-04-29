@@ -6,22 +6,26 @@ class ProductLocationManager:
         self.database = database
 
     def insert(self, productlocation_objects):
+
         data = []
+
         for productlocation_object in productlocation_objects:
-            data.append((productlocation_object.Product_ID,
-                         productlocation_object.Store_ID,
-                         productlocation_object.City_ID,))
-            mycursor = self.database.cursor()
-            mycursor.executemany(SQL_INSERT_PRODUCT_LOCATION, data)
-            self.database.commit()
+
+            data.append((productlocation_object.product_id,
+                        productlocation_object.store_id,
+                        productlocation_object.city_id,))
+
+        mycursor = self.database.cursor()
+        mycursor.executemany(SQL_INSERT_PRODUCT_LOCATION, data)
+        self.database.commit()
 
 
 class ProductLocation:
 
-    def __init__(self, Product_ID, Store_ID, City_ID):
-        self.Product_ID = Product_ID
-        self.Store_ID = Store_ID
-        self.City_ID = City_ID
+    def __init__(self, product_id, store_id, city_id):
+        self.product_id = product_id
+        self.store_id = store_id
+        self.city_id = city_id
 
     def __str__(self):
-        return f"Product_ID : {self.Product_ID}, Store_ID : {self.Store_ID}, City_ID : {self.City_ID}"
+        return f"Product_ID : {self.product_id}, Store_ID : {self.store_id}, City_ID : {self.city_id}"

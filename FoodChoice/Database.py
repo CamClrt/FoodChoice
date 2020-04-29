@@ -6,6 +6,8 @@ from FoodChoice.Store import *
 from FoodChoice.Product import *
 from FoodChoice.Category import *
 from FoodChoice.Filter import *
+from FoodChoice.CategoryProduct import *
+from FoodChoice.ProductLocation import *
 
 import time
 import os.path
@@ -76,17 +78,22 @@ class Database:
                         print(f"> {name} table created successfully")
 
                     # insert data in DB
-                    print("\n-------------> Inserting data in database <-------------")
+                    print("\n-------------> Inserting data in database <-------------\n")
 
                     products = []  # store product objects
                     prod_mng = ProductManager(db)
 
                     with Bar('Processing', max=len(imported_products)) as bar:
                         for imported_product in imported_products:
+
                             filters = Filter()
+
                             cat_mng = CategoryManager(db)
                             city_mng = CityManager(db)
                             store_mng = StoreManager(db)
+                            catprod_mng = CategoryProductManager(db)
+                            prodloc_mng = ProductLocationManager(db)
+
                             categories = [] #store category objects
                             cities = [] #store city objects
                             stores = [] #store store objects
@@ -123,13 +130,31 @@ class Database:
                             name, brand, nutrition_grade, energy_100g, url, code = filters.prod_filters(
                                 tmp_name, tmp_brand, tmp_nutrition_grade, tmp_energy_100g, tmp_url, tmp_code)
 
-                            products.append(Product(name, brand, nutrition_grade, energy_100g,
-                                                    url, code, stores, cities, categories))
+                            products.append(prod_mng.insert(Product(name, brand, nutrition_grade, energy_100g,
+                                                    url, code, stores, cities, categories)))
                             bar.next()
 
-                    prod_mng.insert(products)
+                    # insert data in CategoryProduct table
+                    categoryproducts = []
+                    productlocations = []
+                    for product in products:
+                        prod_id = product.id
+                        for category in product.categories:
+                            cat_id = category.id
+                            categoryproducts.append(CategoryProduct(prod_id, cat_id))
 
-            print("Database connected successfully")
+                        # insert data in ProductLocation table
+                        for city in product.cities:
+                            city_id = city.id
+                            for store in product.stores:
+                                store_id = store.id
+                                productlocations.append(ProductLocation(prod_id, store_id, city_id))
+
+                    catprod_mng.insert(categoryproducts)
+                    prodloc_mng.insert(productlocations)
+
+
+            print("\nDatabase connected successfully\n")
 
         except Error as e:
             print(f"The error '{e}' occurred")

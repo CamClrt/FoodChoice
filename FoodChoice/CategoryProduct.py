@@ -5,15 +5,18 @@ class CategoryProductManager:
     def __init__(self, database):
         self.database = database
 
-    def __init__(self, database):
-        self.database = database
+    def insert(self, categoryproduct_objects):
 
-    def insert(self, categoryproduct_object):
+        data = []
+
+        for categoryproduct_object in categoryproduct_objects:
+
+            data.append((categoryproduct_object.product_id,
+                         categoryproduct_object.category_id,))
+
         mycursor = self.database.cursor()
-        data = "('" + str(categoryproduct_object.product_id) + "','" + str(categoryproduct_object.category_id) + "')"
-        mycursor.execute(SQL_INSERT_CATEGORY_PRODUCT.replace("%s", data))
+        mycursor.executemany(SQL_INSERT_CATEGORY_PRODUCT, data)
         self.database.commit()
-
 
 class CategoryProduct:
 

@@ -15,7 +15,7 @@ class CategoryManager:
         if res is None:
             return self.insert(category)
         else:
-            category.id = res[0]
+            category.id = int(res[0])
             return category
 
     def insert(self, category_object):

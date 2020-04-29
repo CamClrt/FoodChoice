@@ -136,18 +136,17 @@ TABLES = {
 }
 
 SQL_INSERT_PRODUCTS = "INSERT INTO Product " \
-                              "(Name, Brand, Nutrition_grade, Energy_100g, URL, Code)" \
-                              "VALUES (%s, %s, %s, %s, %s, %s);"
+                              "(Name, Brand, Nutrition_grade, Energy_100g, URL, Code) VALUES %s;"
 
 SQL_INSERT_STORES = "INSERT IGNORE INTO Store (Name) VALUES ('%s');"
 
 SQL_INSERT_CITIES = "INSERT IGNORE INTO City (Name) VALUES ('%s');"
 
-SQL_INSERT_PRODUCT_LOCATION = "INSERT INTO ProductLocation (Product_ID, Store_ID, City_ID) VALUES %s;"
+SQL_INSERT_PRODUCT_LOCATION = "INSERT INTO ProductLocation (Product_ID, Store_ID, City_ID) VALUES (%s, %s, %s);"
 
 SQL_INSERT_CATEGORIES = "INSERT IGNORE INTO Category (Name) VALUES ('%s');"
 
-SQL_INSERT_CATEGORY_PRODUCT = "INSERT INTO CategoryProduct (Product_ID, Category_ID) VALUES %s;"
+SQL_INSERT_CATEGORY_PRODUCT = "INSERT INTO CategoryProduct (Product_ID, Category_ID) VALUES (%s, %s);"
 
 SQL_INSERT_USERS = "INSERT IGNORE INTO Users (Name, Password) VALUES ('%s', '%s');"
 

@@ -67,7 +67,7 @@ class API:
         """Import and return a selection of products by category"""
         products = []
 
-        print("\n-----> Importing data from Open Food Facts API <-----")
+        print("\n-----> Importing data from Open Food Facts API <-----\n")
         with Bar('Processing', max=len(self.categories)) as bar:
             for category in self.categories:
                 PAYLOAD["tag_0"] = "'" + str(category) + "'"
@@ -94,6 +94,6 @@ class API:
 
                 bar.next()
 
-        print(f"--------------> {len(products)} products imported <--------------")
+        print(f"\n--------------> {len(products)} products imported <--------------\n")
 
         return products

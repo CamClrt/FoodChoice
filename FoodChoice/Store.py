@@ -14,7 +14,7 @@ class StoreManager:
         if res is None:
             return self.insert(store)
         else:
-            store.id = res[0]
+            store.id = int(res[0])
             return store
 
     def insert(self, store_object):
