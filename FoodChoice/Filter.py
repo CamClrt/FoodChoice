@@ -32,6 +32,6 @@ class Filter:
         brand = (tmp_brand[:100]).replace("'", "")
         nutrition_grade = tmp_nutrition_grade[:1]
         energy_100g = str(tmp_energy_100g)
-        url = (tmp_url[:255]).replace("'", "")
+        url = tmp_url.replace("'", "")
         code = str(tmp_code)
         return name, brand, nutrition_grade, energy_100g, url, code

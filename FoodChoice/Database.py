@@ -77,6 +77,9 @@ class Database:
                         mycursor.execute(query)
                         print(f"> {name} table created successfully")
 
+                    # TODO afficher les catégories principales
+                    print(api.categories)
+
                     # insert data in DB
                     print("\n-------------> Inserting data in database <-------------\n")
 

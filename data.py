@@ -11,7 +11,7 @@ DATE = date.__str__()[:19]
 CATEGORIES_URL = "https://fr.openfoodfacts.org/categories.json"
 CATEGORIES_KEY = "tags"
 CATEGORIES_NAME_FIELD = "name"
-NB_CAT_SELECTED_AMONG_THE_LIST = 15
+NB_CAT_SELECTED_AMONG_THE_LIST = 25
 CATEGORIES_REGEX = "^[A-Z].+"
 
 # products
@@ -25,7 +25,7 @@ PAYLOAD = {
     "tag_contains_0": "contains",
     "tag_0": "category",
     "sort_by": "last_modified_t",
-    "page_size": "50",
+    "page_size": "500",
     "json": "true"
 }
 
@@ -69,7 +69,7 @@ SQL_CREATE_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS `Product` (" \
                            "`Brand` VARCHAR(100)," \
                            "`Nutrition_grade` CHAR(1)," \
                            "`Energy_100g` SMALLINT UNSIGNED," \
-                           "`URL` VARCHAR(255)," \
+                           "`URL` TEXT," \
                            "PRIMARY KEY (`ID`)" \
                            ")" \
                            "ENGINE=INNODB;"
@@ -94,7 +94,6 @@ SQL_CREATE_SUBSTITUTE_TABLE = "CREATE TABLE IF NOT EXISTS `Substitute` (" \
                               "`Users_ID` TINYINT UNSIGNED," \
                               "`Product_ID` BIGINT UNSIGNED," \
                               "`Date` DATETIME," \
-                              "`Note` TEXT," \
                               "KEY `PK, FK` (`Substitute_ID`)," \
                               "KEY `FK` (`Users_ID`, `Product_ID`)" \
                               ")" \
