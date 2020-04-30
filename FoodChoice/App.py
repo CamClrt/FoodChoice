@@ -1,5 +1,8 @@
 from data import *
+import getpass
 from FoodChoice.Database import Database
+from FoodChoice.Users import *
+import sys
 
 
 class App:
@@ -17,22 +20,66 @@ class App:
 
             print("\n", " FoodChoice database ".center(100, '*'), "\n")
 
-            for x in myresult:
-                print(x)
+            user_cnx = False
 
-            print("\n", " TABLES ".center(100, '*'), "\n")
+            while user_cnx == False:
 
-            sql = (SQL_SHOW_TABLES)
-            mycursor.execute(sql)
-            myresult = mycursor.fetchall()
+                authentification_request = "\nWhat do you want ? \n1. Login in \n2. Sign up \n3. Exit \n"
+                start_choice = int(input(authentification_request))
 
-            for x in myresult:
-                print(x)
+                if type(start_choice) is int and start_choice <= 3:
 
-            print("\n", " USERS ".center(100, '*'), "\n")
-            sql = (SQL_SELECT_ALL.replace("%s", "Users"))
-            mycursor.execute(sql)
-            myresult = mycursor.fetchall()
+                    if int(start_choice) == 3:  # Exit ?
+                        conf = input("Do you really want to quit the program ? Y/N\n")
+                        if conf.lower() == "y":
+                            print("\n>>> Thank you and see you soon !<<<")
+                            sys.exit(0)
+                        else:
+                            user_cnx == False
 
-            for x in myresult:
-                print(x)
+                    elif int(start_choice) == 1:  # Login in
+                        print("Please login in...\n")
+                        name = input("Your username : ")
+                        pwd = getpass.getpass("Your password (hidden fied) : ")
+                        users_mng = UsersManager(db)
+                        name_res, user_object = users_mng.find_name(name, pwd)
+
+                        if name_res:
+                            pwd_res, user_object = users_mng.ckeck_pwd(name, pwd)
+                            if pwd_res:
+                                print("\nLogin in successfully ICI")
+                                user_cnx = True
+                            else:
+                                print("\nWARNING : Wrong password !!!")
+                                pwd = getpass.getpass("\nPlease, try again ! Your password (hidden fied) : ")
+                                pwd_res, user_object = users_mng.ckeck_pwd(name, pwd)
+                                if pwd_res:
+                                    print("\nLogin in successfully")
+                                    user_cnx = True
+                                else:
+                                    print("\nWARNING : Wrong password !!!")
+                                    user_cnx == False
+                        else:
+                            print("\nWARNING : User unknown !")
+                            user_cnx == False
+
+                    else:  # Sign up
+                        print("Please sign up...\n")
+                        name = input("Your username : ")
+                        pwd = getpass.getpass("Your password (hidden fied) : ")
+                        users_mng = UsersManager(db)
+                        res, user_object = users_mng.find_name(name, pwd)
+
+                        if res:
+                            print(f"WARNING : '{name}' as username is already use by someone else !")
+                            user_cnx == False
+                        else:
+                            users_mng.create(name, pwd)
+                            print("User created successfully")
+                            user_cnx = True
+
+                else:
+                    user_cnx == False
+
+            print("Yolo sortie du While")
+            return user_object
