@@ -21,6 +21,7 @@ class ProductManager:
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
         product_object.id = mycursor.fetchone()[0]
+        mycursor.close()
         return product_object
 
 

@@ -11,6 +11,7 @@ class CityManager:
         mycursor.execute(SQL_SELECT_CITY.replace("%s", city_name))
         res = mycursor.fetchone()
         city = City(city_name)
+        mycursor.close()
         if res is None:
             return self.insert(city)
         else:
@@ -23,6 +24,7 @@ class CityManager:
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
         city_object.id = mycursor.fetchone()[0]
+        mycursor.close()
         return city_object
 
 

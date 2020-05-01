@@ -28,49 +28,54 @@ class App:
 
             while user_cnx == False:
                 authentification_request = "\nNow, what do you want ? \n1. Log in \n2. Sign up \n3. Exit\nAnswer : "
-                start_choice = int(input(authentification_request))
+                start_choice = input(authentification_request)
                 users_mng = UsersManager(db)
 
-                if type(start_choice) is int and start_choice <= 3:
+                try:
+                    if type(int(start_choice)) is int or int(start_choice) > 0 or int(start_choice) < 4:
+                        if start_choice <= 3:
 
-                    if int(start_choice) == 3:  # Exit ?
-                        conf = input("\nDo you really want to quit the program ? Y/N")
-                        if conf.lower() == "y":
-                            print("\n>>> Thank you and see you soon !<<<")
-                            sys.exit(0)
+                            if int(start_choice) == 3:  # Exit ?
+                                conf = input("\nDo you really want to quit the program ? Y/N")
+                                if conf.lower() == "y":
+                                    print("\n>>> Thank you and see you soon !<<<")
+                                    sys.exit(0)
+                                else:
+                                    user_cnx == False
+
+                            elif int(start_choice) == 1:  # Login in
+                                print("\nPlease login in...")
+                                name = input("\nYour username : ")
+                                name_res, user_object = users_mng.find_name(name)  #test name
+                                if name_res:
+                                    pwd = getpass.getpass("Your password (hidden field) : ")
+                                    pwd_res, user_object = users_mng.ckeck_pwd(name, pwd)  #test pwd
+                                    if pwd_res:
+                                        print("\nLogin in successfully")
+                                        user_cnx = True
+                                    else:
+                                        print("\nWARNING : Wrong password !!!")
+                                else:
+                                    print("\nWARNING : User unknown !")
+
+                            else:  # Sign up
+                                print("\nPlease sign up...")
+                                name = input("\nYour username : ")
+                                res, user_object = users_mng.find_name(name)  # test name
+
+                                if res:
+                                    print(f"\nWARNING : '{name}' is already used by someone else !")
+                                else:
+                                    pwd = getpass.getpass('Your password (hidden field) : ')
+                                    pwd_hashed = bcrypt.hashpw(bytes(pwd, 'utf-8'), bcrypt.gensalt())  # convert pwd in bytes
+                                    serial_pwd_hashed = pickle.dumps(pwd_hashed)  # serialize the serial_pwd_hashed object
+                                    users_mng.create(name, serial_pwd_hashed)
+                                    print(f"\nUser {name} created successfully")
+                                    user_cnx = True
                         else:
                             user_cnx == False
 
-                    elif int(start_choice) == 1:  # Login in
-                        print("\nPlease login in...")
-                        name = input("\nYour username : ")
-                        name_res, user_object = users_mng.find_name(name)  #test name
-                        if name_res:
-                            pwd = getpass.getpass("Your password (hidden field) : ")
-                            pwd_res, user_object = users_mng.ckeck_pwd(name, pwd)  #test pwd
-                            if pwd_res:
-                                print("\nLogin in successfully")
-                                user_cnx = True
-                            else:
-                                print("\nWARNING : Wrong password !!!")
-                        else:
-                            print("\nWARNING : User unknown !")
+                except:
+                    print(f"\nWARNING : '{start_choice}' is not an integer between 1 and 3")
 
-                    else:  # Sign up
-                        print("\nPlease sign up...")
-                        name = input("\nYour username : ")
-                        res, user_object = users_mng.find_name(name)  # test name
-
-                        if res:
-                            print(f"\nWARNING : '{name}' is already used by someone else !")
-                        else:
-                            pwd = getpass.getpass('Your password (hidden field) : ')
-                            pwd_hashed = bcrypt.hashpw(bytes(pwd, 'utf-8'), bcrypt.gensalt())  # convert pwd in bytes
-                            serial_pwd_hashed = pickle.dumps(pwd_hashed)  # serialize the serial_pwd_hashed object
-                            users_mng.create(name, serial_pwd_hashed)
-                            print(f"\nUser {name} created successfully")
-                            user_cnx = True
-                else:
-                    user_cnx == False
-
-            return user_object
+        return user_object

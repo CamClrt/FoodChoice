@@ -18,6 +18,7 @@ class ProductLocationManager:
         mycursor = self.database.cursor()
         mycursor.executemany(SQL_INSERT_PRODUCT_LOCATION, data)
         self.database.commit()
+        mycursor.close()
 
 
 class ProductLocation:

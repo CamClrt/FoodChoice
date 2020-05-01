@@ -19,6 +19,7 @@ class UsersManager:
         user_object = Users(name)
         mycursor.execute(LAST_INSERT_ID)
         user_object.id = mycursor.fetchone()[0]
+        mycursor.close()
         return user_object
 
     def find_name(self, user_name):
@@ -26,6 +27,7 @@ class UsersManager:
         mycursor = self.database.cursor()
         mycursor.execute(SQL_SELECT_USER_NAME, (user_name,))
         res = mycursor.fetchone()
+        mycursor.close()
 
         if res is None:
             return False, None
@@ -40,6 +42,7 @@ class UsersManager:
         mycursor = self.database.cursor()
         mycursor.execute(SQL_SELECT_USER_NAME, (user_name,))
         query_res = mycursor.fetchone()
+        mycursor.close()
         received_pwd_hashed = pickle.loads((query_res[2]))
         res = bcrypt.checkpw(bytes(pwd, 'utf-8'), received_pwd_hashed)
 

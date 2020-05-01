@@ -10,6 +10,7 @@ class StoreManager:
         mycursor = self.database.cursor()
         mycursor.execute(SQL_SELECT_STORE.replace("%s", store_name))
         res = mycursor.fetchone()
+        mycursor.close()
         store = Store(store_name)
         if res is None:
             return self.insert(store)
@@ -23,6 +24,7 @@ class StoreManager:
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
         store_object.id = mycursor.fetchone()[0]
+        mycursor.close()
         return store_object
 
 

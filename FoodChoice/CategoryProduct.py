@@ -17,6 +17,7 @@ class CategoryProductManager:
         mycursor = self.database.cursor()
         mycursor.executemany(SQL_INSERT_CATEGORY_PRODUCT, data)
         self.database.commit()
+        mycursor.close()
 
 class CategoryProduct:
 

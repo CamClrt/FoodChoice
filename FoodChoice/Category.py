@@ -11,6 +11,7 @@ class CategoryManager:
         mycursor = self.database.cursor()
         mycursor.execute(SQL_SELECT_CATEGORY.replace("%s", category_name))
         res = mycursor.fetchone()
+        mycursor.close()
         category = Category(category_name)
         if res is None:
             return self.insert(category)
@@ -25,6 +26,7 @@ class CategoryManager:
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
         category_object.id = mycursor.fetchone()[0]
+        mycursor.close()
         return category_object
 
 
