@@ -11,7 +11,7 @@ DATE = date.__str__()[:19]
 CATEGORIES_URL = "https://fr.openfoodfacts.org/categories.json"
 CATEGORIES_KEY = "tags"
 CATEGORIES_NAME_FIELD = "name"
-NB_CAT_SELECTED_AMONG_THE_LIST = 30
+NB_CAT_SELECTED_AMONG_THE_LIST = 10
 CATEGORIES_REGEX = "^[A-Z].+"
 
 # products
@@ -112,7 +112,7 @@ SQL_CREATE_PRODUCT_LOCATION_TABLE = "CREATE TABLE IF NOT EXISTS `ProductLocation
 SQL_CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS `Users` (" \
                          "`ID` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT," \
                          "`Name` VARCHAR(15) UNIQUE," \
-                         "`Password` VARCHAR(255)," \
+                         "`Password` BLOB NOT NULL," \
                          "PRIMARY KEY (`ID`)" \
                          ")" \
                          "ENGINE=INNODB;"
@@ -144,7 +144,7 @@ SQL_INSERT_CATEGORIES = "INSERT IGNORE INTO Category (Name) VALUES ('%s');"
 
 SQL_INSERT_CATEGORY_PRODUCT = "INSERT INTO CategoryProduct (Product_ID, Category_ID) VALUES (%s, %s);"
 
-SQL_INSERT_USER = "INSERT IGNORE INTO Users (Name, Password) VALUES %s;"
+SQL_INSERT_USER = "INSERT IGNORE INTO Users (Name, Password) VALUES (%s, %s);"
 
 SQL_INSERT_SUBSTITUTES = "INSERT INTO Substitute (Users_ID, Product_ID, Date, Note) VALUES ('%s', '%s', '%s', '%s');"
 
@@ -159,7 +159,5 @@ SQL_SELECT_STORE = "SELECT ID FROM Store WHERE Name = '%s';"
 
 SQL_SELECT_CITY = "SELECT ID FROM City WHERE Name = '%s';"
 
-SQL_SELECT_USER_NAME = "SELECT * FROM Users WHERE Name='%s';"
-
-SQL_SELECT_USER_NAME_AND_PWD = "SELECT * FROM Users WHERE Name='%s/name' AND Password='%s/pwd';"
+SQL_SELECT_USER_NAME = "SELECT * FROM Users WHERE Name=%s;"
 

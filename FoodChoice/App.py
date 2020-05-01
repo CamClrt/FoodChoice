@@ -1,5 +1,8 @@
 from data import *
 import getpass
+import bcrypt
+import pickle
+
 from FoodChoice.Database import Database
 from FoodChoice.Users import *
 import sys
@@ -11,6 +14,7 @@ class App:
         pass
 
     def start(self):
+        """Launch the DB connection and/or initialization + invite user log in, sign in or quit"""
 
         with Database() as db:
             mycursor = db.cursor()
@@ -18,19 +22,19 @@ class App:
             mycursor.execute(sql)
             myresult = mycursor.fetchall()
 
-            print("\n", " FoodChoice database ".center(100, '*'), "\n")
-
+            print("\n", " FoodChoice database ".center(100, '*').upper())
+            print("\n", " Connexion ".center(100, '#'))
             user_cnx = False
 
             while user_cnx == False:
-
-                authentification_request = "\nWhat do you want ? \n1. Login in \n2. Sign up \n3. Exit \n"
+                authentification_request = "\nNow, what do you want ? \n1. Log in \n2. Sign up \n3. Exit\nAnswer : "
                 start_choice = int(input(authentification_request))
+                users_mng = UsersManager(db)
 
                 if type(start_choice) is int and start_choice <= 3:
 
                     if int(start_choice) == 3:  # Exit ?
-                        conf = input("Do you really want to quit the program ? Y/N\n")
+                        conf = input("\nDo you really want to quit the program ? Y/N")
                         if conf.lower() == "y":
                             print("\n>>> Thank you and see you soon !<<<")
                             sys.exit(0)
@@ -38,48 +42,35 @@ class App:
                             user_cnx == False
 
                     elif int(start_choice) == 1:  # Login in
-                        print("Please login in...\n")
-                        name = input("Your username : ")
-                        pwd = getpass.getpass("Your password (hidden fied) : ")
-                        users_mng = UsersManager(db)
-                        name_res, user_object = users_mng.find_name(name, pwd)
-
+                        print("\nPlease login in...")
+                        name = input("\nYour username : ")
+                        name_res, user_object = users_mng.find_name(name)  #test name
                         if name_res:
-                            pwd_res, user_object = users_mng.ckeck_pwd(name, pwd)
+                            pwd = getpass.getpass("Your password (hidden field) : ")
+                            pwd_res, user_object = users_mng.ckeck_pwd(name, pwd)  #test pwd
                             if pwd_res:
-                                print("\nLogin in successfully ICI")
+                                print("\nLogin in successfully")
                                 user_cnx = True
                             else:
                                 print("\nWARNING : Wrong password !!!")
-                                pwd = getpass.getpass("\nPlease, try again ! Your password (hidden fied) : ")
-                                pwd_res, user_object = users_mng.ckeck_pwd(name, pwd)
-                                if pwd_res:
-                                    print("\nLogin in successfully")
-                                    user_cnx = True
-                                else:
-                                    print("\nWARNING : Wrong password !!!")
-                                    user_cnx == False
                         else:
                             print("\nWARNING : User unknown !")
-                            user_cnx == False
 
                     else:  # Sign up
-                        print("Please sign up...\n")
-                        name = input("Your username : ")
-                        pwd = getpass.getpass("Your password (hidden fied) : ")
-                        users_mng = UsersManager(db)
-                        res, user_object = users_mng.find_name(name, pwd)
+                        print("\nPlease sign up...")
+                        name = input("\nYour username : ")
+                        res, user_object = users_mng.find_name(name)  # test name
 
                         if res:
-                            print(f"WARNING : '{name}' as username is already use by someone else !")
-                            user_cnx == False
+                            print(f"\nWARNING : '{name}' is already used by someone else !")
                         else:
-                            users_mng.create(name, pwd)
-                            print("User created successfully")
+                            pwd = getpass.getpass('Your password (hidden field) : ')
+                            pwd_hashed = bcrypt.hashpw(bytes(pwd, 'utf-8'), bcrypt.gensalt())  # convert pwd in bytes
+                            serial_pwd_hashed = pickle.dumps(pwd_hashed)  # serialize the serial_pwd_hashed object
+                            users_mng.create(name, serial_pwd_hashed)
+                            print(f"\nUser {name} created successfully")
                             user_cnx = True
-
                 else:
                     user_cnx == False
 
-            print("Yolo sortie du While")
             return user_object
