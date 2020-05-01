@@ -32,11 +32,11 @@ class App:
                 users_mng = UsersManager(db)
 
                 try:
-                    if type(int(start_choice)) is int or int(start_choice) > 0 or int(start_choice) < 4:
-                        if start_choice <= 3:
+                    if int(start_choice) in [1, 2, 3]:
+                        if int(start_choice) <= 3:
 
                             if int(start_choice) == 3:  # Exit ?
-                                conf = input("\nDo you really want to quit the program ? Y/N")
+                                conf = input("\nDo you really want to quit the program ? Y/N : ")
                                 if conf.lower() == "y":
                                     print("\n>>> Thank you and see you soon !<<<")
                                     sys.exit(0)
