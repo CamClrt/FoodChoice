@@ -17,19 +17,14 @@ class App:
         """Launch the DB connection and/or initialization + invite user log in, sign in or quit"""
 
         with Database() as db:
-            mycursor = db.cursor()
-            sql = (SQL_SHOW_DB)
-            mycursor.execute(sql)
-            myresult = mycursor.fetchall()
-
             print("\n", " FoodChoice database ".center(100, '*').upper())
             print("\n", " Connexion ".center(100, '#'))
             user_cnx = False
+            users_mng = UsersManager(db)
 
             while user_cnx == False:
                 authentification_request = "\nNow, what do you want ? \n1. Log in \n2. Sign up \n3. Exit\nAnswer : "
                 start_choice = input(authentification_request)
-                users_mng = UsersManager(db)
 
                 try:
                     if int(start_choice) in [1, 2, 3]:

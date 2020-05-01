@@ -25,7 +25,7 @@ class UsersManager:
     def find_name(self, user_name):
         """find user_name in DB, return True and user_object if it already exists or False if it not exists"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_SELECT_USER_NAME, (user_name,))
+        mycursor.execute(SQL_SELECT_USER_NAME, (user_name, ))
         res = mycursor.fetchone()
         mycursor.close()
 
@@ -40,7 +40,7 @@ class UsersManager:
     def ckeck_pwd(self,user_name, pwd):
         """check if the password is right"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_SELECT_USER_NAME, (user_name,))
+        mycursor.execute(SQL_SELECT_USER_NAME, (user_name, ))
         query_res = mycursor.fetchone()
         mycursor.close()
         received_pwd_hashed = pickle.loads((query_res[2]))

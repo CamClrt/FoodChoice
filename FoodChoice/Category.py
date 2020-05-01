@@ -9,7 +9,7 @@ class CategoryManager:
     def find(self, category_name):
         """search if category_name already exists in the category table and insert it"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_SELECT_CATEGORY.replace("%s", category_name))
+        mycursor.execute(SQL_SELECT_CATEGORY, (category_name, ))
         res = mycursor.fetchone()
         mycursor.close()
         category = Category(category_name)
@@ -22,7 +22,7 @@ class CategoryManager:
     def insert(self, category_object):
         """insert category_object in DB"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_INSERT_CATEGORIES.replace("%s", category_object.name))
+        mycursor.execute(SQL_INSERT_CATEGORIES, (category_object.name, ))
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
         category_object.id = mycursor.fetchone()[0]

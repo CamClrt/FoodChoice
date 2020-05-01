@@ -8,7 +8,7 @@ class CityManager:
     def find(self, city_name):
         """search if city_name already exists in the city table and insert it"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_SELECT_CITY.replace("%s", city_name))
+        mycursor.execute(SQL_SELECT_CITY, (city_name, ))
         res = mycursor.fetchone()
         city = City(city_name)
         mycursor.close()
@@ -20,7 +20,7 @@ class CityManager:
 
     def insert(self, city_object):
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_INSERT_CITIES.replace("%s", city_object.name))
+        mycursor.execute(SQL_INSERT_CITIES,(city_object.name, ))
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
         city_object.id = mycursor.fetchone()[0]

@@ -8,7 +8,7 @@ class StoreManager:
     def find(self, store_name):
         """search if store_name already exists in the store table and insert it"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_SELECT_STORE.replace("%s", store_name))
+        mycursor.execute(SQL_SELECT_STORE, (store_name, ))
         res = mycursor.fetchone()
         mycursor.close()
         store = Store(store_name)
@@ -20,7 +20,7 @@ class StoreManager:
 
     def insert(self, store_object):
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_INSERT_STORES.replace("%s", store_object.name))
+        mycursor.execute(SQL_INSERT_STORES, (store_object.name, ))
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
         store_object.id = mycursor.fetchone()[0]

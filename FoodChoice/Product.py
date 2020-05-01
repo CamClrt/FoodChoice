@@ -9,15 +9,16 @@ class ProductManager:
     def insert(self, product_object):
         mycursor = self.database.cursor()
 
-        data = "('" + product_object.name + "','" \
-               + product_object.brand + "','" \
-               + product_object.nutrition_grade + "'," \
-               + str(product_object.energy_100g) + ",'" \
-               + product_object.url + "'," \
-               + str(product_object.code) + ")"
+        data = (product_object.name,
+                product_object.brand,
+                product_object.nutrition_grade,
+                product_object.energy_100g,
+                product_object.url,
+                product_object.code,
+                )
 
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_INSERT_PRODUCTS.replace("%s", data))
+        mycursor.execute(SQL_INSERT_PRODUCTS, data)
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
         product_object.id = mycursor.fetchone()[0]

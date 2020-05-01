@@ -18,7 +18,7 @@ from mysql.connector import Error
 
 
 class Database:
-    """"The MySQL database"""
+    """"Represent the MySQL database"""
 
     def __init__(self, database_name=DATABASE_NAME,
                  host_name=HOST_NAME,
@@ -56,10 +56,10 @@ class Database:
             if len(path) != 0:
                 url_db = path[0] + self.database_name
                 if os.path.exists(url_db):
-                    mycursor.execute(SQL_USE_DB.replace("DB", self.database_name))
+                    mycursor.execute(SQL_USE_DB)
                 else:
 
-                    # import data from OpenFoodfacts API
+                    # import data from OpenFoodFacts API
                     api = API()
                     try:
                         imported_products = api.products
@@ -69,16 +69,13 @@ class Database:
                         imported_products = api.products
 
                     # create database and tables
-                    mycursor.execute(SQL_CREATE_DB.replace("DB", self.database_name))
+                    mycursor.execute(SQL_CREATE_DB)
                     print("\n> Database created successfully")
 
-                    mycursor.execute(SQL_USE_DB.replace("DB", self.database_name))
+                    mycursor.execute(SQL_USE_DB)
                     for name, query in TABLES.items():
                         mycursor.execute(query)
                         print(f"> {name} table created successfully")
-
-                    # TODO afficher les catégories principales
-                    print(api.categories)
 
                     # insert data in DB
                     print("\n-------------> Inserting data in database <-------------\n")
@@ -97,9 +94,9 @@ class Database:
                             catprod_mng = CategoryProductManager(db)
                             prodloc_mng = ProductLocationManager(db)
 
-                            categories = [] #store category objects
-                            cities = [] #store city objects
-                            stores = [] #store store objects
+                            categories = []  # store category objects
+                            cities = []  # store city objects
+                            stores = []  # store store objects
 
                             # filter & insert categories
                             tmp_categories = imported_product.get("categories", "").split(',')
@@ -156,11 +153,11 @@ class Database:
                     catprod_mng.insert(categoryproducts)
                     prodloc_mng.insert(productlocations)
 
-
             print("\nDatabase connected successfully\n")
 
         except Error as e:
             print(f"The error '{e}' occurred")
+
         mycursor.close()
 
         return db
