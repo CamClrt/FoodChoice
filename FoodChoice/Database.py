@@ -68,17 +68,11 @@ class Database:
                     api = API()
                     try:
                         imported_products = api.products
-                        imported_categories = api.categories
-                        with open('categories.data', 'wb') as file:
-                            pickle.dump(imported_categories, file)
 
                     except Error as e:
                         print(f"L'erreur '{e}' est survenue")
                         time.sleep(5)
                         imported_products = api.products
-                        imported_categories = api.categories
-                        with open('categories.data', 'wb') as file:
-                            pickle.dump(imported_categories, file)
 
                     # create database and tables
                     mycursor.execute(SQL_CREATE_DB)
@@ -87,7 +81,7 @@ class Database:
                     mycursor.execute(SQL_USE_DB)
                     for name, query in TABLES.items():
                         mycursor.execute(query)
-                        print(f"> La table {name} a été créée avec succès")
+                        print(f"> La table '{name}' a été créée avec succès")
 
                     # insert data in DB
                     print("\n------------> Insertion des données en base <------------\n")
