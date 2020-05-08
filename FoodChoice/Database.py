@@ -173,6 +173,7 @@ class Database:
                     prodloc_mng.insert(productlocations)
 
                     # insert default user account
+
                     users_mng = UsersManager(db)
                     pwd_hashed = bcrypt.hashpw(bytes(users_mng.default_pw, 'utf-8'),
                                                bcrypt.gensalt())  # convert pwd in bytes

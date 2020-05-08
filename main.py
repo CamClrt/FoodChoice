@@ -7,8 +7,7 @@ from FoodChoice.API import API
 
 if __name__ == "__main__":
     app = App()
-    user_object = app.start()
-    app.main_menu(user_object)
+    app.start()
 
 else:
     print("main module is imported")

@@ -86,9 +86,9 @@ class ProductManager:
               "Repères nutritionnels pour 100g: ", product[4], "Kcal", "\n",
               "EAN-13: ", product[5], "\n",
               "URL: ", product[8], "\n",
-              "\n", "Catégories: ", ", ".join(categories), "\n",
-              "\n", "Points de vente: ", ", ".join(stores), "\n",
-              "\n", "Villes: ", ", ".join(cities), "\n")
+              "Catégories: ", ", ".join(categories), "\n",
+              "Points de vente: ", ", ".join(stores), "\n",
+              "Villes: ", ", ".join(cities), "\n")
 
 
 class Product:
