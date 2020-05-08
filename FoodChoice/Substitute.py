@@ -1,12 +1,35 @@
-class Substitute:
+from data import *
+from FoodChoice.Product import *
 
-    def __init__(self, id, date, note, users, product):
+class SubstituteManager:
+    """TODO ecrire"""
+
+    def __init__(self, database):
+        self.database = database
+
+    def substitute_and_display(self, category_selected, product_grade, product_energy):
+        """Substitute the product by a another product healthier and display it"""
+        data = (category_selected, product_grade, product_energy, )
+        mycursor = self.database.cursor()
+        mycursor.execute(SQL_SELECT_SUBSTITUTE, data)
+        substitute = mycursor.fetchall()[0]
+        mycursor.close()
+
+        product_mng = ProductManager(self.database)
+        product_mng.display_product(substitute[0])
+
+        return substitute
+
+
+class Substitute:
+    """TODO ecrire"""
+
+    def __init__(self, id, date, user):
         self.id = id
         self.date = date
-        self.note = note
-        self.users = users
-        self.product = Product() None #object
+        self.user = user
+        self.product = None
 
-SubstituteManager
-
-#la liste des produits que ce substituant substitue
+    def __str__(self):
+        """TODO ecrire"""
+        return f"{self.id}, {self.date}, {self.user}"

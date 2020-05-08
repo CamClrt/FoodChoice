@@ -2,6 +2,7 @@ from data import *
 from progress.bar import Bar
 import requests
 import re
+from colorama import Fore, Style
 
 
 class API:
@@ -64,8 +65,9 @@ class API:
         """Import and return a selection of products by category"""
         products = []
 
-        print("\n-----> Importing data from Open Food Facts API <-----\n")
-        with Bar('Processing', max=len(self.categories)) as bar:
+        print(Fore.GREEN)
+        print("\n-----> Importation des données depuis l'API d'Open Food Facts <-----\n")
+        with Bar('Progression', max=len(self.categories)) as bar:
             for category in self.categories:
                 PAYLOAD["tag_0"] = "'" + str(category) + "'"
                 headers = {'date': DATE, 'user-agent': APP_NAME}
@@ -84,13 +86,14 @@ class API:
                     products.extend(content.get(self.products_key))
 
                 except:
-                    err = f"The error : '{response.status_code}' occurred"
+                    err = f"L'erreur : '{response.status_code}' est survenue"
                     print(err)
                     with open('log.txt', 'a', encoding="utf-8") as file:
                         file.write(err)
 
                 bar.next()
 
-        print(f"\n--------------> {len(products)} products imported <--------------\n")
+        print(f"\n-----------------> {len(products)} produits importés <-----------------")
+        print(Style.RESET_ALL)
 
         return products

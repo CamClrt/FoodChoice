@@ -6,6 +6,9 @@ import pickle
 class UsersManager:
     """Manage Users class and Users table"""
 
+    default_username = "UserByDefault"
+    default_pw = "PwdByDefault"
+
     def __init__(self, database):
         self.database = database
 
@@ -53,14 +56,6 @@ class UsersManager:
         else:
             return False, None
 
-    #def substitute(self, product_object):
-        # TODO
-        # find the substitute
-        # return it
-
-    #def record_substitute(self, substitute_object):
-    # TODO
-    # record it in DB
 
 class Users:
     """Represent Users table"""
@@ -72,4 +67,5 @@ class Users:
         self.substitutes = None
 
     def __repr__(self):
+        """Represent Users table"""
         return f"{self.id}, {self.name}"

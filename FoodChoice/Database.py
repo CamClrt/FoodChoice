@@ -5,13 +5,16 @@ from FoodChoice.City import *
 from FoodChoice.Store import *
 from FoodChoice.Product import *
 from FoodChoice.Category import *
+from FoodChoice.Users import *
 from FoodChoice.Filter import *
 from FoodChoice.CategoryProduct import *
 from FoodChoice.ProductLocation import *
 
 import time
+import pickle
 import os.path
 from progress.bar import Bar
+from colorama import Fore, Style
 
 import mysql.connector
 from mysql.connector import Error
@@ -33,10 +36,12 @@ class Database:
         self.database = None
 
     def __enter__(self):
+        """TODO ecrire"""
         self.database = self.connect()
         return self.database
 
     def __exit__(self, *args):
+        """TODO ecrire"""
         self.database.close()
 
     def connect(self):
@@ -63,31 +68,37 @@ class Database:
                     api = API()
                     try:
                         imported_products = api.products
+                        imported_categories = api.categories
+                        with open('categories.data', 'wb') as file:
+                            pickle.dump(imported_categories, file)
+
                     except Error as e:
-                        print(f"The error '{e}' occurred")
+                        print(f"L'erreur '{e}' est survenue")
                         time.sleep(5)
                         imported_products = api.products
+                        imported_categories = api.categories
+                        with open('categories.data', 'wb') as file:
+                            pickle.dump(imported_categories, file)
 
                     # create database and tables
                     mycursor.execute(SQL_CREATE_DB)
-                    print("\n> Database created successfully")
+                    print(Fore.GREEN + "> La base de données a été créée avec succès")
 
                     mycursor.execute(SQL_USE_DB)
                     for name, query in TABLES.items():
                         mycursor.execute(query)
-                        print(f"> {name} table created successfully")
+                        print(f"> La table {name} a été créée avec succès")
 
                     # insert data in DB
-                    print("\n-------------> Inserting data in database <-------------\n")
+                    print("\n------------> Insertion des données en base <------------\n")
 
                     products = []  # store product objects
                     prod_mng = ProductManager(db)
 
-                    with Bar('Processing', max=len(imported_products)) as bar:
+                    with Bar('Progression', max=len(imported_products)) as bar:
                         for imported_product in imported_products:
 
                             filters = Filter()
-
                             cat_mng = CategoryManager(db)
                             city_mng = CityManager(db)
                             store_mng = StoreManager(db)
@@ -99,6 +110,7 @@ class Database:
                             stores = []  # store store objects
 
                             # filter & insert categories
+
                             tmp_categories = imported_product.get("categories", "").split(',')
                             for tmp_category in tmp_categories:
                                 category = filters.cat_filter(tmp_category)
@@ -122,21 +134,28 @@ class Database:
                             # filter & insert products
                             tmp_name = imported_product.get("product_name_fr", "")
                             tmp_brand = imported_product.get("brands", "")
-                            tmp_nutrition_grade = imported_product.get("nutrition_grades", "")
-                            tmp_energy_100g = imported_product.get("nutriments", "").get("energy_100g", 0)
+                            tmp_nutrition_grade = imported_product.get("nutrition_grades", "z")
+                            tmp_energy_100g = imported_product.get("nutriments", "").get("energy_100g", "999999")
                             tmp_url = imported_product.get("url", "")
                             tmp_code = imported_product.get("code", (13 * "0"))
 
                             name, brand, nutrition_grade, energy_100g, url, code = filters.prod_filters(
                                 tmp_name, tmp_brand, tmp_nutrition_grade, tmp_energy_100g, tmp_url, tmp_code)
 
-                            products.append(prod_mng.insert(Product(name, brand, nutrition_grade, energy_100g,
-                                                    url, code, stores, cities, categories)))
+                            tmp_product_object = Product(name, brand, nutrition_grade, energy_100g,
+                                               url, code, stores, cities, categories)
+
+                            product_object = prod_mng.insert(tmp_product_object)
+
+                            if product_object != None: # if the product is really stored in DB
+                                products.append(product_object)
+
                             bar.next()
 
                     # insert data in CategoryProduct table
                     categoryproducts = []
                     productlocations = []
+
                     for product in products:
                         prod_id = product.id
                         for category in product.categories:
@@ -153,11 +172,17 @@ class Database:
                     catprod_mng.insert(categoryproducts)
                     prodloc_mng.insert(productlocations)
 
-            print("\nDatabase connected successfully\n")
+                    # insert default user account
+                    users_mng = UsersManager(db)
+                    pwd_hashed = bcrypt.hashpw(bytes(users_mng.default_pw, 'utf-8'),
+                                               bcrypt.gensalt())  # convert pwd in bytes
+                    serial_pwd_hashed = pickle.dumps(pwd_hashed)  # serialize the serial_pwd_hashed object
+                    users_mng.create(users_mng.default_username, serial_pwd_hashed)
 
         except Error as e:
-            print(f"The error '{e}' occurred")
+            print(f"L'erreur '{e}' est survenue")
 
         mycursor.close()
+        print(Style.RESET_ALL)
 
         return db

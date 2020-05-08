@@ -1,6 +1,7 @@
 from data import *
 
 class StoreManager:
+    """TODO ecrire"""
 
     def __init__(self, database):
         self.database = database
@@ -29,10 +30,12 @@ class StoreManager:
 
 
 class Store:
+    """TODO ecrire"""
 
     def __init__(self, name):
         self.id = ""
         self.name = name
 
     def __str__(self):
+        """TODO ecrire"""
         return f"{self.id} {self.name}"

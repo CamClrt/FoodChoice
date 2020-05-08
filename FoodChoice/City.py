@@ -1,6 +1,7 @@
 from data import *
 
 class CityManager:
+    """TODO ecrire"""
 
     def __init__(self, database):
         self.database = database
@@ -19,6 +20,7 @@ class CityManager:
             return city
 
     def insert(self, city_object):
+        """TODO ecrire"""
         mycursor = self.database.cursor()
         mycursor.execute(SQL_INSERT_CITIES,(city_object.name, ))
         self.database.commit()
@@ -29,6 +31,7 @@ class CityManager:
 
 
 class City:
+    """TODO ecrire"""
 
     def __init__(self, name, zipcode=00000):
         self.id = ""
@@ -36,4 +39,5 @@ class City:
         self.zipcode = zipcode
 
     def __str__(self):
+        """TODO ecrire"""
         return f"{self.id} {self.name} {self.zipcode}"

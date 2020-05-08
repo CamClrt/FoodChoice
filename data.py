@@ -58,7 +58,7 @@ SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE IF NOT EXISTS `Category` (" \
 SQL_CREATE_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS `Product` (" \
                            "`ID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT," \
                            "`Name` VARCHAR(150)," \
-                           "`Code` BIGINT UNSIGNED," \
+                           "`Code` BIGINT UNSIGNED UNIQUE," \
                            "`Brand` VARCHAR(100)," \
                            "`Nutrition_grade` CHAR(1)," \
                            "`Energy_100g` SMALLINT UNSIGNED," \
@@ -127,7 +127,7 @@ TABLES = {
 }
 
 
-SQL_INSERT_PRODUCTS = "INSERT INTO Product " \
+SQL_INSERT_PRODUCTS = "INSERT IGNORE INTO Product " \
                               "(Name, Brand, Nutrition_grade, Energy_100g, URL, Code) VALUES (%s, %s, %s, %s, %s ,%s);"
 
 SQL_INSERT_STORES = "INSERT IGNORE INTO Store (Name) VALUES (%s);"
@@ -154,3 +154,49 @@ SQL_SELECT_STORE = "SELECT ID FROM Store WHERE Name = %s;"
 SQL_SELECT_CITY = "SELECT ID FROM City WHERE Name = %s;"
 
 SQL_SELECT_USER_NAME = "SELECT * FROM Users WHERE Name = %s;"
+
+SQL_SELECT_PRODUCT_BY_CATEGORY = "" \
+                                         "SELECT DISTINCT Product.ID, Product.Name, Product.Brand, Product.Nutrition_grade, " \
+                                         "Product.Energy_100g, Product.Code, Product.URL " \
+                                         "FROM Product " \
+                                         "INNER JOIN CategoryProduct ON Product.ID = CategoryProduct.Product_ID " \
+                                         "INNER JOIN Category ON CategoryProduct.Category_ID = Category.ID " \
+                                         "WHERE Category.Name = %s;"
+
+SQL_SELECT_PRODUCT = "" \
+                                         "SELECT Product.ID, Product.Name, Product.Brand, Product.Nutrition_grade, " \
+                                         "Product.Energy_100g, Product.Code, Store.Name, City.Name, Product.URL " \
+                                         "FROM Product " \
+                                         "LEFT JOIN ProductLocation ON Product.ID = ProductLocation.Product_ID " \
+                                         "LEFT JOIN Store ON Store.ID = ProductLocation.Store_ID " \
+                                         "LEFT JOIN City ON City.ID = ProductLocation.City_ID " \
+                                         "WHERE Product.ID = %s;"
+
+SQL_SELECT_CATEGORY_PRODUCT = "SELECT DISTINCT Product.ID, Product.Name, Category.ID, Category.Name FROM Category " \
+                              "INNER JOIN CategoryProduct ON CategoryProduct.Category_ID = Category.ID " \
+                              "INNER JOIN Product ON CategoryProduct.Product_ID = Product.ID " \
+                              "WHERE Product.ID = %s;"
+
+SQL_SELECT_CITY_PRODUCT = "SELECT DISTINCT Product.ID, Product.Name, City.ID, City.Name FROM City " \
+                          "INNER JOIN ProductLocation ON City.ID = ProductLocation.City_ID " \
+                          "INNER JOIN Product ON ProductLocation.Product_ID = Product.ID " \
+                          "WHERE Product.ID = %s;"
+
+SQL_SELECT_STORE_PRODUCT = "SELECT DISTINCT Product.ID, Product.Name, Store.ID, Store.Name FROM Store " \
+                          "INNER JOIN ProductLocation ON Store.ID = ProductLocation.Store_ID " \
+                          "INNER JOIN Product ON ProductLocation.Product_ID = Product.ID " \
+                          "WHERE Product.ID = %s;"
+
+SQL_SELECT_SUBSTITUTE = "SELECT ID, Name, Grade, Energy " \
+                        "FROM(SELECT Product.ID AS ID, Product.Name AS Name, " \
+                        "Min(Product.Nutrition_grade) AS Grade, " \
+                        "Min(Product.Energy_100g) AS Energy FROM Product " \
+                        "INNER JOIN CategoryProduct ON Product.ID = CategoryProduct.Product_ID " \
+                        "INNER JOIN Category ON CategoryProduct.Category_ID = Category.ID " \
+                        "WHERE Category.Name = %s " \
+                        "AND Product.Nutrition_grade IS NOT NULL " \
+                        "AND Product.Nutrition_grade <= %s " \
+                        "AND Product.Energy_100g != '0' " \
+                        "AND Product.Energy_100g <= %s " \
+                        "GROUP BY Product.ID) AS healthier_products " \
+                        "ORDER BY Energy;"

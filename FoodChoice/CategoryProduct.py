@@ -1,6 +1,7 @@
 from data import *
 
 class CategoryProductManager:
+    """TODO ecrire"""
 
     def __init__(self, database):
         self.database = database
@@ -20,10 +21,12 @@ class CategoryProductManager:
         mycursor.close()
 
 class CategoryProduct:
+    """TODO ecrire"""
 
     def __init__(self, product_id, category_id):
         self.product_id = product_id
         self.category_id = category_id
 
     def __str__(self):
+        """TODO ecrire"""
         return f"Product_ID : {self.product_id}, Category_ID : {self.category_id}"

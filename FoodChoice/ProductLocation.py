@@ -1,11 +1,13 @@
 from data import *
 
 class ProductLocationManager:
+    """TODO ecrire"""
 
     def __init__(self, database):
         self.database = database
 
     def insert(self, productlocation_objects):
+        """TODO ecrire"""
 
         data = []
 
@@ -22,6 +24,7 @@ class ProductLocationManager:
 
 
 class ProductLocation:
+    """TODO ecrire"""
 
     def __init__(self, product_id, store_id, city_id):
         self.product_id = product_id

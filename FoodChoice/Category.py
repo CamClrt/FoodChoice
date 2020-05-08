@@ -2,6 +2,7 @@ from data import *
 
 
 class CategoryManager:
+    """TODO ecrire"""
 
     def __init__(self, database):
         self.database = database
@@ -12,12 +13,12 @@ class CategoryManager:
         mycursor.execute(SQL_SELECT_CATEGORY, (category_name, ))
         res = mycursor.fetchone()
         mycursor.close()
-        category = Category(category_name)
+        category_object = Category(category_name)
         if res is None:
-            return self.insert(category)
+            return self.insert(category_object)
         else:
-            category.id = int(res[0])
-            return category
+            category_object.id = int(res[0])
+            return category_object
 
     def insert(self, category_object):
         """insert category_object in DB"""
@@ -31,10 +32,12 @@ class CategoryManager:
 
 
 class Category:
+    """TODO ecrire"""
 
     def __init__(self, name):
         self.id = ""
         self.name = name
 
     def __str__(self):
+        """TODO ecrire"""
         return f"{self.id} {self.name}"
