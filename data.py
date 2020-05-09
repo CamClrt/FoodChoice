@@ -147,7 +147,7 @@ SQL_INSERT_SUBSTITUTES = "INSERT INTO Substitute (Users_ID, Product_ID, Date, No
 LAST_INSERT_ID = "SELECT LAST_INSERT_ID();"
 
 
-SQL_SELECT_CATEGORY = "SELECT ID FROM Category WHERE Name = %s;"
+SQL_SELECT_CATEGORY = "SELECT ID FROM Category WHERE Name = %s;"  #TODO revérifier l'usage de toutes les requêtes ?
 
 SQL_SELECT_STORE = "SELECT ID FROM Store WHERE Name = %s;"
 
@@ -162,15 +162,19 @@ SQL_SELECT_PRODUCT = "" \
                                          "LEFT JOIN ProductLocation ON Product.ID = ProductLocation.Product_ID " \
                                          "WHERE Product.ID = %s;"
 
-SQL_SELECT_PRODUCT_BY_CATEGORY = "" \
-                                         "SELECT DISTINCT Product.ID, Product.Name, Product.Brand, Product.Nutrition_grade, " \
-                                         "Product.Energy_100g, Product.Code, Product.URL " \
-                                         "FROM Product " \
-                                         "INNER JOIN CategoryProduct ON Product.ID = CategoryProduct.Product_ID " \
-                                         "INNER JOIN Category ON CategoryProduct.Category_ID = Category.ID " \
-                                         "WHERE Category.Name = %s;"
+SQL_SELECT_CATEGORIES = "SELECT Category.Name, COUNT(CategoryProduct.Category_ID) AS NB_Cat, Category.ID " \
+                        "FROM CategoryProduct " \
+                        "INNER JOIN Category ON CategoryProduct.Category_ID = Category.ID " \
+                        "GROUP BY CategoryProduct.Category_ID " \
+                        "ORDER BY NB_Cat DESC LIMIT 20;"
 
-SQL_SELECT_PRODUCT_BY_NAME = "" \
+SQL_SELECT_PRODUCTS_BY_CATEGORY = "SELECT DISTINCT Product.ID, Product.Name, Product.Brand, Product.Code " \
+                                  "FROM Product " \
+                                  "INNER JOIN CategoryProduct ON Product.ID = CategoryProduct.Product_ID " \
+                                  "INNER JOIN Category ON CategoryProduct.Category_ID = Category.ID " \
+                                  "WHERE Category.ID = %s;"
+
+SQL_SELECT_PRODUCTS_BY_NAME = "" \
                             "SELECT DISTINCT Product.ID, Product.Name, Product.Brand, Product.Code " \
                             "FROM Product " \
                             "WHERE Product.Name LIKE %s " \

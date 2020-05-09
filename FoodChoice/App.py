@@ -14,7 +14,7 @@ class App:
             print(" Bienvenue dans l'application FoodChoice ".center(102, "*"), "\n")
             cnx = True
             while cnx:
-                print(" Connection ".center(100, '#'))
+                print(" Connection ".center(102, '#'))
                 menu = Menu(db)
                 user_object = menu.cnx_menu()
                 menu.main_menu(user_object)

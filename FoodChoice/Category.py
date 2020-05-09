@@ -20,6 +20,14 @@ class CategoryManager:
             category_object.id = int(res[0])
             return category_object
 
+    def most_used_categories(self):
+        """search the 20 most used categories and order them"""
+        mycursor = self.database.cursor()
+        mycursor.execute(SQL_SELECT_CATEGORIES)
+        categories = mycursor.fetchall()
+        mycursor.close()
+        return categories
+
     def insert(self, category_object):
         """insert category_object in DB"""
         mycursor = self.database.cursor()
@@ -29,6 +37,8 @@ class CategoryManager:
         category_object.id = mycursor.fetchone()[0]
         mycursor.close()
         return category_object
+
+
 
 
 class Category:

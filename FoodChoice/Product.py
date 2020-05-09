@@ -1,5 +1,6 @@
 from data import *
 import time
+from FoodChoice.Category import *
 
 
 class ProductManager:
@@ -37,29 +38,52 @@ class ProductManager:
         mycursor.close()
         return product_object
 
-    def find_and_display_by_category(self, category_name): #TODO à revoir
+    def find_and_display_by_category(self): #TODO à revoir
         """Display products by category_name"""
-        mycursor = self.database.cursor()
-        mycursor.execute(SQL_SELECT_PRODUCT_BY_CATEGORY, (category_name,))
-        products_by_category = mycursor.fetchall()
-        print(f"Catégorie selectionnée: {category_name.upper()}\n")
+        cat_mng = CategoryManager(self.database)
+        tmp_most_used_categories = cat_mng.most_used_categories()
+        most_used_categories = sorted(tmp_most_used_categories, key=lambda x: x[0])
 
-        print(" N° ".center(6, "#"), "  Nom ".center(75, "#"), " Marque ".center(50, "#"))
+        categories = {}
+        print("\n", " Catégories ".center(50, "*"), "\n")
+        for tmp_index, category_by_name in enumerate(most_used_categories):
+            index = tmp_index + 1
+            categories[str(index)] = category_by_name
+            print(f'{str(index)}. {str(category_by_name[0])}')
 
-        products = {}
+        cnx = True
+        while cnx:
+            category_choice = input("\nQuelle categorie souhaitez-vous sélectionner: ")
 
-        for tmp_index, product_by_category in enumerate(products_by_category):
-            index = tmp_index +1
-            products[index] = product_by_category
-            print(f'{str(index).center(6)}|'
-                  f'{str(product_by_category[1])[:75].center(75)}|'
-                  f'{str(product_by_category[2])[:50].center(50)}')
+            if category_choice in categories.keys():
+                category = categories.get(category_choice)
+                category_id = category[2]
+                #TODO une liste de produit par catégorie
+                mycursor = self.database.cursor()
+                mycursor.execute(SQL_SELECT_PRODUCTS_BY_CATEGORY, (category_id,))
+                products_by_category = mycursor.fetchall()
+
+                products = {}
+
+                print("\n")
+                print(" N° ".center(10, "#"), "  Nom ".center(50, "#"), " Marque ".center(50, "#"), " Code ".center(15, "#"))
+                for tmp_index, product_by_category in enumerate(products_by_category):
+                    index = tmp_index + 1
+                    products[str(index)] = product_by_category
+                    print(f'{str(index)[:10].center(10)}|'
+                            f'{str(product_by_category[1])[:48].center(50)}|'
+                            f'{str(product_by_category[2])[:48].center(50)}|'
+                            f'{str(product_by_category[3])[:13].center(15)}|')
+                cnx = False
+            else:
+                print(f"\n '{category_choice}': cette catégorie ne figure pas dans la liste\n")
+        return products
 
     def find_and_display_by_name(self, tmp_product_name):
         """Find by product name and display a list of products"""
         mycursor = self.database.cursor()
         product_name = "%" + tmp_product_name + "%"
-        mycursor.execute(SQL_SELECT_PRODUCT_BY_NAME, (product_name, ))
+        mycursor.execute(SQL_SELECT_PRODUCTS_BY_NAME, (product_name, ))
         products_by_name = mycursor.fetchall()
 
         products = {}
@@ -67,6 +91,7 @@ class ProductManager:
         if len(products_by_name) == 0:
             print("\nMalheureusement, aucun produit ne correspond à la recherche!")
         else:
+            print("\n")
             print(" N° ".center(10, "#"), "  Nom ".center(50, "#"), " Marque ".center(50, "#"), " Code ".center(15, "#"))
             for tmp_index, product_by_name in enumerate(products_by_name):
                 index = tmp_index + 1

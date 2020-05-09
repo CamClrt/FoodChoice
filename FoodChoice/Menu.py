@@ -122,34 +122,32 @@ class Menu():
                        "\n\nVotre réponse: "
         menu_choice = input(menu_request)
 
+        product_mng = ProductManager(self.database)
+
         if menu_choice in ["1", "2"]:
             if menu_choice == "1":  # Find by name
                 product_name = input("\nLe nom de votre produit: ")
-                product_mng = ProductManager(self.database)
                 products = product_mng.find_and_display_by_name(product_name)
 
-                if len(products) != 0:
-                    cnx = True
-                    while cnx:
-                        product_choice = input("\nQuel produit souhaitez-vous sélectionner: ")
+            else:
+                products = product_mng.find_and_display_by_category()
 
-                        if product_choice in products.keys():
-                            product = products.get(product_choice)
-                            product_id = product[0]
-                            product_mng.display_product(product_id)
-                            cnx = False
+            if len(products) != 0:
+                cnx = True
+                while cnx:
+                    product_choice = input("\nQuel produit souhaitez-vous sélectionner: ")
 
-                        else:
-                            print(f"\n '{product_choice}': ce produit ne figure pas dans la liste\n")
+                    if product_choice in products.keys():
+                        product = products.get(product_choice)
+                        product_id = product[0]
+                        product_mng.display_product(product_id)
+                        cnx = False
 
-            if menu_choice == "2":  # Find by category
-                # TODO : méthode d'affichage des catégories
-                # TODO : effectuer la sélection de la catégorie
-                # TODO : méthode de recherche des produits
-                # TODO : effectuer la sélection du produit
+                    else:
+                        print(f"\n '{product_choice}': ce produit ne figure pas dans la liste\n")
+
                 # TODO : substituer ? Y/N
                 # TODO : si oui, enregistrer le substitut
-                print("Menu 2")
 
         else:
             print(Fore.RED + f"'{menu_choice}': ce choix ne figure pas dans la liste")
