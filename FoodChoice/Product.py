@@ -1,4 +1,5 @@
 from data import *
+import time
 
 
 class ProductManager:
@@ -36,12 +37,12 @@ class ProductManager:
         mycursor.close()
         return product_object
 
-    def display_by_category(self, category):
-        """Display products by category"""
+    def find_and_display_by_category(self, category_name): #TODO à revoir
+        """Display products by category_name"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_SELECT_PRODUCT_BY_CATEGORY, (category,))
+        mycursor.execute(SQL_SELECT_PRODUCT_BY_CATEGORY, (category_name,))
         products_by_category = mycursor.fetchall()
-        print(f"Catégorie selectionnée: {category.upper()}\n")
+        print(f"Catégorie selectionnée: {category_name.upper()}\n")
 
         print(" N° ".center(6, "#"), "  Nom ".center(75, "#"), " Marque ".center(50, "#"))
 
@@ -54,6 +55,26 @@ class ProductManager:
                   f'{str(product_by_category[1])[:75].center(75)}|'
                   f'{str(product_by_category[2])[:50].center(50)}')
 
+    def find_and_display_by_name(self, tmp_product_name):
+        """Find by product name and display a list of products"""
+        mycursor = self.database.cursor()
+        product_name = "%" + tmp_product_name + "%"
+        mycursor.execute(SQL_SELECT_PRODUCT_BY_NAME, (product_name, ))
+        products_by_name = mycursor.fetchall()
+
+        products = {}
+
+        if len(products_by_name) == 0:
+            print("\nMalheureusement, aucun produit ne correspond à la recherche!")
+        else:
+            print(" N° ".center(10, "#"), "  Nom ".center(50, "#"), " Marque ".center(50, "#"), " Code ".center(15, "#"))
+            for tmp_index, product_by_name in enumerate(products_by_name):
+                index = tmp_index + 1
+                products[str(index)] = product_by_name
+                print(f'{str(index)[:10].center(10)}|'
+                      f'{str(product_by_name[1])[:48].center(50)}|'
+                      f'{str(product_by_name[2])[:48].center(50)}|'
+                      f'{str(product_by_name[3])[:13].center(15)}|')
         return products
 
     def display_product(self, product_id):
@@ -80,16 +101,17 @@ class ProductManager:
         for store_res in stores_res:
             stores.append(store_res[3])
 
+        print("\n", " Fiche produit ".center(100, "*"), "\n")
         print(" Nom: ", product[1], "\n",
               "Marque: ", product[2], "\n",
               "Nutri-Score: ", product[3], "\n",
               "Repères nutritionnels pour 100g: ", product[4], "Kcal", "\n",
               "EAN-13: ", product[5], "\n",
-              "URL: ", product[8], "\n",
+              "URL: ", product[6], "\n",
               "Catégories: ", ", ".join(categories), "\n",
               "Points de vente: ", ", ".join(stores), "\n",
               "Villes: ", ", ".join(cities), "\n")
-
+        time.sleep(3)
 
 class Product:
     """TODO ecrire"""

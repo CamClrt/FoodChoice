@@ -155,6 +155,13 @@ SQL_SELECT_CITY = "SELECT ID FROM City WHERE Name = %s;"
 
 SQL_SELECT_USER_NAME = "SELECT * FROM Users WHERE Name = %s;"
 
+SQL_SELECT_PRODUCT = "" \
+                                         "SELECT Product.ID, Product.Name, Product.Brand, Product.Nutrition_grade, " \
+                                         "Product.Energy_100g, Product.Code, Product.URL " \
+                                         "FROM Product " \
+                                         "LEFT JOIN ProductLocation ON Product.ID = ProductLocation.Product_ID " \
+                                         "WHERE Product.ID = %s;"
+
 SQL_SELECT_PRODUCT_BY_CATEGORY = "" \
                                          "SELECT DISTINCT Product.ID, Product.Name, Product.Brand, Product.Nutrition_grade, " \
                                          "Product.Energy_100g, Product.Code, Product.URL " \
@@ -163,14 +170,11 @@ SQL_SELECT_PRODUCT_BY_CATEGORY = "" \
                                          "INNER JOIN Category ON CategoryProduct.Category_ID = Category.ID " \
                                          "WHERE Category.Name = %s;"
 
-SQL_SELECT_PRODUCT = "" \
-                                         "SELECT Product.ID, Product.Name, Product.Brand, Product.Nutrition_grade, " \
-                                         "Product.Energy_100g, Product.Code, Store.Name, City.Name, Product.URL " \
-                                         "FROM Product " \
-                                         "LEFT JOIN ProductLocation ON Product.ID = ProductLocation.Product_ID " \
-                                         "LEFT JOIN Store ON Store.ID = ProductLocation.Store_ID " \
-                                         "LEFT JOIN City ON City.ID = ProductLocation.City_ID " \
-                                         "WHERE Product.ID = %s;"
+SQL_SELECT_PRODUCT_BY_NAME = "" \
+                            "SELECT DISTINCT Product.ID, Product.Name, Product.Brand, Product.Code " \
+                            "FROM Product " \
+                            "WHERE Product.Name LIKE %s " \
+                            "ORDER BY Product.Name;"
 
 SQL_SELECT_CATEGORY_PRODUCT = "SELECT DISTINCT Product.ID, Product.Name, Category.ID, Category.Name FROM Category " \
                               "INNER JOIN CategoryProduct ON CategoryProduct.Category_ID = Category.ID " \

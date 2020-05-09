@@ -1,4 +1,5 @@
 from FoodChoice.Menu import *
+from FoodChoice.Database import *
 
 
 class App:
