@@ -6,6 +6,7 @@ from colorama import Fore, Style
 
 from FoodChoice.Users import *
 from FoodChoice.Product import *
+from FoodChoice.Substitute import *
 
 
 class Menu():
@@ -17,10 +18,10 @@ class Menu():
     def cnx_menu(self):
         """Allow user to create an account and connect him with or without account"""
 
-        user_cnx = False
+        cnx = True
         users_mng = UsersManager(self.database)
 
-        while user_cnx == False:
+        while cnx == True:
             authentification_request = "\n1. Accès rapide" \
                                        "\n2. Se connecter" \
                                        "\n3. Créer un compte" \
@@ -42,7 +43,7 @@ class Menu():
                         pwd_res, user_object = users_mng.ckeck_pwd(name, pwd)  # test pwd
                         if pwd_res:
                             print("\nConnection réussie\n")
-                            user_cnx = True
+                            cnx = False
                         else:
                             print(Fore.RED + "Mot de passe eronné\n")
                             print(Style.RESET_ALL)
@@ -64,12 +65,12 @@ class Menu():
                         serial_pwd_hashed = pickle.dumps(pwd_hashed)  # serialize the serial_pwd_hashed object
                         user_object = users_mng.create(name, serial_pwd_hashed)
                         print(f"L'utilisateur '{name}' a été créé avec succès\n")
-                        user_cnx = True
+                        cnx = False
 
                 else:  # Connexion without personal access
                     res, user_object = users_mng.find_name(users_mng.default_username)
                     if res:
-                        user_cnx = True
+                        cnx = False
 
             else:
                 print(Fore.RED + f"'{start_choice}': ce choix ne figure pas dans la liste\n")
@@ -80,8 +81,8 @@ class Menu():
     def main_menu(self, user_object):
         """Display the main menu and interact with user"""
 
-        menu_cnx = False
-        while menu_cnx == False:
+        cnx = True
+        while cnx:
 
             print("\n", " Menu principal ".center(100, '*'))
 
@@ -103,7 +104,7 @@ class Menu():
                     # TODO : Si selection > affichage de sa fiche
 
                 elif menu_choice == "3":  # Disconnect ?
-                    menu_cnx = True
+                    cnx = False
 
                 else:
                     self.quit()           # Exit ?
@@ -124,34 +125,39 @@ class Menu():
 
         product_mng = ProductManager(self.database)
 
-        if menu_choice in ["1", "2"]:
-            if menu_choice == "1":  # Find by name
-                product_name = input("\nLe nom de votre produit: ")
-                products = product_mng.find_and_display_by_name(product_name)
+        cnx = True
+        while cnx:
+            if menu_choice in ["1", "2"]:
+                if menu_choice == "1":  # Find by name
+                    product_name = input("\nLe nom de votre produit: ")
+                    products = product_mng.find_and_display_by_name(product_name)
+
+                else:
+                    products = product_mng.find_and_display_by_category()
+
+                if len(products) != 0:
+                        product_choice = input("\nQuel produit souhaitez-vous sélectionner: ")
+
+                        if product_choice in products.keys():
+                            product = products.get(product_choice)
+                            product_id = product[0]
+                            product_mng.display_product(product_id)
+
+                        else:
+                            print(f"\n '{product_choice}': ce produit ne figure pas dans la liste\n")
+
+                sustitute_choix = input("\nTrouver la meilleure alternative à ce produit ? Y/N: ")
+                if sustitute_choix.lower() == "y":
+                    sub_mng = SubstituteManager(self.database)
+                    sub_mng.substitute_and_display(product_id)
+                    # TODO : trouver
+                    # TODO : afficher
+                    # TODO : enregistrer?
+                cnx = False
 
             else:
-                products = product_mng.find_and_display_by_category()
-
-            if len(products) != 0:
-                cnx = True
-                while cnx:
-                    product_choice = input("\nQuel produit souhaitez-vous sélectionner: ")
-
-                    if product_choice in products.keys():
-                        product = products.get(product_choice)
-                        product_id = product[0]
-                        product_mng.display_product(product_id)
-                        cnx = False
-
-                    else:
-                        print(f"\n '{product_choice}': ce produit ne figure pas dans la liste\n")
-
-                # TODO : substituer ? Y/N
-                # TODO : si oui, enregistrer le substitut
-
-        else:
-            print(Fore.RED + f"'{menu_choice}': ce choix ne figure pas dans la liste")
-            print(Style.RESET_ALL)
+                print(Fore.RED + f"'{menu_choice}': ce choix ne figure pas dans la liste")
+                print(Style.RESET_ALL)
 
     def quit(self):
         """Allow user to quit app"""
