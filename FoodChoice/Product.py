@@ -4,15 +4,14 @@ from FoodChoice.Category import *
 
 
 class ProductManager:
-    """TODO ecrire"""
-
+    """Manage Product table"""
     last_id = 0  # Store the last attributed id by MySQL
 
     def __init__(self, database):
         self.database = database
 
     def insert(self, product_object):
-        """TODO ecrire"""
+        """insert product_object in DB"""
         mycursor = self.database.cursor()
 
         data = (product_object.name,
@@ -31,7 +30,7 @@ class ProductManager:
         id = mycursor.fetchone()[0]
         if id != ProductManager.last_id:
             product_object.id = id
-        else :
+        else:
             product_object = None
 
         ProductManager.last_id = id
@@ -80,7 +79,7 @@ class ProductManager:
         return products, sql[:-1]
 
     def find_and_display_by_name(self, tmp_product_name):
-        """Find by product name and display a list of products"""
+        """Find by product name and display a list"""
         mycursor = self.database.cursor()
         product_name = "%" + tmp_product_name + "%"
         mycursor.execute(SQL_SELECT_PRODUCTS_BY_NAME, (product_name, ))
@@ -90,7 +89,7 @@ class ProductManager:
         products = {}
 
         if len(products_by_name) == 0:
-            print("\nMalheureusement, aucun produit ne correspond à la recherche!")
+            print("\nAucun produit ne correspond à la recherche!")
         else:
             print("\n")
             print(" N° ".center(10, "#"), "  Nom ".center(50, "#"), " Marque ".center(50, "#"), " Code ".center(15, "#"))
@@ -104,7 +103,7 @@ class ProductManager:
         return products, sql[:-1]
 
     def display_product(self, product_id):
-        """Display products"""
+        """Display product details"""
         mycursor = self.database.cursor(buffered=True)
         mycursor.execute(SQL_SELECT_PRODUCT, (product_id,))
         product = mycursor.fetchone()
@@ -140,7 +139,7 @@ class ProductManager:
         time.sleep(1)
 
 class Product:
-    """TODO ecrire"""
+    """Represent Product table"""
 
     def __init__(self, name, brand, nutrition_grade, energy_100g, url, code, stores, cities, categories):
         self.id = ""
@@ -153,8 +152,9 @@ class Product:
         self.stores = stores
         self.cities = cities
         self.categories = categories
-        self.sustitute = None
 
     def __str__(self):
-        """TODO ecrire"""
-        return f"{self.id}, {self.name}, {self.code}, {self.brand}, {self.nutrition_grade}, {self.energy_100g}cal, {self.url}"
+        """Represent Product object"""
+        return f"{self.id}, {self.name}, {self.code}, {self.brand}, " \
+               f"{self.nutrition_grade}, {self.energy_100g}cal, {self.url}" \
+               f"{self.code}, {self.stores}, {self.cities}, {self.categories}"

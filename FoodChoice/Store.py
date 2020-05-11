@@ -1,7 +1,7 @@
 from data import *
 
 class StoreManager:
-    """TODO ecrire"""
+    """Manage Store table"""
 
     def __init__(self, database):
         self.database = database
@@ -20,6 +20,7 @@ class StoreManager:
             return store
 
     def insert(self, store_object):
+        """insert """
         mycursor = self.database.cursor()
         mycursor.execute(SQL_INSERT_STORES, (store_object.name, ))
         self.database.commit()
@@ -30,12 +31,12 @@ class StoreManager:
 
 
 class Store:
-    """TODO ecrire"""
+    """Represent Store table"""
 
     def __init__(self, name):
         self.id = ""
         self.name = name
 
     def __str__(self):
-        """TODO ecrire"""
+        """Represent Store object"""
         return f"{self.id} {self.name}"

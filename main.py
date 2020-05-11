@@ -2,7 +2,6 @@
 # coding: utf-8
 
 from FoodChoice.App import App
-from FoodChoice.API import API
 
 
 if __name__ == "__main__":

@@ -1,18 +1,16 @@
 from data import *
 
 class ProductLocationManager:
-    """TODO ecrire"""
+    """Manage ProductLocation table"""
 
     def __init__(self, database):
         self.database = database
 
     def insert(self, productlocation_objects):
-        """TODO ecrire"""
-
+        """insert productlocation objects in DB"""
         data = []
 
         for productlocation_object in productlocation_objects:
-
             data.append((productlocation_object.product_id,
                         productlocation_object.store_id,
                         productlocation_object.city_id,))
@@ -24,7 +22,7 @@ class ProductLocationManager:
 
 
 class ProductLocation:
-    """TODO ecrire"""
+    """Represent ProductLocation table"""
 
     def __init__(self, product_id, store_id, city_id):
         self.product_id = product_id
@@ -32,4 +30,5 @@ class ProductLocation:
         self.city_id = city_id
 
     def __str__(self):
+        """Represent ProductLocation object"""
         return f"Product_ID : {self.product_id}, Store_ID : {self.store_id}, City_ID : {self.city_id}"

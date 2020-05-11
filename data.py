@@ -147,7 +147,7 @@ SQL_INSERT_SUBSTITUTE = "INSERT INTO Substitute (Users_ID, Product_ID, Date) VAL
 LAST_INSERT_ID = "SELECT LAST_INSERT_ID();"
 
 
-SQL_SELECT_CATEGORY = "SELECT ID FROM Category WHERE Name = %s;"  #TODO revérifier l'usage de toutes les requêtes ?
+SQL_SELECT_CATEGORY = "SELECT ID FROM Category WHERE Name = %s;"
 
 SQL_SELECT_STORE = "SELECT ID FROM Store WHERE Name = %s;"
 

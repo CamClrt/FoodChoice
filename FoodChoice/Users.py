@@ -4,8 +4,7 @@ import pickle
 
 
 class UsersManager:
-    """Manage Users class and Users table"""
-
+    """Manage Users table"""
     default_username = "UserByDefault"
     default_pw = "PwdByDefault"
 
@@ -13,7 +12,7 @@ class UsersManager:
         self.database = database
 
     def create(self, name, pwd_serialized):
-        """insert user_object in DB"""
+        """insert user object in DB"""
         mycursor = self.database.cursor()
         data = (name, pwd_serialized)
         mycursor.execute(SQL_INSERT_USER, data)
@@ -26,7 +25,7 @@ class UsersManager:
         return user_object
 
     def find_name(self, user_name):
-        """find user_name in DB, return True and user_object if it already exists or False if it not exists"""
+        """find if user_name is already in DB"""
         mycursor = self.database.cursor()
         mycursor.execute(SQL_SELECT_USER_NAME, (user_name, ))
         res = mycursor.fetchone()
@@ -34,7 +33,6 @@ class UsersManager:
 
         if res is None:
             return False, None
-
         else:
             user_object = Users(user_name)
             user_object.id = int(res[0])
@@ -67,5 +65,5 @@ class Users:
         self.substitutes = None
 
     def __repr__(self):
-        """Represent Users table"""
+        """Represent Users object"""
         return f"{self.id}, {self.name}"

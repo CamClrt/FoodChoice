@@ -1,13 +1,13 @@
 from data import *
 
 class CityManager:
-    """TODO ecrire"""
+    """Manage City table"""
 
     def __init__(self, database):
         self.database = database
 
     def find(self, city_name):
-        """search if city_name already exists in the city table and insert it"""
+        """search if city_name already exists and insert it"""
         mycursor = self.database.cursor()
         mycursor.execute(SQL_SELECT_CITY, (city_name, ))
         res = mycursor.fetchone()
@@ -20,7 +20,7 @@ class CityManager:
             return city
 
     def insert(self, city_object):
-        """TODO ecrire"""
+        """insert city_object in DB"""
         mycursor = self.database.cursor()
         mycursor.execute(SQL_INSERT_CITIES,(city_object.name, ))
         self.database.commit()
@@ -31,7 +31,7 @@ class CityManager:
 
 
 class City:
-    """TODO ecrire"""
+    """Represent City table"""
 
     def __init__(self, name, zipcode=00000):
         self.id = ""
@@ -39,5 +39,5 @@ class City:
         self.zipcode = zipcode
 
     def __str__(self):
-        """TODO ecrire"""
+        """Represent City object"""
         return f"{self.id} {self.name} {self.zipcode}"

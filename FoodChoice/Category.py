@@ -2,13 +2,13 @@ from data import *
 
 
 class CategoryManager:
-    """TODO ecrire"""
+    """Manage Category table"""
 
     def __init__(self, database):
         self.database = database
 
     def find(self, category_name):
-        """search if category_name already exists in the category table and insert it"""
+        """search if category_name already exists and insert it"""
         mycursor = self.database.cursor()
         mycursor.execute(SQL_SELECT_CATEGORY, (category_name, ))
         res = mycursor.fetchone()
@@ -40,12 +40,12 @@ class CategoryManager:
 
 
 class Category:
-    """TODO ecrire"""
+    """Represent Category table"""
 
     def __init__(self, name):
         self.id = ""
         self.name = name
 
     def __str__(self):
-        """TODO ecrire"""
+        """Represent Category object"""
         return f"{self.id} {self.name}"

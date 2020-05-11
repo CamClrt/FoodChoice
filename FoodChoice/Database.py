@@ -36,12 +36,12 @@ class Database:
         self.database = None
 
     def __enter__(self):
-        """TODO ecrire"""
+        """Allow the DB connection"""
         self.database = self.connect()
         return self.database
 
     def __exit__(self, *args):
-        """TODO ecrire"""
+        """Close the DB connection"""
         self.database.close()
 
     def connect(self):
