@@ -202,3 +202,10 @@ SQL_SELECT_SUBSTITUTE = "SELECT products_selection.ID, " \
                         "FROM (%s) AS products_selection " \
                         "ORDER BY products_selection.Nutrition_grade, products_selection.Energy_100g;"
 
+SQL_SELECT_SUBSTITUTES_BY_USER = "SELECT DISTINCT Product.ID, Product.Name, Product.Brand, " \
+                                 "Product.Nutrition_grade, Product.Energy_100g, DATE(Substitute.Date) " \
+                                 "FROM Product " \
+                                 "INNER JOIN Substitute ON Product.ID = Substitute.Product_ID " \
+                                 "INNER JOIN Users ON Substitute.Users_ID = Users.ID " \
+                                 "WHERE Users.ID =  %s"
+

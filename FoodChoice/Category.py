@@ -39,8 +39,6 @@ class CategoryManager:
         return category_object
 
 
-
-
 class Category:
     """TODO ecrire"""
 

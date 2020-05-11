@@ -86,8 +86,8 @@ class Menu():
         while cnx:
             print("\n", " Menu principal ".center(100, '*'))
 
-            menu_request = "\n1. Trouver un produit" \
-                            "\n2. Trouver les substituts enregistrés" \
+            menu_request = "\n1. Quel aliment souhaitez-vous remplacer ?" \
+                            "\n2. Retrouver mes aliments substitués" \
                             "\n3. Quitter l'application" \
                             "\n\nVotre réponse: "
             menu_choice = input(menu_request)
@@ -97,11 +97,8 @@ class Menu():
                     self.find_product_menu()
 
                 elif menu_choice == "2":    # Display substitute
-                    pass
-                    # TODO : afficher la liste de substitut
-                    # TODO : demander à en selection un ou repartir au menu général
-                    # TODO : Si selection > affichage de sa fiche
-
+                    sub_mng = SubstituteManager(self.database)
+                    substitutes = sub_mng.display_list(self.user_object) #TODO : améliorer l'affichage
                 else:
                     self.quit()             # Exit ?
 
@@ -117,15 +114,15 @@ class Menu():
         cnx = True
         while cnx:
 
-            menu_request = "\nChercher un produit par..." \
-                           "\n1. Son nom" \
-                           "\n2. Sa catégorie" \
+            menu_request = "\nSélectionnez par..." \
+                           "\n1. son nom" \
+                           "\n2. sa catégorie" \
                            "\n\nVotre réponse: "
             menu_choice = input(menu_request)
 
             if menu_choice in ["1", "2"]:
                 if menu_choice == "1":  # Find by name
-                    product_name = input("\nLe nom de votre produit: ")
+                    product_name = input("\nSélectionnez l'aliment n°: ")
                     products, sql = product_mng.find_and_display_by_name(product_name)
                 else:
                     products, sql = product_mng.find_and_display_by_category()
@@ -135,7 +132,7 @@ class Menu():
                         if len(products) != 1:
                             sub_cnx = True
                             while sub_cnx:
-                                product_choice = input("\nQuel produit souhaitez-vous sélectionner: ")
+                                product_choice = input("\nSélectionnez l'aliment n°: ")
                                 if product_choice in products.keys():
                                     product = products.get(product_choice)
                                     sub_cnx = False
