@@ -142,7 +142,7 @@ SQL_INSERT_CATEGORY_PRODUCT = "INSERT INTO CategoryProduct (Product_ID, Category
 
 SQL_INSERT_USER = "INSERT IGNORE INTO Users (Name, Password) VALUES (%s, %s);"
 
-SQL_INSERT_SUBSTITUTES = "INSERT INTO Substitute (Users_ID, Product_ID, Date, Note) VALUES ('%s', '%s', '%s', '%s');"
+SQL_INSERT_SUBSTITUTE = "INSERT INTO Substitute (Users_ID, Product_ID, Date) VALUES ('%s', '%s', NOW());"
 
 LAST_INSERT_ID = "SELECT LAST_INSERT_ID();"
 
@@ -168,14 +168,16 @@ SQL_SELECT_CATEGORIES = "SELECT Category.Name, COUNT(CategoryProduct.Category_ID
                         "GROUP BY CategoryProduct.Category_ID " \
                         "ORDER BY NB_Cat DESC LIMIT 20;"
 
-SQL_SELECT_PRODUCTS_BY_CATEGORY = "SELECT DISTINCT Product.ID, Product.Name, Product.Brand, Product.Code " \
+SQL_SELECT_PRODUCTS_BY_CATEGORY = "SELECT DISTINCT Product.ID, Product.Name, Product.Brand, " \
+                                  "Product.Code, Product.Nutrition_grade, Product.Energy_100g " \
                                   "FROM Product " \
                                   "INNER JOIN CategoryProduct ON Product.ID = CategoryProduct.Product_ID " \
                                   "INNER JOIN Category ON CategoryProduct.Category_ID = Category.ID " \
                                   "WHERE Category.ID = %s;"
 
 SQL_SELECT_PRODUCTS_BY_NAME = "" \
-                            "SELECT DISTINCT Product.ID, Product.Name, Product.Brand, Product.Code " \
+                            "SELECT DISTINCT Product.ID, Product.Name, Product.Brand, " \
+                            "Product.Code, Product.Nutrition_grade, Product.Energy_100g " \
                             "FROM Product " \
                             "WHERE Product.Name LIKE %s " \
                             "ORDER BY Product.Name;"
@@ -195,16 +197,8 @@ SQL_SELECT_STORE_PRODUCT = "SELECT DISTINCT Product.ID, Product.Name, Store.ID, 
                           "INNER JOIN Product ON ProductLocation.Product_ID = Product.ID " \
                           "WHERE Product.ID = %s;"
 
-SQL_SELECT_SUBSTITUTE = "SELECT ID, Name, Grade, Energy " \
-                        "FROM(SELECT Product.ID AS ID, Product.Name AS Name, " \
-                        "Min(Product.Nutrition_grade) AS Grade, " \
-                        "Min(Product.Energy_100g) AS Energy FROM Product " \
-                        "INNER JOIN CategoryProduct ON Product.ID = CategoryProduct.Product_ID " \
-                        "INNER JOIN Category ON CategoryProduct.Category_ID = Category.ID " \
-                        "WHERE Category.Name = %s " \
-                        "AND Product.Nutrition_grade IS NOT NULL " \
-                        "AND Product.Nutrition_grade <= %s " \
-                        "AND Product.Energy_100g != '0' " \
-                        "AND Product.Energy_100g <= %s " \
-                        "GROUP BY Product.ID) AS healthier_products " \
-                        "ORDER BY Energy;"
+SQL_SELECT_SUBSTITUTE = "SELECT products_selection.ID, " \
+                        "products_selection.Nutrition_grade, products_selection.Energy_100g " \
+                        "FROM (%s) AS products_selection " \
+                        "ORDER BY products_selection.Nutrition_grade, products_selection.Energy_100g;"
+

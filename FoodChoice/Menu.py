@@ -14,6 +14,7 @@ class Menu():
 
     def __init__(self, database):
         self.database = database
+        self.user_object = None
 
     def cnx_menu(self):
         """Allow user to create an account and connect him with or without account"""
@@ -76,24 +77,22 @@ class Menu():
                 print(Fore.RED + f"'{start_choice}': ce choix ne figure pas dans la liste\n")
                 print(Style.RESET_ALL)
 
-        return user_object
+        self.user_object = user_object
 
-    def main_menu(self, user_object):
+    def main_menu(self):
         """Display the main menu and interact with user"""
 
         cnx = True
         while cnx:
-
             print("\n", " Menu principal ".center(100, '*'))
 
             menu_request = "\n1. Trouver un produit" \
-                           "\n2. Trouver les substituts enregistrés" \
-                           "\n3. Quitter cette session" \
-                           "\n4. Quitter l'application" \
-                           "\n\nVotre réponse: "
+                            "\n2. Trouver les substituts enregistrés" \
+                            "\n3. Quitter l'application" \
+                            "\n\nVotre réponse: "
             menu_choice = input(menu_request)
 
-            if menu_choice in ["1", "2", "3", "4"]:
+            if menu_choice in ["1", "2", "3"]:
                 if menu_choice == "1":    # Replace food
                     self.find_product_menu()
 
@@ -103,11 +102,8 @@ class Menu():
                     # TODO : demander à en selection un ou repartir au menu général
                     # TODO : Si selection > affichage de sa fiche
 
-                elif menu_choice == "3":  # Disconnect ?
-                    cnx = False
-
                 else:
-                    self.quit()           # Exit ?
+                    self.quit()             # Exit ?
 
             else:
                 print(Fore.RED + f"'{menu_choice}': ce choix ne figure pas dans la liste\n")
@@ -116,44 +112,53 @@ class Menu():
     def find_product_menu(self):
         """Display product menu"""
         print(" Recherche de produit ".center(100, '*'))
-
-        menu_request = "\nChercher un produit par..." \
-                       "\n1. Son nom" \
-                       "\n2. Sa catégorie" \
-                       "\n\nVotre réponse: "
-        menu_choice = input(menu_request)
-
         product_mng = ProductManager(self.database)
 
         cnx = True
         while cnx:
+
+            menu_request = "\nChercher un produit par..." \
+                           "\n1. Son nom" \
+                           "\n2. Sa catégorie" \
+                           "\n\nVotre réponse: "
+            menu_choice = input(menu_request)
+
             if menu_choice in ["1", "2"]:
                 if menu_choice == "1":  # Find by name
                     product_name = input("\nLe nom de votre produit: ")
-                    products = product_mng.find_and_display_by_name(product_name)
-
+                    products, sql = product_mng.find_and_display_by_name(product_name)
                 else:
-                    products = product_mng.find_and_display_by_category()
+                    products, sql = product_mng.find_and_display_by_category()
 
                 if len(products) != 0:
-                        product_choice = input("\nQuel produit souhaitez-vous sélectionner: ")
 
-                        if product_choice in products.keys():
-                            product = products.get(product_choice)
+                        if len(products) != 1:
+                            sub_cnx = True
+                            while sub_cnx:
+                                product_choice = input("\nQuel produit souhaitez-vous sélectionner: ")
+                                if product_choice in products.keys():
+                                    product = products.get(product_choice)
+                                    sub_cnx = False
+                                else:
+                                    print(Fore.RED + f"'{product_choice}': ce choix ne figure pas dans la liste")
+                                    print(Style.RESET_ALL)
+
                             product_id = product[0]
                             product_mng.display_product(product_id)
 
-                        else:
-                            print(f"\n '{product_choice}': ce produit ne figure pas dans la liste\n")
-
-                sustitute_choix = input("\nTrouver la meilleure alternative à ce produit ? Y/N: ")
-                if sustitute_choix.lower() == "y":
-                    sub_mng = SubstituteManager(self.database)
-                    sub_mng.substitute_and_display(product_id)
-                    # TODO : trouver
-                    # TODO : afficher
-                    # TODO : enregistrer?
-                cnx = False
+                            sustitute_choice = input("\nTrouver une meilleure alternative à ce produit? Y/N: ")
+                            if sustitute_choice.lower() == "y":
+                                print("\n", " Votre produit de substitution ".center(100, "*"), "\n")
+                                sub_mng = SubstituteManager(self.database)
+                                substitute_object = sub_mng.substitute_and_display(sql, self.user_object)
+                                sustitute_record = input("\nEnregistrer ce substitut ? Y/N: ")
+                            if sustitute_record.lower() == "y":
+                                sub_mng.insert(substitute_object)
+                                cnx = False
+                else:
+                    product = products.get("1")
+                    product_id = product[0]
+                    product_mng.display_product(product_id)
 
             else:
                 print(Fore.RED + f"'{menu_choice}': ce choix ne figure pas dans la liste")

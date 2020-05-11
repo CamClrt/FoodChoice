@@ -38,7 +38,7 @@ class ProductManager:
         mycursor.close()
         return product_object
 
-    def find_and_display_by_category(self): #TODO à revoir
+    def find_and_display_by_category(self):
         """Display products by category_name"""
         cat_mng = CategoryManager(self.database)
         tmp_most_used_categories = cat_mng.most_used_categories()
@@ -58,9 +58,9 @@ class ProductManager:
             if category_choice in categories.keys():
                 category = categories.get(category_choice)
                 category_id = category[2]
-                #TODO une liste de produit par catégorie
                 mycursor = self.database.cursor()
                 mycursor.execute(SQL_SELECT_PRODUCTS_BY_CATEGORY, (category_id,))
+                sql = mycursor.statement
                 products_by_category = mycursor.fetchall()
 
                 products = {}
@@ -77,13 +77,14 @@ class ProductManager:
                 cnx = False
             else:
                 print(f"\n '{category_choice}': cette catégorie ne figure pas dans la liste\n")
-        return products
+        return products, sql[:-1]
 
     def find_and_display_by_name(self, tmp_product_name):
         """Find by product name and display a list of products"""
         mycursor = self.database.cursor()
         product_name = "%" + tmp_product_name + "%"
         mycursor.execute(SQL_SELECT_PRODUCTS_BY_NAME, (product_name, ))
+        sql = mycursor.statement
         products_by_name = mycursor.fetchall()
 
         products = {}
@@ -100,7 +101,7 @@ class ProductManager:
                       f'{str(product_by_name[1])[:48].center(50)}|'
                       f'{str(product_by_name[2])[:48].center(50)}|'
                       f'{str(product_by_name[3])[:13].center(15)}|')
-        return products
+        return products, sql[:-1]
 
     def display_product(self, product_id):
         """Display products"""
@@ -132,11 +133,11 @@ class ProductManager:
               "Nutri-Score: ", product[3], "\n",
               "Repères nutritionnels pour 100g: ", product[4], "Kcal", "\n",
               "EAN-13: ", product[5], "\n",
-              "URL: ", product[6], "\n",
-              "Catégories: ", ", ".join(categories), "\n",
-              "Points de vente: ", ", ".join(stores), "\n",
+              "URL: ", product[6], "\n\n",
+              "Catégories: ", ", ".join(categories), "\n\n",
+              "Points de vente: ", ", ".join(stores), "\n\n",
               "Villes: ", ", ".join(cities), "\n")
-        time.sleep(3)
+        time.sleep(1)
 
 class Product:
     """TODO ecrire"""

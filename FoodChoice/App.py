@@ -16,5 +16,5 @@ class App:
             while cnx:
                 print(" Connection ".center(102, '#'))
                 menu = Menu(db)
-                user_object = menu.cnx_menu()
-                menu.main_menu(user_object)
+                menu.cnx_menu()
+                menu.main_menu()
