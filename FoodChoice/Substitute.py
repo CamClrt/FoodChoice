@@ -13,17 +13,17 @@ class SubstituteManager:
         mycursor = self.database.cursor()
         query = SQL_SELECT_SUBSTITUTE.replace("%s", sql) #TODO à revoir avec Aymen
         mycursor.execute(query)
-        substitute_id = mycursor.fetchall()[0][0]
+        product_id = mycursor.fetchall()[0][0]
         mycursor.close()
         product_mng = ProductManager(self.database)
-        product_mng.display_product(substitute_id)
-        substitute_object = Substitute(user_object.id, substitute_id)
+        product_mng.display_product(product_id)
+        substitute_object = Substitute(user_object.id, product_id)
         return substitute_object
 
     def insert(self, substitute_object):
         """insert substitute object in DB"""
         mycursor = self.database.cursor()
-        data = (substitute_object.user, substitute_object.product)
+        data = (substitute_object.user, substitute_object.product, substitute_object.note)
         mycursor.execute(SQL_INSERT_SUBSTITUTE, data)
         self.database.commit()
         print("L'enregistrement a été effectué avec succès\n")
@@ -37,9 +37,24 @@ class SubstituteManager:
         print("\n", " Substituts ".center(100, "*"), "\n")
         for tmp_index, substitute in enumerate(substitutes):
             index = tmp_index + 1
-            substitutes_dic[index] = substitute
-            print(f"{index}. {substitute}")
+            substitutes_dic[str(index)] = substitute
+            print(f"{substitute[5]}  {index}. {substitute[1]} - {substitute[2]} (votre note: {substitute[6]})")
         return substitutes_dic
+
+    def add_note(self, product_id, note):
+        """insert substitute note in DB"""
+        mycursor = self.database.cursor()
+        data = (note[:140], product_id)
+        mycursor.execute(SQL_UPDATE_SUBSTITUTE_NOTE, data)
+        self.database.commit()
+        print("L'enregistrement de votre note a été effectué avec succès\n")
+
+    def delete(self, substitute_id):
+        """delete substitute in DB"""
+        mycursor = self.database.cursor()
+        mycursor.execute(SQL_DELETE_SUBSTITUTE, (substitute_id,))
+        self.database.commit()
+        print("Ce substitut a été supprimé avec succès\n")
 
 
 class Substitute:
@@ -49,6 +64,8 @@ class Substitute:
         self.id = id
         self.user = user_id
         self.product = product_id
+        self.date = ""
+        self.note = "aucune"
 
     def __str__(self):
         """Represent Substitute object"""

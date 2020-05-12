@@ -10,5 +10,3 @@ if __name__ == "__main__":
 
 else:
     print("main module is imported")
-
-

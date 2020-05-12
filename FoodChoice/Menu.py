@@ -86,7 +86,7 @@ class Menu():
         while cnx:
             print("\n", " Menu principal ".center(100, '*'))
 
-            menu_request = "\n1. Quel aliment souhaitez-vous remplacer ?" \
+            menu_request = "\n1. Quel aliment souhaitez-vous remplacer?" \
                             "\n2. Retrouver mes aliments substitués" \
                             "\n3. Quitter l'application" \
                             "\n\nVotre réponse: "
@@ -98,9 +98,49 @@ class Menu():
 
                 elif menu_choice == "2":    # Display substitute
                     sub_mng = SubstituteManager(self.database)
-                    substitutes = sub_mng.display_list(self.user_object) #TODO : améliorer l'affichage
+                    substitutes = sub_mng.display_list(self.user_object)
+
+                    if len(substitutes) != 0:
+
+                        subsitute_request = "\nQuelle action souhaitez-vous faire?" \
+                                       "\n1. Consulter la fiche détaillée d'un substitut" \
+                                       "\n2. Ajouter ou modifier la note d'un substitut" \
+                                       "\n3. Supprimer un substitut" \
+                                       "\n4. Rejoindre le menu principal" \
+                                       "\n\nVotre réponse: "
+                        subsitute_choice = input(subsitute_request)
+
+                        if subsitute_choice == "4":
+                            pass
+                        else:
+
+                            if subsitute_choice in ["1", "2", "3"]:
+                                subsitute_index_choice = input("\nSélectionnez l'aliment n°: ")
+
+                                if subsitute_index_choice in substitutes.keys():
+                                    subsitute = substitutes.get(subsitute_index_choice)
+                                    product_id = subsitute[0]
+                                    subsitute_id = subsitute[7]
+
+                                    if subsitute_choice == "1":    # Display substitute details
+                                        prod_mng = ProductManager(self.database)
+                                        prod_mng.display_product(product_id)
+
+                                    elif subsitute_choice == "2":  # Add personal note
+                                        subsitute_note = input("Votre note en moins de 140 caractères): ")
+                                        sub_mng = SubstituteManager(self.database)
+                                        sub_mng.add_note(product_id, subsitute_note)
+
+                                    else:                          # Drop a substitute
+                                        sub_mng = SubstituteManager(self.database)
+                                        sub_mng.delete(subsitute_id)
+
+                                else:
+                                    print(Fore.RED + f"'{subsitute_index_choice}': ce choix ne figure pas dans la liste\n")
+                                    print(Style.RESET_ALL)
+
                 else:
-                    self.quit()             # Exit ?
+                    self.quit()             # Exit?
 
             else:
                 print(Fore.RED + f"'{menu_choice}': ce choix ne figure pas dans la liste\n")
@@ -143,12 +183,12 @@ class Menu():
                             product_id = product[0]
                             product_mng.display_product(product_id)
 
-                            sustitute_choice = input("\nTrouver une meilleure alternative à ce produit? Y/N: ")
+                            sustitute_choice = input("\nTrouver une meilleure alternative à ce produit? y/n: ")
                             if sustitute_choice.lower() == "y":
                                 print("\n", " Votre produit de substitution ".center(100, "*"), "\n")
                                 sub_mng = SubstituteManager(self.database)
                                 substitute_object = sub_mng.substitute_and_display(sql, self.user_object)
-                                sustitute_record = input("\nEnregistrer ce substitut ? Y/N: ")
+                                sustitute_record = input("\nEnregistrer ce substitut? y/n: ")
                             if sustitute_record.lower() == "y":
                                 sub_mng.insert(substitute_object)
                                 cnx = False
@@ -163,7 +203,7 @@ class Menu():
 
     def quit(self):
         """Allow user to quit app"""
-        conf = input("Souhaitez-vous réellement quitter le programme? Y/N: ")
+        conf = input("Souhaitez-vous réellement quitter le programme? y/n: ")
         if conf.lower() == "y":
             print("\n>>> Merci et à bientôt! <<<")
             sys.exit(0)

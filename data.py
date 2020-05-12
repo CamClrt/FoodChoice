@@ -83,11 +83,12 @@ SQL_CREATE_CITY_TABLE = "CREATE TABLE IF NOT EXISTS `City` (" \
                         "ENGINE=INNODB;"
 
 SQL_CREATE_SUBSTITUTE_TABLE = "CREATE TABLE IF NOT EXISTS `Substitute` (" \
-                              "`Substitute_ID` BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT," \
+                              "`ID` BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT," \
                               "`Users_ID` TINYINT UNSIGNED," \
                               "`Product_ID` BIGINT UNSIGNED," \
                               "`Date` DATETIME," \
-                              "KEY `PK, FK` (`Substitute_ID`)," \
+                              "`Note` VARCHAR(140)," \
+                              "KEY `PK, FK` (`ID`)," \
                               "KEY `FK` (`Users_ID`, `Product_ID`)" \
                               ")" \
                               "ENGINE=INNODB;"
@@ -142,9 +143,14 @@ SQL_INSERT_CATEGORY_PRODUCT = "INSERT INTO CategoryProduct (Product_ID, Category
 
 SQL_INSERT_USER = "INSERT IGNORE INTO Users (Name, Password) VALUES (%s, %s);"
 
-SQL_INSERT_SUBSTITUTE = "INSERT INTO Substitute (Users_ID, Product_ID, Date) VALUES ('%s', '%s', NOW());"
+SQL_INSERT_SUBSTITUTE = "INSERT INTO Substitute (Users_ID, Product_ID, Date, Note) VALUES (%s, %s, NOW(), %s);"
 
 LAST_INSERT_ID = "SELECT LAST_INSERT_ID();"
+
+
+SQL_UPDATE_SUBSTITUTE_NOTE = "UPDATE Substitute SET Note = %s WHERE Substitute.Product_ID = %s;"
+
+SQL_DELETE_SUBSTITUTE = "DELETE From Substitute WHERE Substitute.ID = %s;"
 
 
 SQL_SELECT_CATEGORY = "SELECT ID FROM Category WHERE Name = %s;"
@@ -203,9 +209,12 @@ SQL_SELECT_SUBSTITUTE = "SELECT products_selection.ID, " \
                         "ORDER BY products_selection.Nutrition_grade, products_selection.Energy_100g;"
 
 SQL_SELECT_SUBSTITUTES_BY_USER = "SELECT DISTINCT Product.ID, Product.Name, Product.Brand, " \
-                                 "Product.Nutrition_grade, Product.Energy_100g, DATE(Substitute.Date) " \
+                                 "Product.Nutrition_grade, Product.Energy_100g, " \
+                                 "DATE_FORMAT(Substitute.Date, '%d/%m/%Y'), " \
+                                 "Substitute.Note, Substitute.ID "\
                                  "FROM Product " \
                                  "INNER JOIN Substitute ON Product.ID = Substitute.Product_ID " \
                                  "INNER JOIN Users ON Substitute.Users_ID = Users.ID " \
-                                 "WHERE Users.ID =  %s"
+                                 "WHERE Users.ID = %s;"
+
 
