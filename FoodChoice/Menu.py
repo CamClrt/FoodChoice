@@ -81,7 +81,6 @@ class Menu():
 
     def main_menu(self):
         """Display the main menu and interact with user"""
-
         cnx = True
         while cnx:
             print("\n", " Menu principal ".center(100, '*'))
@@ -108,46 +107,48 @@ class Menu():
 
     def substitute_menu(self):
         """Display substitute menu"""
-        sub_mng = SubstituteManager(self.database)
-        substitutes = sub_mng.display_list(self.user_object)
+        cnx = True
+        while cnx:
+            print("\n", " Substituts ".center(100, "*"), "\n")
+            sub_mng = SubstituteManager(self.database)
+            substitutes = sub_mng.display_list(self.user_object)
+            if len(substitutes) != 0:
+                subsitute_request = "\nQuelle action souhaitez-vous faire?" \
+                                    "\n1. Consulter la fiche détaillée d'un substitut" \
+                                    "\n2. Ajouter ou modifier la note d'un substitut" \
+                                    "\n3. Supprimer un substitut" \
+                                    "\n4. Rejoindre le menu principal" \
+                                    "\n\nVotre réponse: "
+                subsitute_choice = input(subsitute_request)
 
-        if len(substitutes) != 0:
-            subsitute_request = "\nQuelle action souhaitez-vous faire?" \
-                                "\n1. Consulter la fiche détaillée d'un substitut" \
-                                "\n2. Ajouter ou modifier la note d'un substitut" \
-                                "\n3. Supprimer un substitut" \
-                                "\n4. Rejoindre le menu principal" \
-                                "\n\nVotre réponse: "
-            subsitute_choice = input(subsitute_request)
+                if subsitute_choice == "4":
+                    cnx = False
+                else:
 
-            if subsitute_choice == "4":
-                pass
-            else:
+                    if subsitute_choice in ["1", "2", "3"]:
+                        subsitute_index_choice = input("\nSélectionnez l'aliment n°: ")
 
-                if subsitute_choice in ["1", "2", "3"]:
-                    subsitute_index_choice = input("\nSélectionnez l'aliment n°: ")
+                        if subsitute_index_choice in substitutes.keys():
+                            subsitute = substitutes.get(subsitute_index_choice)
+                            product_id = subsitute[0]
+                            subsitute_id = subsitute[7]
 
-                    if subsitute_index_choice in substitutes.keys():
-                        subsitute = substitutes.get(subsitute_index_choice)
-                        product_id = subsitute[0]
-                        subsitute_id = subsitute[7]
+                            if subsitute_choice == "1":  # Display substitute details
+                                prod_mng = ProductManager(self.database)
+                                prod_mng.display_product(product_id)
 
-                        if subsitute_choice == "1":  # Display substitute details
-                            prod_mng = ProductManager(self.database)
-                            prod_mng.display_product(product_id)
+                            elif subsitute_choice == "2":  # Add personal note
+                                subsitute_note = input("Votre note en moins de 140 caractères): ")
+                                sub_mng = SubstituteManager(self.database)
+                                sub_mng.add_note(product_id, subsitute_note)
 
-                        elif subsitute_choice == "2":  # Add personal note
-                            subsitute_note = input("Votre note en moins de 140 caractères): ")
-                            sub_mng = SubstituteManager(self.database)
-                            sub_mng.add_note(product_id, subsitute_note)
+                            else:  # Drop a substitute
+                                sub_mng = SubstituteManager(self.database)
+                                sub_mng.delete(subsitute_id)
 
-                        else:  # Drop a substitute
-                            sub_mng = SubstituteManager(self.database)
-                            sub_mng.delete(subsitute_id)
-
-                    else:
-                        print(Fore.RED + f"'{subsitute_index_choice}': ce choix ne figure pas dans la liste\n")
-                        print(Style.RESET_ALL)
+                        else:
+                            print(Fore.RED + f"'{subsitute_index_choice}': ce choix ne figure pas dans la liste\n")
+                            print(Style.RESET_ALL)
 
     def product_menu(self):
         """Display product menu"""

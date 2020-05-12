@@ -33,7 +33,6 @@ class SubstituteManager:
         mycursor.execute(SQL_SELECT_SUBSTITUTES_BY_USER, (user_object.id,))
         substitutes = mycursor.fetchall()
         substitutes_dic = {}
-        print("\n", " Substituts ".center(100, "*"), "\n")
         for tmp_index, substitute in enumerate(substitutes):
             index = tmp_index + 1
             substitutes_dic[str(index)] = substitute
