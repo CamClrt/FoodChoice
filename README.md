@@ -25,9 +25,9 @@ After MySQL installation, in your terminal use theses commands:
 
 Create a user with all privileges:
 
-`CREATE USER 'FoodChoiceUser'@'host' IDENTIFIED BY 'FoodChoiceUser'`
--> Replace 'host' by the host name on your server
-`GRANT ALL ON *.* TO 'FoodChoiceUser'@'host';`
+`CREATE USER 'FoodChoiceUser'@'host' IDENTIFIED BY 'FoodChoiceUser'`  
+-> Replace 'host' by the host name on your server  
+`GRANT ALL ON *.* TO 'FoodChoiceUser'@'host';`  
 -> Don't forget to replace 'host'
 
 > Clone the repository from Github
