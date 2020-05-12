@@ -1,8 +1,9 @@
 Pur Beurre x OpenFoodFacts: FoodChoice
 =================
 
-This project aims to help the Pur Beurre compagny's customer to eat healthier thanks to the [Open Food facts](https://world.openfoodfacts.org/) data.  
 This is a student project made for the project 5 from [OpenClassrooms](https://openclassrooms.com/ )'s Python course.
+
+This project aims to help the Pur Beurre compagny's customer to eat healthier thanks to the [Open Food facts](https://world.openfoodfacts.org/) data.
 
 1. Before starting
 2. To use the program
@@ -15,7 +16,7 @@ This is a student project made for the project 5 from [OpenClassrooms](https://o
 
 ## 1. Before starting
 
-You need to install:
+> You need to install
 
 * MySQL 8 -> please follow [the official documentation](https://dev.mysql.com/doc/mysql-installation-excerpt/8.0/en/)
 
@@ -45,8 +46,6 @@ The user interacts with it only with his keyboard.
 **Important**: for the moment the program is only available in French.
 
 ## 3. Functions
-
-User can:
 
 * Connect without account to the application
 * Create and log in to his personal account (an user name and password is required)
