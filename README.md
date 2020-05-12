@@ -23,7 +23,7 @@ After MySQL installation, in your terminal use theses commands:
 
 > Configure MySQL
 
-Start MySQL services [the official documentation](https://dev.mysql.com/doc/mysql-getting-started/en/#mysql-getting-started-connecting)
+Start MySQL services -> please follow [the official documentation](https://dev.mysql.com/doc/mysql-getting-started/en/#mysql-getting-started-connecting)
 
 Create a user with all privileges:
 
@@ -31,20 +31,21 @@ Create a user with all privileges:
 `GRANT ALL PRIVILEGES ON FoodChoice.* TO 'FoodChoiceUser'@'localhost';`  
 `FLUSH PRIVILEGES;` 
 
-*If you want to use a different host, it will be also necessary to update HOST_NAME*
-
 Nb: don't forget to stop MySQL services when you don't use the application
 
 > Configure data.py
 
-At the root of the package in data.py module, update the user information according what you have chosen :
+At the root of the package in data.py module, update the user information according what you have chosen above :
 
-USER_NAME = "FoodChoiceUser"
-USER_PASSWORD = "my-secret-pw"
+`USER_NAME = "FoodChoiceUser"`  
+`USER_PASSWORD = "my-secret-pw"`
+
+*If you want to use a different host, it will be also necessary to update HOST_NAME*
 
 > Clone the repository from Github
 
 `git clone git@github.com:CamClrt/FoodChoice.git` or `git clone https://github.com/CamClrt/FoodChoice.git`
+
 
 > Install the package
 
@@ -54,7 +55,7 @@ TODO
 
 ## 2. To use the program
 
-The application is built for being used in a terminal's interface.
+The application is built for being used in a terminal's interface.  
 The user can interact with it with keyboard.
 
 **Important**: for the moment the program is only available in French.
