@@ -43,7 +43,7 @@ class Menu():
                         pwd = getpass.getpass("Mot de passe (champ caché): ")
                         pwd_res, user_object = users_mng.ckeck_pwd(name, pwd)  # test pwd
                         if pwd_res:
-                            print("\nConnection réussie\n")
+                            print("\nConnexion réussie\n")
                             cnx = False
                         else:
                             print(Fore.RED + "Mot de passe eronné\n")

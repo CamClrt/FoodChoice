@@ -12,7 +12,6 @@ This project aims to help the Pur Beurre compagny's customer to eat healthier th
 5. Contributing
 6. Versions
 7. Authors
-8. Licences
 
 ## 1. Before starting
 
@@ -26,7 +25,8 @@ After MySQL installation, in your terminal use theses commands:
 
 Create a user with all privileges:
 
-TODO
+`CREATE USER 'FoodChoiceUser'@'host' IDENTIFIED BY 'FoodChoiceUser' -- Replace 'host' by the host name on your server`
+`GRANT ALL ON *.* TO 'FoodChoiceUser'@'host';                       -- Don't forget to replace 'host'`
 
 > Clone the repository from Github
 
@@ -79,7 +79,3 @@ Last version: https://github.com/CamClrt/FoodChoice
 Baby dev 🐣 I'm learning 🐍 #Python with [OpenClassrooms](https://openclassrooms.com/ )
 
 **Aymen Mouelhi** (as supervisor): https://github.com/aymen-mouelhi
-
-## 8. Licences
-
-???

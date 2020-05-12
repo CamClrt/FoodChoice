@@ -11,8 +11,7 @@ class SubstituteManager:
     def substitute_and_display(self, sql, user_object):
         """Substitute the product by an other healthier"""
         mycursor = self.database.cursor()
-        query = SQL_SELECT_SUBSTITUTE.replace("%s", sql) #TODO à revoir avec Aymen
-        mycursor.execute(query)
+        mycursor.execute(SQL_SELECT_SUBSTITUTE.replace("%s", sql))
         product_id = mycursor.fetchall()[0][0]
         mycursor.close()
         product_mng = ProductManager(self.database)
