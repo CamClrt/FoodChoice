@@ -1,9 +1,9 @@
 Pur Beurre x OpenFoodFacts: FoodChoice
 =================
 
-This is a student project made for the project 5 from [OpenClassrooms](https://openclassrooms.com/ )'s Python course.
+This is a student project made for the project 5 from [OpenClassrooms](https://openclassrooms.com/ )'s Python course
 
-This project aims to help the Pur Beurre compagny's customer to eat healthier thanks to the [Open Food facts](https://world.openfoodfacts.org/) data.
+This project aims to help the Pur Beurre compagny's customer to eat healthier thanks to the [Open Food facts](https://world.openfoodfacts.org/) data
 
 1. Before starting
 2. To use the program
@@ -55,10 +55,10 @@ TODO
 
 ## 2. To use the program
 
-The application is built for being used in a terminal's interface.  
-The user can interact with it with keyboard.
+The application is built for being used in a terminal's interface  
+The user can interact with it with keyboard
 
-**Important**: for the moment the program is only available in French.
+**Important**: for the moment the program is only available in French
 
 ## 3. Functions
 
