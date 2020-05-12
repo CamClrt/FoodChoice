@@ -25,16 +25,16 @@ After MySQL installation, in your terminal use theses commands:
 
 Create a user with all privileges:
 
-`CREATE USER 'FoodChoiceUser'@'localhost' IDENTIFIED BY 'my-secret-pw';`
-`GRANT ALL PRIVILEGES ON FoodChoice.* TO 'FoodChoiceUser'@'localhost';`
-`FLUSH PRIVILEGES`
-`exit`
+`CREATE USER 'FoodChoiceUser'@'localhost' IDENTIFIED BY 'my-secret-pw';`  
+`GRANT ALL PRIVILEGES ON FoodChoice.* TO 'FoodChoiceUser'@'localhost';`  
+`FLUSH PRIVILEGES`  
+`exit`  
 
 *If you want to use a different host, it will be also necessary to update HOST_NAME*
 
 > Configure data.py
 
-At the root of the package, in data.py module update your user information according the user and user password you have chosen :
+At the root of the package in data.py module, update the user information according what you have chosen :
 
 USER_NAME = "FoodChoiceUser"
 USER_PASSWORD = "my-secret-pw"
