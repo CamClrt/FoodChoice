@@ -1,5 +1,13 @@
 from datetime import datetime
 
+########################### DATABASE CONFIG ###############################
+
+# database
+DATABASE_NAME = "FoodChoice"
+HOST_NAME = "localhost"
+USER_NAME = "FoodChoiceUser"
+USER_PASSWORD = "my-secret-pw"
+
 ########################### API CONFIG ###############################
 
 # headers
@@ -28,14 +36,6 @@ PAYLOAD = {
     "page_size": "50",
     "json": "true"
 }
-
-########################### DATABASE CONFIG ###############################
-
-# database
-DATABASE_NAME = "FoodChoice"
-HOST_NAME = "localhost"
-USER_NAME = "FoodChoiceUser"
-USER_PASSWORD = "my-secret-pw"
 
 ############################# SQL QUERIES #################################
 

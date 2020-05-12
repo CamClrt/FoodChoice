@@ -23,7 +23,7 @@ After MySQL installation, in your terminal use theses commands:
 
 > Configure MySQL
 
-start MySQL services
+Start MySQL services [the official documentation](https://dev.mysql.com/doc/mysql-getting-started/en/#mysql-getting-started-connecting)
 
 Create a user with all privileges:
 
