@@ -90,7 +90,7 @@ Last version: https://github.com/CamClrt/FoodChoice
 
 ## 7. Authors
 
-**Camille Clarret** aka **Camoulty** or **CamClrt** : https://github.com/CamClrt/labyrinth/  
+**Camille Clarret** aka **Camoulty** or **CamClrt** : https://github.com/CamClrt/ 
 Baby dev 🐣 I'm learning 🐍 #Python with [OpenClassrooms](https://openclassrooms.com/ )
 
 **Aymen Mouelhi** (as supervisor): https://github.com/aymen-mouelhi
