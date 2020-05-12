@@ -23,14 +23,17 @@ After MySQL installation, in your terminal use theses commands:
 
 > Configure MySQL
 
+start MySQL services
+
 Create a user with all privileges:
 
 `CREATE USER 'FoodChoiceUser'@'localhost' IDENTIFIED BY 'my-secret-pw';`  
 `GRANT ALL PRIVILEGES ON FoodChoice.* TO 'FoodChoiceUser'@'localhost';`  
-`FLUSH PRIVILEGES`  
-`exit`  
+`FLUSH PRIVILEGES;` 
 
 *If you want to use a different host, it will be also necessary to update HOST_NAME*
+
+Nb: don't forget to stop MySQL services when you don't use the application
 
 > Configure data.py
 
