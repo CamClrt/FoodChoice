@@ -16,21 +16,21 @@ This project aims to help the Pur Beurre compagny's customer to eat healthier th
 
 ## 1. Before starting
 
-> You need to install
+> You need to install MySQL
 
 * MySQL 8 -> please follow [the official documentation](https://dev.mysql.com/doc/mysql-installation-excerpt/8.0/en/)
 
 After MySQL installation, in your terminal use theses commands:
-
-> Clone the repository from Github
-
-`git clone git@github.com:CamClrt/FoodChoice.git` or `git clone https://github.com/CamClrt/FoodChoice.git`
 
 > Configure MySQL
 
 Create a user with all privileges:
 
 TODO
+
+> Clone the repository from Github
+
+`git clone git@github.com:CamClrt/FoodChoice.git` or `git clone https://github.com/CamClrt/FoodChoice.git`
 
 > Install the package
 
