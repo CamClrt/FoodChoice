@@ -41,7 +41,7 @@ TODO
 ## 2. To use the program
 
 The application is built for being used in a terminal's interface.
-The user interacts with it only with his keyboard.
+The user can interact with it with keyboard.
 
 **Important**: for the moment the program is only available in French.
 
