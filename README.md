@@ -25,11 +25,10 @@ After MySQL installation, in your terminal use theses commands:
 
 Create a user with all privileges:
 
-`CREATE USER 'FoodChoiceUser'@'host' IDENTIFIED BY 'FoodChoiceUser'`  
--> Replace 'host' by the host name on your server  
+`CREATE USER 'FoodChoiceUser'@'localhost' IDENTIFIED BY 'FoodChoiceUser'`  
+`GRANT ALL ON *.* TO 'FoodChoiceUser'@'localhost';`
 
-`GRANT ALL ON *.* TO 'FoodChoiceUser'@'host';`  
--> Don't forget to replace 'host'
+*If you want to use a different host, it will be necessary to update HOST_NAME in data.py*
 
 > Clone the repository from Github
 
