@@ -34,8 +34,8 @@ PAYLOAD = {
 # database
 DATABASE_NAME = "FoodChoice"
 HOST_NAME = "localhost"
-USER_NAME_ROOT = "root"
-USER_PASSWORD_ROOT = "my-secret-pw"
+USER_NAME = "FoodChoiceUser"
+USER_PASSWORD = "my-secret-pw"
 
 ############################# SQL QUERIES #################################
 

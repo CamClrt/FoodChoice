@@ -25,14 +25,14 @@ class Database:
 
     def __init__(self, database_name=DATABASE_NAME,
                  host_name=HOST_NAME,
-                 user_name_root=USER_NAME_ROOT,
-                 user_password_root=USER_PASSWORD_ROOT
+                 user_name=USER_NAME,
+                 user_password=USER_PASSWORD
                  ):
 
         self.database_name = database_name
         self.host_name = host_name
-        self.user_name_root = user_name_root
-        self.user_password_root = user_password_root
+        self.user_name = user_name
+        self.user_password = user_password
         self.database = None
 
     def __enter__(self):
@@ -49,8 +49,8 @@ class Database:
         db = None
         try:
             db = mysql.connector.connect(
-                user=self.user_name_root,
-                password=self.user_password_root,
+                user=self.user_name,
+                password=self.user_password,
                 host=self.host_name,
             )
 
