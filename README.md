@@ -1,7 +1,7 @@
 Pur Beurre x OpenFoodFacts: FoodChoice
 =================
 
-This project aims to help the Pur Beurre compagny's customer to eat healthier thanks to the [Open Food facts](https://world.openfoodfacts.org/) data.
+This project aims to help the Pur Beurre compagny's customer to eat healthier thanks to the [Open Food facts](https://world.openfoodfacts.org/) data.  
 This is a student project made for the project 5 from [OpenClassrooms](https://openclassrooms.com/ )'s Python course.
 
 1. Before starting
