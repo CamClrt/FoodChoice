@@ -15,6 +15,10 @@ This project aims to help the Pur Beurre compagny's customer to eat healthier th
 
 ## 1. Before starting
 
+> You need to install Python
+
+* Python 3.8  -> please follow [the official documentation](https://www.python.org/downloads/release/python-380/)
+
 > You need to install MySQL
 
 * MySQL 8 -> please follow [the official documentation](https://dev.mysql.com/doc/mysql-installation-excerpt/8.0/en/)
