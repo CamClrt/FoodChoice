@@ -55,7 +55,7 @@ At the root of the package in data.py module, update the user information accord
 
 **With a virtual environment**
 
-Use [virtualenv](https://pypi.org/project/virtualenv/), in your current folder :
+Use [virtualenv](https://pypi.org/project/virtualenv/), in your current folder
 
 Activate the virtual environment:
 `source env/bin/activate`  
