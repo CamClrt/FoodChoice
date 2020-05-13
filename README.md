@@ -57,10 +57,17 @@ At the root of the package in data.py module, update the user information accord
 
 Use [virtualenv](https://pypi.org/project/virtualenv/), in your current folder :
 
-`source env/bin/activate               #activate the virtual environment`  
-`pip install -r requirements.txt       #install in the environment all the librairies required`  
-`python main.py                        #launch the application`  
-`deactivate                            #deactivate the virtual environment`  
+Activate the virtual environment:
+`source env/bin/activate`  
+
+Install in the environment all the libraries required:
+`pip install -r requirements.txt`  
+
+Launch the application:
+`python main.py`  
+
+At the end, deactivate the virtual environment:
+`deactivate`  
 
 **With the package**
 
