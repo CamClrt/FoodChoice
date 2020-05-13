@@ -8,5 +8,6 @@ setup(
     license='',
     author='Camille Clarret',
     author_email='camille.clarret@gmail.com',
-    description='[P5] : OpenClassrooms student project - Import data from the OpenFoodFact API and find healthier products'
+    description='[P5] : OpenClassrooms student project - Import data from the OpenFoodFact API and find healthier products',
+    scripts=['main']
 )
