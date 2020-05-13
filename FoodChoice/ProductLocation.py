@@ -1,5 +1,6 @@
 from data import *
 
+
 class ProductLocationManager:
     """Manage ProductLocation table"""
 
@@ -12,8 +13,8 @@ class ProductLocationManager:
 
         for productlocation_object in productlocation_objects:
             data.append((productlocation_object.product_id,
-                        productlocation_object.store_id,
-                        productlocation_object.city_id,))
+                         productlocation_object.store_id,
+                         productlocation_object.city_id,))
 
         mycursor = self.database.cursor()
         mycursor.executemany(SQL_INSERT_PRODUCT_LOCATION, data)
@@ -31,4 +32,5 @@ class ProductLocation:
 
     def __str__(self):
         """Represent ProductLocation object"""
-        return f"Product_ID : {self.product_id}, Store_ID : {self.store_id}, City_ID : {self.city_id}"
+        return f"Product_ID : {self.product_id}, Store_ID : " \
+               f"{self.store_id}, City_ID : {self.city_id}"

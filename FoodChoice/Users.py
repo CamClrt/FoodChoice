@@ -1,6 +1,6 @@
-from data import *
-import bcrypt
 import pickle
+import bcrypt
+from data import *
 
 
 class UsersManager:
@@ -38,7 +38,7 @@ class UsersManager:
             user_object.id = int(res[0])
             return True, user_object
 
-    def ckeck_pwd(self,user_name, pwd):
+    def ckeck_pwd(self, user_name, pwd):
         """check if the password is right"""
         mycursor = self.database.cursor()
         mycursor.execute(SQL_SELECT_USER_NAME, (user_name, ))

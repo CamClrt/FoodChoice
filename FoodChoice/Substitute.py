@@ -1,6 +1,6 @@
+from mysql.connector import Error
 from data import *
 from FoodChoice.Product import *
-from mysql.connector import Error
 
 class SubstituteManager:
     """Manage Substitute table"""
@@ -36,7 +36,8 @@ class SubstituteManager:
         for tmp_index, substitute in enumerate(substitutes):
             index = tmp_index + 1
             substitutes_dic[str(index)] = substitute
-            print(f"{substitute[5]}  {index}. {substitute[1]} - {substitute[2]} (votre note: {substitute[6]})")
+            print(f"{substitute[5]}  {index}. {substitute[1]} "
+                  f"- {substitute[2]} (votre note: {substitute[6]})")
         return substitutes_dic
 
     def add_note(self, product_id, note):

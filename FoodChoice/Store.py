@@ -1,5 +1,6 @@
 from data import *
 
+
 class StoreManager:
     """Manage Store table"""
 

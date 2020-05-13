@@ -4,9 +4,6 @@ import re
 class Filter:
     """Allow to filter API data before DB insertion"""
 
-    def __init__(self):
-        pass
-
     def cat_filter(self, tmp_category):
         """Filter categories data"""
         category = tmp_category.strip().capitalize()
@@ -26,7 +23,8 @@ class Filter:
         store = tmp_store.strip().capitalize()
         return store[:50]
 
-    def prod_filters(self, tmp_name, tmp_brand, tmp_nutrition_grade, tmp_energy_100g, tmp_url, tmp_code):
+    def prod_filters(self, tmp_name, tmp_brand, tmp_nutrition_grade,
+                     tmp_energy_100g, tmp_url, tmp_code):
         """Filter products data"""
         name = tmp_name[:150]
         brand = tmp_brand[:100]

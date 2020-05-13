@@ -1,5 +1,6 @@
 from data import *
 
+
 class CityManager:
     """Manage City table"""
 
@@ -22,7 +23,7 @@ class CityManager:
     def insert(self, city_object):
         """insert city_object in DB"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_INSERT_CITIES,(city_object.name, ))
+        mycursor.execute(SQL_INSERT_CITIES, (city_object.name, ))
         self.database.commit()
         mycursor.execute(LAST_INSERT_ID)
         city_object.id = mycursor.fetchone()[0]

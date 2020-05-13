@@ -1,7 +1,8 @@
 import sys
-import bcrypt
-import pickle
 import getpass
+import pickle
+import bcrypt
+
 from colorama import Fore, Style
 
 from FoodChoice.Users import *
@@ -9,7 +10,7 @@ from FoodChoice.Product import *
 from FoodChoice.Substitute import *
 
 
-class Menu():
+class Menu:
     """Respresents all the app menus"""
 
     def __init__(self, database):
@@ -18,17 +19,15 @@ class Menu():
 
     def cnx_menu(self):
         """Allow user to create an account and connect him with or without account"""
-
         cnx = True
         users_mng = UsersManager(self.database)
 
-        while cnx == True:
+        while cnx:
             authentification_request = "\n1. Accès rapide" \
                                        "\n2. Se connecter" \
                                        "\n3. Créer un compte" \
                                        "\n4. Quitter" \
                                        "\n\nVotre réponse: "
-
             start_choice = input(authentification_request)
 
             if start_choice in ["1", "2", "3", "4"]:
@@ -62,8 +61,10 @@ class Menu():
                         print(Style.RESET_ALL)
                     else:
                         pwd = getpass.getpass('Mot de passe (champ caché): ')
-                        pwd_hashed = bcrypt.hashpw(bytes(pwd, 'utf-8'), bcrypt.gensalt())  # convert pwd in bytes
-                        serial_pwd_hashed = pickle.dumps(pwd_hashed)  # serialize the serial_pwd_hashed object
+                        # convert pwd in bytes
+                        pwd_hashed = bcrypt.hashpw(bytes(pwd, 'utf-8'), bcrypt.gensalt())
+                        # serialize the serial_pwd_hashed object
+                        serial_pwd_hashed = pickle.dumps(pwd_hashed)
                         user_object = users_mng.create(name, serial_pwd_hashed)
                         print(f"L'utilisateur '{name}' a été créé avec succès\n")
                         cnx = False
@@ -86,9 +87,9 @@ class Menu():
             print("\n", " Menu principal ".center(100, '*'))
 
             menu_request = "\n1. Quel aliment souhaitez-vous remplacer?" \
-                            "\n2. Retrouver mes aliments substitués" \
-                            "\n3. Quitter l'application" \
-                            "\n\nVotre réponse: "
+                           "\n2. Retrouver mes aliments substitués" \
+                           "\n3. Quitter l'application" \
+                           "\n\nVotre réponse: "
             menu_choice = input(menu_request)
 
             if menu_choice in ["1", "2", "3"]:
@@ -147,7 +148,8 @@ class Menu():
                                 sub_mng.delete(subsitute_id)
 
                         else:
-                            print(Fore.RED + f"'{subsitute_index_choice}': ce choix ne figure pas dans la liste\n")
+                            print(Fore.RED + f"'{subsitute_index_choice}':"
+                                             f" ce choix ne figure pas dans la liste\n")
                             print(Style.RESET_ALL)
             else:
                 cnx = False
@@ -182,17 +184,20 @@ class Menu():
                                     product = products.get(product_choice)
                                     sub_cnx = False
                                 else:
-                                    print(Fore.RED + f"'{product_choice}': ce choix ne figure pas dans la liste")
+                                    print(Fore.RED + f"'{product_choice}':"
+                                                     f" ce choix ne figure pas dans la liste")
                                     print(Style.RESET_ALL)
 
                             product_id = product[0]
                             product_mng.display_product(product_id)
 
-                            sustitute_choice = input("\nTrouver une meilleure alternative à ce produit? y/n: ")
+                            sustitute_choice =\
+                                input("\nTrouver une meilleure alternative à ce produit? y/n: ")
                             if str(sustitute_choice).lower() == "y":
                                 print("\n", " Votre produit de substitution ".center(100, "*"), "\n")
                                 sub_mng = SubstituteManager(self.database)
-                                substitute_object = sub_mng.substitute_and_display(sql, self.user_object)
+                                substitute_object = \
+                                    sub_mng.substitute_and_display(sql, self.user_object)
                                 sustitute_record = input("\nEnregistrer ce substitut? y/n: ")
                                 if str(sustitute_record).lower() == "y":
                                     sub_mng.insert(substitute_object)

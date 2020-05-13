@@ -1,5 +1,5 @@
-from data import *
 import time
+from data import *
 from FoodChoice.Category import *
 
 
@@ -65,14 +65,15 @@ class ProductManager:
                 products = {}
 
                 print("\n")
-                print(" N° ".center(10, "#"), "  Nom ".center(50, "#"), " Marque ".center(50, "#"), " Code ".center(15, "#"))
+                print(" N° ".center(10, "#"), "  Nom ".center(50, "#"),
+                      " Marque ".center(50, "#"), " Code ".center(15, "#"))
                 for tmp_index, product_by_category in enumerate(products_by_category):
                     index = tmp_index + 1
                     products[str(index)] = product_by_category
                     print(f'{str(index)[:10].center(10)}|'
-                            f'{str(product_by_category[1])[:48].center(50)}|'
-                            f'{str(product_by_category[2])[:48].center(50)}|'
-                            f'{str(product_by_category[3])[:13].center(15)}|')
+                          f'{str(product_by_category[1])[:48].center(50)}|'
+                          f'{str(product_by_category[2])[:48].center(50)}|'
+                          f'{str(product_by_category[3])[:13].center(15)}|')
                 cnx = False
             else:
                 print(f"\n '{category_choice}': cette catégorie ne figure pas dans la liste\n")
@@ -92,7 +93,8 @@ class ProductManager:
             print("\nAucun produit ne correspond à la recherche!")
         else:
             print("\n")
-            print(" N° ".center(10, "#"), "  Nom ".center(50, "#"), " Marque ".center(50, "#"), " Code ".center(15, "#"))
+            print(" N° ".center(10, "#"), "  Nom ".center(50, "#"),
+                  " Marque ".center(50, "#"), " Code ".center(15, "#"))
             for tmp_index, product_by_name in enumerate(products_by_name):
                 index = tmp_index + 1
                 products[str(index)] = product_by_name
@@ -138,10 +140,12 @@ class ProductManager:
               "Villes: ", ", ".join(cities), "\n")
         time.sleep(1)
 
+
 class Product:
     """Represent Product table"""
 
-    def __init__(self, name, brand, nutrition_grade, energy_100g, url, code, stores, cities, categories):
+    def __init__(self, name, brand, nutrition_grade, energy_100g,
+                 url, code, stores, cities, categories):
         self.id = ""
         self.name = name
         self.brand = brand

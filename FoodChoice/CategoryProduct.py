@@ -1,5 +1,6 @@
 from data import *
 
+
 class CategoryProductManager:
     """Manage CategoryProduct table"""
 
@@ -18,6 +19,7 @@ class CategoryProductManager:
         mycursor.executemany(SQL_INSERT_CATEGORY_PRODUCT, data)
         self.database.commit()
         mycursor.close()
+
 
 class CategoryProduct:
     """Represent CategoryProduct table"""
