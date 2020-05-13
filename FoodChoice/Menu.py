@@ -138,7 +138,7 @@ class Menu():
                                 prod_mng.display_product(product_id)
 
                             elif subsitute_choice == "2":  # Add personal note
-                                subsitute_note = input("Votre note en moins de 140 caractères): ")
+                                subsitute_note = input("Votre note en moins de 140 caractères: ")
                                 sub_mng = SubstituteManager(self.database)
                                 sub_mng.add_note(product_id, subsitute_note)
 
@@ -149,6 +149,8 @@ class Menu():
                         else:
                             print(Fore.RED + f"'{subsitute_index_choice}': ce choix ne figure pas dans la liste\n")
                             print(Style.RESET_ALL)
+            else:
+                cnx = False
 
     def product_menu(self):
         """Display product menu"""

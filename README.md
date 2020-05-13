@@ -31,7 +31,7 @@ Create a user with all privileges:
 `GRANT ALL PRIVILEGES ON FoodChoice.* TO 'FoodChoiceUser'@'localhost';`  
 `FLUSH PRIVILEGES;` 
 
-Nb: don't forget to stop MySQL services when you don't use the application
+Don't forget to stop MySQL services when you don't use the application
 
 > Configure data.py
 
@@ -47,9 +47,18 @@ At the root of the package in data.py module, update the user information accord
 `git clone git@github.com:CamClrt/FoodChoice.git` or `git clone https://github.com/CamClrt/FoodChoice.git`
 
 
-> Install the package
+> Execute with a virtual environment or install the package
 
-TODO
+**With a virtual environment**
+
+Use [virtualenv](https://pypi.org/project/virtualenv/), in your current folder :
+
+`source env/bin/activate               #activate the virtual environment`  
+`pip install -r requirements.txt       #install in the environment all the librairies required`  
+`python main.py                        #launch the application`  
+`deactivate                            #deactivate the virtual environment`  
+
+**With the package**
 
 `pip install .`
 
@@ -73,6 +82,7 @@ The user can interact with it with keyboard
 
 ## 4. Made with
 
+* Python 3.8
 * PyCharm: https://www.jetbrains.com/fr-fr/pycharm/, text editor
 * OpenFoodFacts: https://fr.openfoodfacts.org/, API
 * MySQL 8, RDBMS
