@@ -51,7 +51,7 @@ At the root of the package in data.py module, update the user information accord
 `git clone git@github.com:CamClrt/FoodChoice.git` or `git clone https://github.com/CamClrt/FoodChoice.git`
 
 
-> Execute with a virtual environment or install the package
+> How install and run the program
 
 **With a virtual environment**
 
@@ -68,10 +68,6 @@ Launch the application:
 
 At the end, deactivate the virtual environment:
 `deactivate`  
-
-**With the package**
-
-`pip install .`
 
 ## 2. To use the program
 
