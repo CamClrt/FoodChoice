@@ -97,7 +97,11 @@ The user can interact with it with keyboard
 
 ## 5. Contributing
 
-Feel free to contribute to this project
+Fork it  
+Create your feature branch (`git checkout -b my-new-feature`)  
+Commit your changes (`git commit -am 'Add some feature'`)  
+Push to the branch (`git push origin my-new-feature`)  
+Create new Pull Request
 
 ## 6. Versions
 
