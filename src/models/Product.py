@@ -1,6 +1,6 @@
 import time
-from data import *
-from FoodChoice.Category import *
+from src.utils.queries import *
+from src.models.Category import *
 
 
 class ProductManager:

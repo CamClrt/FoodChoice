@@ -1,4 +1,4 @@
-from data import *
+from src.utils.config import *
 from progress.bar import Bar
 import requests
 import re
@@ -31,7 +31,7 @@ class API:
     def categories(self):
         """Import and return a selection of categories"""
         headers = {'date': DATE, 'user-agent': APP_NAME}
-        response = requests.get(self.categories_url, headers=headers)
+        response = requests.get(self.categories_url, headers=headers, timeout=10)
         log = f"API : Date: '{response.headers['Date']}', ' \
                         'Import categories '{self.nb_cat_selected_among_the_list}': ' \
                         'Content-Type: '{response.headers['Content-Type']}', ' \
@@ -71,7 +71,7 @@ class API:
             for category in self.categories:
                 PAYLOAD["tag_0"] = "'" + str(category) + "'"
                 headers = {'date': DATE, 'user-agent': APP_NAME}
-                response = requests.get(self.products_url, params=PAYLOAD, headers=headers)
+                response = requests.get(self.products_url, params=PAYLOAD, headers=headers, timeout=10)
                 log = f"API : Date: '{response.headers['Date']}', ' \
                                 'Import products in '{category}': ' \
                                 'Content-Type: '{response.headers['Content-Type']}', ' \

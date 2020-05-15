@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='P5',
     version='1.0',
-    packages=['FoodChoice'],
+    packages=['src'],
     url='https://github.com/CamClrt/FoodChoice',
     license='',
     author='Camille Clarret',

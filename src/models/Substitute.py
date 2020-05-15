@@ -1,6 +1,7 @@
 from mysql.connector import Error
-from data import *
-from FoodChoice.Product import *
+from src.utils.queries import *
+from src.models.Product import *
+
 
 class SubstituteManager:
     """Manage Substitute table"""

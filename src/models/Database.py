@@ -1,14 +1,15 @@
-from data import *
+from src.utils.config import *
+from src.utils.queries import *
 
-from FoodChoice.API import *
-from FoodChoice.City import *
-from FoodChoice.Store import *
-from FoodChoice.Product import *
-from FoodChoice.Category import *
-from FoodChoice.Users import *
-from FoodChoice.Filter import *
-from FoodChoice.CategoryProduct import *
-from FoodChoice.ProductLocation import *
+from src.api.API import *
+from src.models.City import *
+from src.models.Store import *
+from src.models.Product import *
+from src.models.Category import *
+from src.models.Users import *
+from src.utils.Filter import *
+from src.models.CategoryProduct import *
+from src.models.ProductLocation import *
 
 import time
 import pickle

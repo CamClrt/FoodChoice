@@ -1,6 +1,6 @@
 import pickle
 import bcrypt
-from data import *
+from src.utils.queries import *
 
 
 class UsersManager:

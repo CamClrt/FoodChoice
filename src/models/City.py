@@ -1,4 +1,4 @@
-from data import *
+from src.utils.queries import *
 
 
 class CityManager:
