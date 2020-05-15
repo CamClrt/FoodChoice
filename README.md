@@ -51,23 +51,48 @@ At the root of the package in data.py module, update the user information accord
 `git clone git@github.com:CamClrt/FoodChoice.git` or `git clone https://github.com/CamClrt/FoodChoice.git`
 
 
-> How install and run the program
+> Execute with a virtual environment or install the package
 
 **With a virtual environment**
 
 Use [virtualenv](https://pypi.org/project/virtualenv/), in your current folder
 
-Activate the virtual environment:
-`source env/bin/activate`  
+*For Mac OS, Linux and Windows*  
+
+`pip install virtualenv`  
 
 Install in the environment all the libraries required:
 `pip install -r requirements.txt`  
 
+*For Mac OS or Linux*  
+
+Create the virtual environment:
+`virtualenv -p python3 env`
+
+Activate the virtual environment:
+`source env/bin/activate`  
+
 Launch the application:
-`python main.py`  
+`python3 -m src.main`    
+
+*For Windows*  
+
+Create the virtual environment:
+`virtualenv -p $env:python3 env`
+
+Activate the virtual environment:
+`./env/scripts/activate.ps1`   
+
+Launch the application:
+`python -m src.main`   
+
+*For Mac OS, Linux and Windows*  
 
 At the end, deactivate the virtual environment:
 `deactivate`  
+
+If you need, remove it:
+`rm -rf env`  
 
 ## 2. To use the program
 
@@ -79,7 +104,7 @@ The user can interact with it with keyboard
 ## 3. Functions
 
 * Connect without account to the application
-* Create and log in to his personal account (an user name and password is required)
+* Create and log in to his personal account (a user name and password is required)
 * Find a product by his category or his name
 * Display the product's details (Name, Brand, Code, Nutrition_grade, Energy_100g, URL, Categories, Stores and Cities)
 * Substitute the current product by an other healthier (compare to the 'Nutrition_grade' and the 'Energy_100g' fields)
