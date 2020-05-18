@@ -37,7 +37,7 @@ Create a user with all privileges:
 
 Don't forget to stop MySQL services when you don't use the application
 
-> Configure data.py
+> Configure congig.py
 
 At the root of the package in data.py module, update the user information according what you have chosen above :
 
