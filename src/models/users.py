@@ -1,10 +1,15 @@
+"""
+    This module manage all operations with the Users table
+"""
+
 import pickle
 import bcrypt
-from src.utils.queries import *
+from utils import queries
 
 
 class UsersManager:
     """Manage Users table"""
+
     default_username = "UserByDefault"
     default_pw = "PwdByDefault"
 
@@ -15,11 +20,11 @@ class UsersManager:
         """insert user object in DB"""
         mycursor = self.database.cursor()
         data = (name, pwd_serialized)
-        mycursor.execute(SQL_INSERT_USER, data)
+        mycursor.execute(queries.SQL_INSERT_USER, data)
         self.database.commit()
 
         user_object = Users(name)
-        mycursor.execute(LAST_INSERT_ID)
+        mycursor.execute(queries.LAST_INSERT_ID)
         user_object.id = mycursor.fetchone()[0]
         mycursor.close()
         return user_object
@@ -27,7 +32,7 @@ class UsersManager:
     def find_name(self, user_name):
         """find if user_name is already in DB"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_SELECT_USER_NAME, (user_name, ))
+        mycursor.execute(queries.SQL_SELECT_USER_NAME, (user_name,))
         res = mycursor.fetchone()
         mycursor.close()
 
@@ -41,11 +46,11 @@ class UsersManager:
     def ckeck_pwd(self, user_name, pwd):
         """check if the password is right"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_SELECT_USER_NAME, (user_name, ))
+        mycursor.execute(queries.SQL_SELECT_USER_NAME, (user_name,))
         query_res = mycursor.fetchone()
         mycursor.close()
         received_pwd_hashed = pickle.loads((query_res[2]))
-        res = bcrypt.checkpw(bytes(pwd, 'utf-8'), received_pwd_hashed)
+        res = bcrypt.checkpw(bytes(pwd, "utf-8"), received_pwd_hashed)
 
         if res:
             user_object = Users(user_name)

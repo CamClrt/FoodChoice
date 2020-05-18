@@ -1,4 +1,8 @@
-from src.utils.queries import *
+"""
+    This module manage all operations with the CategoryProduct table
+"""
+
+from utils import queries
 
 
 class CategoryProductManager:
@@ -12,11 +16,15 @@ class CategoryProductManager:
         data = []
 
         for categoryproduct_object in categoryproduct_objects:
-            data.append((categoryproduct_object.product_id,
-                         categoryproduct_object.category_id,))
+            data.append(
+                (
+                    categoryproduct_object.product_id,
+                    categoryproduct_object.category_id,
+                )
+            )
 
         mycursor = self.database.cursor()
-        mycursor.executemany(SQL_INSERT_CATEGORY_PRODUCT, data)
+        mycursor.executemany(queries.SQL_INSERT_CATEGORY_PRODUCT, data)
         self.database.commit()
         mycursor.close()
 
@@ -30,4 +38,6 @@ class CategoryProduct:
 
     def __str__(self):
         """Represent CategoryProduct object"""
-        return f"Product_ID : {self.product_id}, Category_ID : {self.category_id}"
+        return (
+            f"Product_ID : {self.product_id}, Category_ID : {self.category_id}"
+        )

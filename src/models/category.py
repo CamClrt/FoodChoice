@@ -1,4 +1,8 @@
-from src.utils.queries import *
+"""
+    This module manage all operations with the Category table
+"""
+
+from utils import queries
 
 
 class CategoryManager:
@@ -10,7 +14,7 @@ class CategoryManager:
     def find(self, category_name):
         """search if category_name already exists and insert it"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_SELECT_CATEGORY, (category_name, ))
+        mycursor.execute(queries.SQL_SELECT_CATEGORY, (category_name,))
         res = mycursor.fetchone()
         mycursor.close()
         category_object = Category(category_name)
@@ -23,7 +27,7 @@ class CategoryManager:
     def most_used_categories(self):
         """search the 20 most used categories and order them"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_SELECT_CATEGORIES)
+        mycursor.execute(queries.SQL_SELECT_CATEGORIES)
         categories = mycursor.fetchall()
         mycursor.close()
         return categories
@@ -31,9 +35,10 @@ class CategoryManager:
     def insert(self, category_object):
         """insert category_object in DB"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_INSERT_CATEGORIES, (category_object.name, ))
+        mycursor.execute(
+            queries.SQL_INSERT_CATEGORIES, (category_object.name,))
         self.database.commit()
-        mycursor.execute(LAST_INSERT_ID)
+        mycursor.execute(queries.LAST_INSERT_ID)
         category_object.id = mycursor.fetchone()[0]
         mycursor.close()
         return category_object

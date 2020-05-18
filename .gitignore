@@ -1,7 +1,8 @@
-__pycache__
 env
-venv
 .idea
+.vscode
 X - Help P5
 log.txt
 FoodChoice_sauvegarde.sql
+venv
+__pycache__

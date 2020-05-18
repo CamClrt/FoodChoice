@@ -1,4 +1,8 @@
-from src.utils.queries import *
+"""
+    This module manage all operations with the City table
+"""
+
+from utils import queries
 
 
 class CityManager:
@@ -10,7 +14,7 @@ class CityManager:
     def find(self, city_name):
         """search if city_name already exists and insert it"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_SELECT_CITY, (city_name, ))
+        mycursor.execute(queries.SQL_SELECT_CITY, (city_name,))
         res = mycursor.fetchone()
         city = City(city_name)
         mycursor.close()
@@ -23,9 +27,9 @@ class CityManager:
     def insert(self, city_object):
         """insert city_object in DB"""
         mycursor = self.database.cursor()
-        mycursor.execute(SQL_INSERT_CITIES, (city_object.name, ))
+        mycursor.execute(queries.SQL_INSERT_CITIES, (city_object.name,))
         self.database.commit()
-        mycursor.execute(LAST_INSERT_ID)
+        mycursor.execute(queries.LAST_INSERT_ID)
         city_object.id = mycursor.fetchone()[0]
         mycursor.close()
         return city_object

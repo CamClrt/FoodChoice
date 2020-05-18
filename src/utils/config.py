@@ -1,7 +1,10 @@
+"""
+    This module store all the configurations data
+"""
+
 from datetime import datetime
 
-
-########################### DATABASE CONFIG ###############################
+# DATABASE CONFIG
 
 # database
 DATABASE_NAME = "FoodChoice"
@@ -9,10 +12,10 @@ HOST_NAME = "localhost"
 USER_NAME = "FoodChoiceUser"
 USER_PASSWORD = "my-secret-pw"
 
-########################### API CONFIG ###############################
+# API CONFIG
 
 # headers
-APP_NAME = 'FoodChoice/0.0.1'
+APP_NAME = "FoodChoice/0.0.1"
 date = datetime.now()
 DATE = date.__str__()[:19]
 
@@ -20,7 +23,7 @@ DATE = date.__str__()[:19]
 CATEGORIES_URL = "https://fr.openfoodfacts.org/categories.json"
 CATEGORIES_KEY = "tags"
 CATEGORIES_NAME_FIELD = "name"
-NB_CAT_SELECTED_AMONG_THE_LIST = 10
+NB_CAT_SELECTED_AMONG_THE_LIST = 15
 CATEGORIES_REGEX = "^[A-Z].+"
 
 # products
@@ -34,6 +37,6 @@ PAYLOAD = {
     "tag_contains_0": "contains",
     "tag_0": "category",
     "sort_by": "last_modified_t",
-    "page_size": "50",
-    "json": "true"
+    "page_size": "150",
+    "json": "true",
 }

@@ -1,4 +1,8 @@
-from src.utils.queries import *
+"""
+    This module manage all operations with the ProductLocation table
+"""
+
+from utils import queries
 
 
 class ProductLocationManager:
@@ -12,12 +16,16 @@ class ProductLocationManager:
         data = []
 
         for productlocation_object in productlocation_objects:
-            data.append((productlocation_object.product_id,
-                         productlocation_object.store_id,
-                         productlocation_object.city_id,))
+            data.append(
+                (
+                    productlocation_object.product_id,
+                    productlocation_object.store_id,
+                    productlocation_object.city_id,
+                )
+            )
 
         mycursor = self.database.cursor()
-        mycursor.executemany(SQL_INSERT_PRODUCT_LOCATION, data)
+        mycursor.executemany(queries.SQL_INSERT_PRODUCT_LOCATION, data)
         self.database.commit()
         mycursor.close()
 
@@ -32,5 +40,7 @@ class ProductLocation:
 
     def __str__(self):
         """Represent ProductLocation object"""
-        return f"Product_ID : {self.product_id}, Store_ID : " \
-               f"{self.store_id}, City_ID : {self.city_id}"
+        return (
+            f"Product_ID : {self.product_id}, Store_ID : "
+            f"{self.store_id}, City_ID : {self.city_id}"
+        )

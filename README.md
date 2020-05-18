@@ -57,42 +57,21 @@ At the root of the package in data.py module, update the user information accord
 
 Use [virtualenv](https://pypi.org/project/virtualenv/), in your current folder
 
-*For Mac OS, Linux and Windows*  
-
-`pip install virtualenv`  
+Activate the virtual environment:
+`source env/bin/activate`  
 
 Install in the environment all the libraries required:
 `pip install -r requirements.txt`  
 
-*For Mac OS or Linux*  
-
-Create the virtual environment:
-`virtualenv -p python3 env`
-
-Activate the virtual environment:
-`source env/bin/activate`  
-
 Launch the application:
-`python3 -m src.main`    
-
-*For Windows*  
-
-Create the virtual environment:
-`virtualenv -p $env:python3 env`
-
-Activate the virtual environment:
-`./env/scripts/activate.ps1`   
-
-Launch the application:
-`python -m src.main`   
-
-*For Mac OS, Linux and Windows*  
+`python FoodChoice/main.py`  
 
 At the end, deactivate the virtual environment:
 `deactivate`  
 
-If you need, remove it:
-`rm -rf env`  
+**With the package**
+
+`pip install .`
 
 ## 2. To use the program
 
