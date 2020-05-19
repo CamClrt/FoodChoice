@@ -64,7 +64,7 @@ Install in the environment all the libraries required:
 `pip install -r requirements.txt`  
 
 Launch the application:
-`python FoodChoice/main.py`  
+`python FoodChoice/src/main.py`  
 
 At the end, deactivate the virtual environment:
 `deactivate`  
