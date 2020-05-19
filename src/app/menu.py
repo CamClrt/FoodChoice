@@ -1,5 +1,3 @@
-# pylint:  disable=too-many-locals, too-many-nested-blocks, too-many-branches
-
 """
     This module manage the menus
 """

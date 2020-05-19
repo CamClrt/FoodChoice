@@ -21,4 +21,3 @@ setup(
                 'data from the OpenFoodFact API and find healthier products',
     scripts=['src/main.py']
 )
-

@@ -1,5 +1,3 @@
-# pylint:  disable=too-many-arguments,
-
 """
     This module store all the useful filters to process API data
 """

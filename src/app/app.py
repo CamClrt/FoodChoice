@@ -1,5 +1,3 @@
-# pylint:  disable=no-self-use, too-few-public-methods
-
 """
     This module manage the application start
 """
